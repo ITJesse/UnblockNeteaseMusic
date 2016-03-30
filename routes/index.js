@@ -12,12 +12,23 @@ router.post('/api/feedback/client/log', function(req, res, next) {
   });
 });
 
-router.all('/*', function(req, res, next) {
+router.get('/*', function(req, res, next) {
+  // console.log(req.headers);
+  utils.defaultGet(req.headers, req.originalUrl, function(err, headers, body) {
+    if (err) {
+      return console.error(err);
+    } else {
+      // console.log(body);
+      // console.log(utils);
+      next();
+    }
+  });
+});
+router.post('/*', function(req, res, next) {
   // console.log(req.body);
   utils.defaultPost(req.headers, req.body, req.originalUrl, function(err, headers, body) {
     if (err) {
-      console.error(err);
-      return callback(err);
+      return console.error(err);
     } else {
       // console.log(body);
       // console.log(utils);

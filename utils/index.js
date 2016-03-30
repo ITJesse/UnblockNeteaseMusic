@@ -21,6 +21,22 @@ utils.prototype.defaultPost = function(headers, body, url, callback) {
     } else {
       _this.body = body;
       _this.headers = headers;
+      delete _this.headers['content-encoding'];
+      callback(null, headers, body);
+    }
+  })
+}
+
+utils.prototype.defaultGet = function(headers, url, callback) {
+  var _this = this;
+  _this.get(headers, url, function(err, headers, body) {
+    if (err) {
+      console.error(err);
+      return callback(err);
+    } else {
+      _this.body = body;
+      _this.headers = headers;
+      delete _this.headers['content-encoding'];
       callback(null, headers, body);
     }
   })
@@ -32,21 +48,49 @@ utils.prototype.post = function(headers, body, url, callback) {
 
   body = new Buffer(body);
 
-  // console.log('==============');
-  // console.log(body);
-
+  if(!/^http/.test(url)) {
+    url = baseUrl + url;
+  }
+  // console.log(url);
   var options = {
-    url: baseUrl + url,
+    url: url,
     headers: headers,
     method: 'post',
-    body: body
+    body: body,
+    gzip: true
   };
   request(options, function(err, res, body) {
     if (err) {
       console.error(err);
       return callback(err);
     } else {
-      // console.log(res.body);
+      // console.log(res.headers);
+      callback(null, res.headers, body);
+    }
+  });
+}
+
+utils.prototype.get = function(headers, url, callback) {
+  // console.log(headers);
+  var _this = this;
+
+  if(!/^http/.test(url)) {
+    url = baseUrl + url;
+  }
+  // console.log(url);
+  var options = {
+    url: url,
+    headers: headers,
+    method: 'get',
+    gzip: true
+  };
+  request(options, function(err, res, body) {
+    if (err) {
+      console.error(err);
+      return callback(err);
+    } else {
+      // console.log(res.headers);
+      // console.log(body);
       callback(null, res.headers, body);
     }
   });
