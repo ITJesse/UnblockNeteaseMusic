@@ -1,6 +1,6 @@
 # UnblockNeteaseMusic
 
-A proxy for Netease Music...
+A proxy server for Netease Music...
 
 # How to use
 
@@ -8,11 +8,7 @@ A proxy for Netease Music...
 2. `npm install`
 3. `npm start`
 
-## For Windows users
-
-Just set the proxy to 127.0.0.1:8123 on your client's settings page.
-
-## For other users
+## Setup nginx
 
 1. Install nginx.
 2. Create a new vhost with the conf file below.
