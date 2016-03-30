@@ -12,7 +12,7 @@ router.post('/api/feedback/client/log', function(req, res, next) {
   });
 });
 
-router.post('/*', function(req, res, next) {
+router.all('/*', function(req, res, next) {
   // console.log(req.body);
   utils.defaultPost(req.headers, req.body, req.originalUrl, function(err, headers, body) {
     if (err) {
@@ -86,7 +86,7 @@ router.post('/eapi/song/enhance/player/url', function(req, res, next) {
   }
 });
 
-router.post('/*', function(req, res, next) {
+router.all('/*', function(req, res, next) {
   // console.log(utils.headers);
   // console.log(utils.body);
   res.set(utils.headers);
