@@ -2,6 +2,11 @@
 
 A proxy server for Netease Music...
 
+# Dependencies
+
+1. Python 2.7 installed and add to path.
+2. Node.js 4.x+
+
 # How to use
 
 1. `git clone https://github.com/ITJesse/UnblockNeteaseMusic.git`
