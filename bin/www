@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('UnblockNeteaseMusic:server');
 var http = require('http');
+var colors = require('colors');
 
 /**
  * Get port from environment and store in Express.
@@ -87,4 +88,5 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  console.log('Listening on '.yellow + bind.yellow);
 }

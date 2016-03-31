@@ -13,7 +13,11 @@ A proxy server for Netease Music...
 2. `npm install`
 3. `npm start`
 
-## Setup nginx
+## Windows users
+
+Just simply change your proxy to `127.0.0.1:8123` and restart client.
+
+## Others (reverse Proxy by nginx)
 
 1. Install nginx.
 2. Create a new vhost with the conf file below.
