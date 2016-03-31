@@ -1,9 +1,11 @@
 {
-  "name": "UnblockNeteaseMusic",
-  "version": "0.1.0",
-  "private": true,
+  "name": "unblock-netease-music",
+  "version": "0.1.1",
   "scripts": {
     "start": "node ./bin/www"
+  },
+  "bin": {
+    "unblockneteasemusic": "bin/www"
   },
   "dependencies": {
     "async": "^2.0.0-rc.2",
@@ -18,5 +20,18 @@
     "python-shell": "^0.4.0",
     "request": "^2.69.0",
     "serve-favicon": "~2.3.0"
-  }
+  },
+  "description": "A proxy server for Netease Music...",
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ITJesse/UnblockNeteaseMusic.git"
+  },
+  "author": "itjesse",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/ITJesse/UnblockNeteaseMusic/issues"
+  },
+  "homepage": "https://github.com/ITJesse/UnblockNeteaseMusic#readme"
 }

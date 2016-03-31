@@ -9,9 +9,8 @@ A proxy server for Netease Music...
 
 # How to use
 
-1. `git clone https://github.com/ITJesse/UnblockNeteaseMusic.git`
-2. `npm install`
-3. `npm start`
+1. `$ npm install unblock-netease-music -g`
+2. `$ unblockneteasemusic`
 
 ## Windows users
 
