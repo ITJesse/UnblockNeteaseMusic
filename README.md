@@ -12,7 +12,7 @@ A proxy server for Netease Music...
 1. `npm install unblock-netease-music -g`
 2. `unblockneteasemusic`
 
-## Windows users
+## Windows users (broken, maybe fix on next release)
 
 Just simply change your proxy to `127.0.0.1:8123` and restart client.
 
@@ -21,7 +21,7 @@ Just simply change your proxy to `127.0.0.1:8123` and restart client.
 1. Install nginx.
 2. Create a new vhost with the conf file below.
 3. Start nginx.
-4. Add a line into /etc/hosts `music.163.com 127.0.0.1`
+4. Add a line into /etc/hosts `127.0.0.1 music.163.com`
 
 # Nginx conf file
 
