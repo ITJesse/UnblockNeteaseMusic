@@ -27,21 +27,6 @@ utils.prototype.defaultPost = function(headers, body, url, callback) {
   })
 }
 
-utils.prototype.defaultGet = function(headers, url, callback) {
-  var _this = this;
-  _this.get(headers, url, function(err, headers, body) {
-    if (err) {
-      console.error(err);
-      return callback(err);
-    } else {
-      _this.body = body;
-      _this.headers = headers;
-      delete _this.headers['content-encoding'];
-      callback(null, headers, body);
-    }
-  })
-}
-
 utils.prototype.post = function(headers, body, url, callback) {
   // console.log(headers);
   var _this = this;
@@ -71,7 +56,6 @@ utils.prototype.post = function(headers, body, url, callback) {
 }
 
 utils.prototype.get = function(headers, url, callback) {
-  // console.log(headers);
   var _this = this;
 
   if(!/^http/.test(url)) {
@@ -112,6 +96,22 @@ utils.prototype.getPlaybackUrl = function() {
   return body["data"][0]["url"];
 }
 
+utils.prototype.getDownloadBitrate = function() {
+  // console.log(this.body);
+  var body = JSON.parse(this.body);
+  return body["data"]["br"];
+}
+
+utils.prototype.getDownloadReturnCode = function() {
+  var body = JSON.parse(this.body);
+  return body["data"]["code"];
+}
+
+utils.prototype.getDownloadUrl = function() {
+  var body = JSON.parse(this.body);
+  return body["data"]["url"];
+}
+
 utils.prototype.getEncId = function(dfsId, callback) {
   // var magicBytes = new Buffer('3go8&$8*3*3h0k(2)2');
   // var songId = new Buffer(dfsId.toString());
@@ -136,13 +136,10 @@ utils.prototype.getEncId = function(dfsId, callback) {
     } else {
       callback(null, results[0]);
     }
-    // results is an array consisting of messages collected during execution
-    // console.log('results: %j', results);
   });
 }
 
 utils.prototype.generateUrl = function(dfsId, callback) {
-  // console.log(dfsId);
   var s = (new Date()).getSeconds() % 2 + 1;
   this.getEncId(dfsId, function(err, encId) {
     if (err) {
@@ -261,6 +258,30 @@ utils.prototype.modifyPlayerApi = function(callback) {
       body["data"][0]["url"] = newUrl;
       body["data"][0]["br"] = 320000;
       body["data"][0]["code"] = "200";
+
+      _this.body = JSON.stringify(body);
+      callback(null);
+    }
+  });
+}
+
+utils.prototype.modifyDownloadApi = function(callback) {
+  console.log("Download API Injected".green);
+
+  var _this = this;
+
+  var body = JSON.parse(_this.body);
+  var songId = body["data"]["id"];
+  _this.getUrl(songId, function(err, newUrl) {
+    if (err) {
+      console.error(err.red);
+      return callback(err);
+    } else {
+      var newUrl = newUrl;
+      console.log("New URL is ".green + newUrl.green);
+      body["data"]["url"] = newUrl;
+      body["data"]["br"] = 320000;
+      body["data"]["code"] = "200";
 
       _this.body = JSON.stringify(body);
       callback(null);

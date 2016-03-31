@@ -19,12 +19,15 @@ router.get('/*', function(req, res) {
     headers: req.headers,
     method: 'get'
   };
-  request(options).pipe(res);
+  request(options)
+    .on('error', function(err) {
+      console.error(err)
+    })
+    .pipe(res);
 });
 
 router.post('/*', function(req, res, next) {
-  // console.log(req.body);
-  if(/mp3$|flac$/.test(req.originalUrl)){
+  if (/mp3$|flac$/.test(req.originalUrl)) {
     return request.get(req.originalUrl).pipe(res);
   }
   utils.defaultPost(req.headers, req.body, req.originalUrl, function(err, headers, body) {
@@ -94,6 +97,21 @@ router.post('/eapi/song/enhance/player/url', function(req, res, next) {
     });
   } else {
     console.log('Playback bitrate is not changed. The song URL is '.green + utils.getPlaybackUrl().green);
+    next();
+  }
+});
+
+router.post('/eapi/song/enhance/download/url', function(req, res, next) {
+  if (utils.getDownloadReturnCode() != 200 || utils.getDownloadBitrate() < 320000) {
+    utils.modifyDownloadApi(function(err) {
+      if (err) {
+        return console.error(err.red);
+      } else {
+        next();
+      }
+    });
+  } else {
+    console.log('Download bitrate is not changed. The song URL is '.green + utils.getPlaybackUrl().green);
     next();
   }
 });
