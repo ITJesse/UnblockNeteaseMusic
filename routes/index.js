@@ -18,7 +18,7 @@ router.get('/*', function(req, res) {
   };
   request(options)
     .on('error', function(err) {
-      console.error(err)
+      console.error(err.red)
     })
     .pipe(res);
 });
@@ -29,7 +29,9 @@ router.post('/*', function(req, res, next) {
   }
   utils.defaultPost(req.headers, req.body, req.originalUrl, function(err, headers, body) {
     if (err) {
-      return console.error(err);
+      console.error(err.red);
+      res.status = 500;
+      return res.send('Bad request');
     } else {
       // console.log(body);
       // console.log(utils);
@@ -87,7 +89,9 @@ router.post('/eapi/song/enhance/player/url', function(req, res, next) {
   if (utils.getPlaybackReturnCode() != 200 || utils.getPlaybackBitrate() < 320000) {
     utils.modifyPlayerApi(function(err) {
       if (err) {
-        return console.error(err.red);
+        console.error(err.red);
+        res.status = 500;
+        return res.send('Bad request');
       } else {
         next();
       }
@@ -102,7 +106,9 @@ router.post('/eapi/song/enhance/download/url', function(req, res, next) {
   if (utils.getDownloadReturnCode() != 200 || utils.getDownloadBitrate() < 320000) {
     utils.modifyDownloadApi(function(err) {
       if (err) {
-        return console.error(err.red);
+        console.error(err.red);
+        res.status = 500;
+        return res.send('Bad request');
       } else {
         next();
       }
