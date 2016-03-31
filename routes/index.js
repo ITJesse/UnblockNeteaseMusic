@@ -6,16 +6,13 @@ var request = require('request');
 
 var utils = new Utils();
 
-router.post('/api/feedback/client/log', function(req, res, next) {
-  res.status = 404;
-  res.send({
-    error: '404'
-  });
-});
-
 router.get('/*', function(req, res) {
+  var url = req.originalUrl;
+  if(!/^http/.test(url)){
+    url = "http://223.252.199.7" + url;
+  }
   var options = {
-    url: req.originalUrl,
+    url: url,
     headers: req.headers,
     method: 'get'
   };
