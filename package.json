@@ -1,6 +1,6 @@
 {
   "name": "unblock-netease-music",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "scripts": {
     "start": "node ./bin/www"
   },

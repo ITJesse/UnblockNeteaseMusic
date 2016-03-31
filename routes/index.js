@@ -46,7 +46,7 @@ router.post('/eapi/v3/playlist/detail', function(req, res, next) {
   utils.modifyDetailApi();
   next();
 });
-router.post('/eapi/v1/album/', function(req, res, next) {
+router.post('/eapi/v1/album/*', function(req, res, next) {
   utils.modifyDetailApi();
   next();
 });
