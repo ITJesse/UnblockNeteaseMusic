@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Utils = require('../utils');
 var colors = require('colors');
+var request = require('request');
 
 var utils = new Utils();
 
@@ -12,20 +13,20 @@ router.post('/api/feedback/client/log', function(req, res, next) {
   });
 });
 
-router.get('/*', function(req, res, next) {
-  // console.log(req.headers);
-  utils.defaultGet(req.headers, req.originalUrl, function(err, headers, body) {
-    if (err) {
-      return console.error(err);
-    } else {
-      // console.log(body);
-      // console.log(utils);
-      next();
-    }
-  });
+router.get('/*', function(req, res) {
+  var options = {
+    url: req.originalUrl,
+    headers: req.headers,
+    method: 'get'
+  };
+  request(options).pipe(res);
 });
+
 router.post('/*', function(req, res, next) {
   // console.log(req.body);
+  if(/mp3$|flac$/.test(req.originalUrl)){
+    return request.get(req.originalUrl).pipe(res);
+  }
   utils.defaultPost(req.headers, req.body, req.originalUrl, function(err, headers, body) {
     if (err) {
       return console.error(err);
