@@ -9,8 +9,8 @@ A proxy server for Netease Music...
 
 # How to use
 
-1. `$ npm install unblock-netease-music -g`
-2. `$ unblockneteasemusic`
+1. `npm install unblock-netease-music -g`
+2. `unblockneteasemusic`
 
 ## Windows users
 
