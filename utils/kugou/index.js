@@ -5,7 +5,9 @@ var request = require('request');
 var kugou = function() {};
 
 kugou.prototype.search = function(name, artist, callback) {
-  var songName = encodeURIComponent(artist + " - " + name);
+  console.log("Song name: ".green + name);
+  console.log("Artist: ".green + artist);
+  var songName = encodeURIComponent(artist + " " + name);
   var url = "http://mobilecdn.kugou.com/api/v3/search/song?format=json&keyword=" + songName + "&page=1&pagesize=1&showtype=1";
   request.get(url, function(err, res, body) {
     if (err) {
@@ -26,13 +28,10 @@ kugou.prototype.search = function(name, artist, callback) {
           }
           callback(null, hash, bitrate);
         } else {
-          console.log('No resource found on kugou.'.orange);
-          callback('-1');
+          callback('No resource found on kugou.');
         }
       } else {
-        console.error(data['error']);
-        console.log('No resource found on kugou.'.orange);
-        callback(data['error']);
+        callback('No resource found on kugou.');
       }
     }
   });

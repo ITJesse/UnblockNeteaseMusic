@@ -16,7 +16,6 @@ netease.prototype.getPlaybackReturnCode = function(body) {
 }
 
 netease.prototype.getPlaybackUrl = function(body) {
-  console.log(body)
   var body = JSON.parse(body);
   return body["data"][0]["url"];
 }
