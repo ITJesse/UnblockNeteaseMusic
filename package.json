@@ -15,7 +15,7 @@
     "express": "~4.13.1",
     "md5": "^2.1.0",
     "morgan": "~1.6.1",
-    "request": "^2.69.0",
+    "request": "^2.69.0"
   },
   "description": "A proxy server for Netease Music...",
   "main": "app.js",
