@@ -6,43 +6,6 @@ var waterfall = require("async/waterfall");
 
 var utils = new Utils();
 
-<<<<<<< HEAD
-router.get('/*', function(req, res) {
-  var url = req.originalUrl;
-  if(!/^http/.test(url)){
-    url = "http://223.252.199.7" + url;
-  }
-  var options = {
-    url: url,
-    headers: req.headers,
-    method: 'get'
-  };
-  request(options)
-    .on('error', function(err) {
-      console.error(err.red)
-    })
-    .pipe(res);
-});
-
-router.post('/*', function(req, res, next) {
-  if (/mp3$|flac$/.test(req.originalUrl)) {
-    return request.get(req.originalUrl).pipe(res);
-  }
-  utils.defaultPost(req.headers, req.body, req.originalUrl, function(err, headers, body) {
-    if (err) {
-      console.error(err.red);
-      res.status = 500;
-      return res.send('Bad request');
-    } else {
-      // console.log(body);
-      // console.log(utils);
-      next();
-    }
-  });
-});
-
-=======
->>>>>>> kugou
 router.post('/eapi/v3/song/detail', function(req, res, next) {
   res.defaultBody = utils.netease.modifyDetailApi(res.defaultBody);
   next();
@@ -89,15 +52,6 @@ router.post('/eapi/v1/play/record', function(req, res, next) {
 });
 
 router.post('/eapi/song/enhance/player/url', function(req, res, next) {
-<<<<<<< HEAD
-  if (utils.getPlaybackReturnCode() != 200 || utils.getPlaybackBitrate() < 320000) {
-    utils.modifyPlayerApi(function(err) {
-      if (err) {
-        console.error(err.red);
-        res.status = 500;
-        return res.send('Bad request');
-      } else {
-=======
   if (utils.netease.getPlaybackReturnCode(res.defaultBody) != 200 || utils.netease.getPlaybackBitrate(res.defaultBody) < 320000) {
     waterfall([
       function(callback) {
@@ -140,7 +94,6 @@ router.post('/eapi/song/enhance/player/url', function(req, res, next) {
         res.send();
       }else{
         res.defaultBody = utils.netease.modifyPlayerApiCustom(url, bitrate, res.defaultBody);
->>>>>>> kugou
         next();
       }
     });
@@ -151,15 +104,6 @@ router.post('/eapi/song/enhance/player/url', function(req, res, next) {
 });
 
 router.post('/eapi/song/enhance/download/url', function(req, res, next) {
-<<<<<<< HEAD
-  if (utils.getDownloadReturnCode() != 200 || utils.getDownloadBitrate() < 320000) {
-    utils.modifyDownloadApi(function(err) {
-      if (err) {
-        console.error(err.red);
-        res.status = 500;
-        return res.send('Bad request');
-      } else {
-=======
   if (utils.netease.getDownloadReturnCode(res.defaultBody) != 200 || utils.netease.getDownloadBitrate(res.defaultBody) < 320000) {
     waterfall([
       function(callback) {
@@ -202,7 +146,6 @@ router.post('/eapi/song/enhance/download/url', function(req, res, next) {
         res.send();
       }else{
         res.defaultBody = utils.netease.modifyDownloadApiCustom(url, bitrate, res.defaultBody);
->>>>>>> kugou
         next();
       }
     });
