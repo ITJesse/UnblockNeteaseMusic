@@ -25,7 +25,8 @@ var proxy = function(req, res, next){
         // console.log(resq.body);
         res.defaultBody = resq.body;
         delete resq.headers['content-encoding'];
-        res.set(resq.headers)
+        res.set(resq.headers);
+        // console.log(resq.body)
         next();
       }
     });

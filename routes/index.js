@@ -98,7 +98,7 @@ router.post('/eapi/song/enhance/player/url', function(req, res, next) {
       }
     });
   } else {
-    console.log('Playback bitrate is not changed. The song URL is '.green + utils.getPlaybackUrl().green);
+    console.log('Playback bitrate is not changed. The song URL is '.green + utils.netease.getPlaybackUrl(res.defaultBody).green);
     next();
   }
 });
@@ -150,7 +150,7 @@ router.post('/eapi/song/enhance/download/url', function(req, res, next) {
       }
     });
   } else {
-    console.log('Download bitrate is not changed. The song URL is '.green + utils.getPlaybackUrl().green);
+    console.log('Download bitrate is not changed. The song URL is '.green + utils.netease.getDownloadUrl(res.defaultBody).green);
     next();
   }
 });

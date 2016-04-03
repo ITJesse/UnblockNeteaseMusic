@@ -13,19 +13,25 @@ kugou.prototype.search = function(name, artist, callback) {
       callback(err);
     } else {
       var data = JSON.parse(body);
-      if (data.status == 1) {
-        var hash320 = data['data']['info'][0]['320hash'];
-        var hash128 = data['data']['info'][0]['hash'];
-        if (!!hash320.length) {
-          var hash = hash320;
-          var bitrate = 320000;
+      if (data.status == 1 && !!data['data']['info'].length) {
+        if (data['data']['info'][0]['songname'].indexOf(name) != -1) {
+          var hash320 = data['data']['info'][0]['320hash'];
+          var hash128 = data['data']['info'][0]['hash'];
+          if (!!hash320.length) {
+            var hash = hash320;
+            var bitrate = 320000;
+          } else {
+            var hash = hash128;
+            var bitrate = 128000;
+          }
+          callback(null, hash, bitrate);
         } else {
-          var hash = hash128;
-          var bitrate = 128000;
+          console.log('No resource found on kugou.'.orange);
+          callback('-1');
         }
-        callback(null, hash, bitrate);
       } else {
         console.error(data['error']);
+        console.log('No resource found on kugou.'.orange);
         callback(data['error']);
       }
     }
