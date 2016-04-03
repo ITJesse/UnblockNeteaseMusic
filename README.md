@@ -4,8 +4,7 @@ A proxy server for Netease Music...
 
 # Dependencies
 
-1. Python 2.7 installed and added to path.
-2. Node.js 4.x+
+1. Node.js 4.x+
 
 # How to use
 
