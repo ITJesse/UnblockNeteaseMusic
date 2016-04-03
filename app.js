@@ -1,7 +1,7 @@
 var express = require('express');
-var favicon = require('serve-favicon');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+var proxy = require('./middleware')
 
 var routes = require('./routes/index');
 
@@ -11,6 +11,7 @@ app.use(logger('dev'));
 app.use(bodyParser.raw({
   type: 'application/x-www-form-urlencoded'
 }));
+app.use(proxy);
 
 app.use('/', routes);
 
@@ -22,23 +23,8 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-// error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.send({
-      message: err.message,
-      error: err
-    });
-  });
-}
-
-// production error handler
-// no stacktraces leaked to user
 app.use(function(err, req, res, next) {
+  console.error(err);
   res.status(err.status || 500);
   res.send({
     message: err.message,
