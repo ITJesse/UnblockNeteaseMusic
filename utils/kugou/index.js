@@ -22,11 +22,13 @@ kugou.prototype.search = function(name, artist, callback) {
           if (!!hash320.length) {
             var hash = hash320;
             var bitrate = 320000;
+            var filesize = data['data']['info'][0]['320filesize'];
           } else {
             var hash = hash128;
             var bitrate = 128000;
+            var filesize = data['data']['info'][0]['filesize'];
           }
-          callback(null, hash, bitrate);
+          callback(null, hash, bitrate, filesize);
         } else {
           callback('No resource found on kugou.');
         }

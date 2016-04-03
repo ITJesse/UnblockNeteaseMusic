@@ -97,9 +97,8 @@ netease.prototype.modifyDetailApi = function(body) {
     .replace(/\"subp\":\d+/g, '"subp":1');
 }
 
-netease.prototype.modifyPlayerApiCustom = function(newUrl, bitrate, body) {
+netease.prototype.modifyPlayerApiCustom = function(newUrl, bitrate, filesize, body) {
   console.log("Player API Injected".green);
-  // console.log(body);
 
   var _this = this;
 
@@ -110,6 +109,9 @@ netease.prototype.modifyPlayerApiCustom = function(newUrl, bitrate, body) {
   body["data"][0]["url"] = newUrl;
   body["data"][0]["br"] = bitrate;
   body["data"][0]["code"] = "200";
+  // body["data"][0]["md5"] = 'efba483eb717cc872436075748bcfcf8';
+  body["data"][0]["size"] = filesize;
+  body["data"][0]["type"] = "mp3";
 
   return JSON.stringify(body);
 }

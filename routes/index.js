@@ -70,30 +70,30 @@ router.post('/eapi/song/enhance/player/url', function(req, res, next) {
       function(detail, callback) {
         var songName = utils.netease.getSongName(detail);
         var artist = utils.netease.getArtistName(detail);
-        utils.kugou.search(songName, artist, function(err, hash, bitrate) {
+        utils.kugou.search(songName, artist, function(err, hash, bitrate, filesize) {
           if (err) {
             console.error(err);
           } else {
-            callback(null, hash, bitrate);
+            callback(null, hash, bitrate, filesize);
           }
         });
       },
-      function(hash, bitrate, callback) {
+      function(hash, bitrate, filesize, callback) {
         utils.kugou.getUrl(hash, function(err, url) {
           if (err) {
             console.error(err);
           } else {
-            callback(null, url, bitrate);
+            callback(null, url, bitrate, filesize);
           }
         });
       }
-    ], function(err, url, bitrate) {
+    ], function(err, url, bitrate, filesize) {
       if(err) {
         console.error(err);
         res.status = 500;
         res.send();
       }else{
-        res.defaultBody = utils.netease.modifyPlayerApiCustom(url, bitrate, res.defaultBody);
+        res.defaultBody = utils.netease.modifyPlayerApiCustom(url, bitrate, filesize, res.defaultBody);
         next();
       }
     });
@@ -122,30 +122,30 @@ router.post('/eapi/song/enhance/download/url', function(req, res, next) {
       function(detail, callback) {
         var songName = utils.netease.getSongName(detail);
         var artist = utils.netease.getArtistName(detail);
-        utils.kugou.search(songName, artist, function(err, hash, bitrate) {
+        utils.kugou.search(songName, artist, function(err, hash, bitrate, filesize) {
           if (err) {
             console.error(err);
           } else {
-            callback(null, hash, bitrate);
+            callback(null, hash, bitrate, filesize);
           }
         });
       },
-      function(hash, bitrate, callback) {
+      function(hash, bitrate, filesize, callback) {
         utils.kugou.getUrl(hash, function(err, url) {
           if (err) {
             console.error(err);
           } else {
-            callback(null, url, bitrate);
+            callback(null, url, bitrate, filesize);
           }
         });
       }
-    ], function(err, url, bitrate) {
+    ], function(err, url, bitrate, filesize) {
       if(err) {
         console.error(err);
         res.status = 500;
         res.send();
       }else{
-        res.defaultBody = utils.netease.modifyDownloadApiCustom(url, bitrate, res.defaultBody);
+        res.defaultBody = utils.netease.modifyDownloadApiCustom(url, bitrate, filesize, res.defaultBody);
         next();
       }
     });
