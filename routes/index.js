@@ -83,17 +83,17 @@ router.post('/eapi/song/enhance/player/url', function(req, res, next) {
           if (err) {
             console.error(err);
           } else {
-            callback(null, url, bitrate, filesize);
+            callback(null, url, hash, bitrate, filesize);
           }
         });
       }
-    ], function(err, url, bitrate, filesize) {
+    ], function(err, url, hash, bitrate, filesize) {
       if(err) {
         console.error(err);
         res.status = 500;
         res.send();
       }else{
-        res.defaultBody = utils.netease.modifyPlayerApiCustom(url, bitrate, filesize, res.defaultBody);
+        res.defaultBody = utils.netease.modifyPlayerApiCustom(url, hash, bitrate, filesize, res.defaultBody);
         next();
       }
     });
@@ -135,17 +135,17 @@ router.post('/eapi/song/enhance/download/url', function(req, res, next) {
           if (err) {
             console.error(err);
           } else {
-            callback(null, url, bitrate, filesize);
+            callback(null, url, hash, bitrate, filesize);
           }
         });
       }
-    ], function(err, url, bitrate, filesize) {
+    ], function(err, url, hash, bitrate, filesize) {
       if(err) {
         console.error(err);
         res.status = 500;
         res.send();
       }else{
-        res.defaultBody = utils.netease.modifyDownloadApiCustom(url, bitrate, filesize, res.defaultBody);
+        res.defaultBody = utils.netease.modifyDownloadApiCustom(url, hash, bitrate, filesize, res.defaultBody);
         next();
       }
     });
