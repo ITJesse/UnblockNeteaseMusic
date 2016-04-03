@@ -13,9 +13,11 @@ var proxy = function(req, res, next){
       url: url,
       headers: req.headers,
       method: 'post',
-      body: new Buffer(req.body),
       gzip: true
     };
+    if(!!req.body.length){
+      options.body = req.body;
+    }
     request(options, function(err, resq, body) {
       if (err) {
         console.error(err);
