@@ -107,7 +107,7 @@ router.post('/eapi/song/enhance/download/url', function(req, res, next) {
   if (utils.netease.getDownloadReturnCode(res.defaultBody) != 200 || utils.netease.getDownloadBitrate(res.defaultBody) < 320000) {
     waterfall([
       function(callback) {
-        var songId = utils.netease.getPlaybackSongId(res.defaultBody);
+        var songId = utils.netease.getDownloadSongId(res.defaultBody);
         callback(null, songId);
       },
       function(songId, callback) {
@@ -145,7 +145,7 @@ router.post('/eapi/song/enhance/download/url', function(req, res, next) {
         res.status = 500;
         res.send();
       }else{
-        res.defaultBody = utils.netease.modifyPlayerApiCustom(url, bitrate, res.defaultBody);
+        res.defaultBody = utils.netease.modifyDownloadApiCustom(url, bitrate, res.defaultBody);
         next();
       }
     });
