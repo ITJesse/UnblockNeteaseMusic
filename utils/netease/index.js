@@ -1,5 +1,6 @@
 var colors = require('colors');
 var request = require('request');
+var crypto = require('crypto');
 
 var netease = function() {
   this.baseUrl = "http://223.252.199.7";
@@ -42,7 +43,7 @@ netease.prototype.getSongName = function(body) {
 
 netease.prototype.getArtistName = function(body) {
   var body = JSON.parse(body);
-  return body["songs"][0]['ar'][0]['name'];
+  return body["songs"][0]['artists'][0]['name'];
 }
 
 netease.prototype.getPlaybackSongId = function(body) {
@@ -65,16 +66,14 @@ netease.prototype.getSongDetail = function(songId, callback) {
 
   var header = {
     'host': 'music.163.com',
-    'cookie': 'os=pc',
     'content-type': 'application/x-www-form-urlencoded'
   };
 
   var options = {
-    url: _this.baseUrl + "/api/v2/song/detail",
+    url: _this.baseUrl + "/api/song/detail/?ids=[" + songId + "]&id=" + songId,
     headers: header,
-    method: 'post',
+    method: 'get',
     gzip: true,
-    body: "c=" + JSON.stringify(data)
   };
   request(options, function(err, res, body) {
     if (err) {
@@ -85,6 +84,50 @@ netease.prototype.getSongDetail = function(songId, callback) {
       return callback(null, body);
     }
   });
+}
+
+netease.prototype.getEncId = function(dfsId){
+  var byte1 = new Buffer('3go8&$8*3*3h0k(2)2');
+  var byte2 = new Buffer(dfsId);
+  var byte1_len = byte1.length;
+  for(var i=0; i<byte2.length; i++){
+    byte2[i] = byte2[i]^byte1[i%byte1_len];
+  }
+  var md5 = crypto.createHash('md5').update(byte2).digest('base64');
+  var result = md5.replace(/\//g, '_').replace(/\+/g, '-');
+  return result;
+}
+
+netease.prototype.getFallbackQuality = function(pageContent) {
+  var body = JSON.parse(pageContent);
+
+  // Downgrade if we don't have higher quality...
+  var nQuality = 'hMusic';
+  if (nQuality == "hMusic" && !!!body["songs"][0]["hMusic"]) {
+    nQuality = "mMusic";
+  }
+  if (nQuality == "mMusic" && !!!body["songs"][0]["mMusic"]) {
+    nQuality = "lMusic";
+  }
+  if (nQuality == "lMusic" && !!!body["songs"][0]["lMusic"]) {
+    nQuality = "bMusic";
+  }
+  if (nQuality == "bMusic" && !!!body["songs"][0]["bMusic"]) {
+    nQuality = "audition";
+  }
+
+  if (nQuality == "audition" && !!!body["songs"][0]["audition"]) {
+    console.log('Song url not found.'.red)
+  }
+
+  return body["songs"][0][nQuality];
+}
+
+netease.prototype.generateFallbackUrl = function(dfsId) {
+  var s = (new Date()).getSeconds() % 2 + 1;
+  var encId = this.getEncId(dfsId);
+  var url = "http://m" + s + ".music.126.net/" + encId + "/" + dfsId + ".mp3";
+  return url;
 }
 
 netease.prototype.modifyDetailApi = function(body) {

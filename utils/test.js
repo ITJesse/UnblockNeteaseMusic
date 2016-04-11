@@ -1,8 +1,10 @@
 var netease = new(require('./netease'));
 
-netease.getMusicDetail('589979', function(err, detail){
+netease.getSongDetail('33418856', function(err, detail){
   console.log(err);
-  console.log(detail['songs'][0]);
+  var quality = netease.getFallbackQuality(detail);
+  console.log(quality.dfsId);
+  console.log(netease.generateFallbackUrl(quality.dfsId.toString()));
 });
 
 // var kugou = new(require('./kugou'));

@@ -61,6 +61,7 @@ router.post('/eapi/song/enhance/player/url', function(req, res, next) {
       function(songId, callback) {
         utils.netease.getSongDetail(songId, function(err, detail) {
           if (err) {
+            callback(err);
             console.error(err);
           } else {
             callback(null, detail);
@@ -72,27 +73,37 @@ router.post('/eapi/song/enhance/player/url', function(req, res, next) {
         var artist = utils.netease.getArtistName(detail);
         utils.kugou.search(songName, artist, function(err, hash, bitrate, filesize) {
           if (err) {
-            console.error(err);
+            var quality = utils.netease.getFallbackQuality(detail);
+            callback(null, 'netease', null, quality.bitrate.toString(), quality.size.toString(), quality.dfsId.toString());
           } else {
-            callback(null, hash, bitrate, filesize);
+            callback(null, 'kugou', hash, bitrate, filesize, null);
           }
         });
       },
-      function(hash, bitrate, filesize, callback) {
-        utils.kugou.getUrl(hash, function(err, url) {
-          if (err) {
-            console.error(err);
-          } else {
-            callback(null, url, hash, bitrate, filesize);
-          }
-        });
+      function(type, hash, bitrate, filesize, dfsId, callback) {
+        switch (type) {
+          case 'netease':
+            var url = utils.netease.generateFallbackUrl(dfsId);
+            callback(null, url, null, bitrate, filesize);
+            break;
+          case 'kugou':
+            utils.kugou.getUrl(hash, function(err, url) {
+              if (err) {
+                callback(err);
+                console.error(err);
+              } else {
+                callback(null, url, hash, bitrate, filesize);
+              }
+            });
+            break;
+        }
       }
     ], function(err, url, hash, bitrate, filesize) {
-      if(err) {
+      if (err) {
         console.error(err);
         res.status = 500;
         res.send();
-      }else{
+      } else {
         res.defaultBody = utils.netease.modifyPlayerApiCustom(url, hash, bitrate, filesize, res.defaultBody);
         next();
       }
@@ -124,27 +135,37 @@ router.post('/eapi/song/enhance/download/url', function(req, res, next) {
         var artist = utils.netease.getArtistName(detail);
         utils.kugou.search(songName, artist, function(err, hash, bitrate, filesize) {
           if (err) {
-            console.error(err);
+            var quality = utils.netease.getFallbackQuality(detail);
+            callback(null, 'netease', null, quality.bitrate.toString(), quality.size.toString(), quality.dfsId.toString());
           } else {
-            callback(null, hash, bitrate, filesize);
+            callback(null, 'kugou', hash, bitrate, filesize, null);
           }
         });
       },
-      function(hash, bitrate, filesize, callback) {
-        utils.kugou.getUrl(hash, function(err, url) {
-          if (err) {
-            console.error(err);
-          } else {
-            callback(null, url, hash, bitrate, filesize);
-          }
-        });
+      function(type, hash, bitrate, filesize, dfsId, callback) {
+        switch (type) {
+          case 'netease':
+            var url = utils.netease.generateFallbackUrl(dfsId);
+            callback(null, url, null, bitrate, filesize);
+            break;
+          case 'kugou':
+            utils.kugou.getUrl(hash, function(err, url) {
+              if (err) {
+                callback(err);
+                console.error(err);
+              } else {
+                callback(null, url, hash, bitrate, filesize);
+              }
+            });
+            break;
+        }
       }
     ], function(err, url, hash, bitrate, filesize) {
-      if(err) {
+      if (err) {
         console.error(err);
         res.status = 500;
         res.send();
-      }else{
+      } else {
         res.defaultBody = utils.netease.modifyDownloadApiCustom(url, hash, bitrate, filesize, res.defaultBody);
         next();
       }
