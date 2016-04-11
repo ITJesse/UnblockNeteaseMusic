@@ -70,7 +70,7 @@ netease.prototype.getSongDetail = function(songId, callback) {
   };
 
   var options = {
-    url: _this.baseUrl + "/api/song/detail/?ids=[" + songId + "]",
+    url: _this.baseUrl + "/api/song/detail/?ids=[" + songId + "]&id=" + songId,
     headers: header,
     method: 'get',
     gzip: true,
