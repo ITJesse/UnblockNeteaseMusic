@@ -1,6 +1,6 @@
 {
   "name": "unblock-netease-music",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "scripts": {
     "start": "node ./bin/www"
   },
@@ -18,6 +18,12 @@
     "morgan": "~1.6.1",
     "request": "^2.69.0"
   },
+  "keywords": [
+    "netease",
+    "neteasemusic",
+    "unblock",
+    "neteaseunblock"
+  ],
   "description": "A proxy server for Netease Music...",
   "main": "app.js",
   "devDependencies": {},
