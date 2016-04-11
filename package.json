@@ -11,6 +11,7 @@
     "async": "^2.0.0-rc.2",
     "body-parser": "~1.13.2",
     "colors": "^1.1.2",
+    "commander": "^2.9.0",
     "debug": "~2.2.0",
     "express": "~4.13.1",
     "md5": "^2.1.0",

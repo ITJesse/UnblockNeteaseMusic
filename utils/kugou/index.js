@@ -30,9 +30,11 @@ kugou.prototype.search = function(name, artist, callback) {
           }
           callback(null, hash, bitrate, filesize);
         } else {
+          console.error('No resource found on kugou.'.yellow)
           callback('No resource found on kugou.');
         }
       } else {
+        console.error('No resource found on kugou.'.yellow)
         callback('No resource found on kugou.');
       }
     }

@@ -1,6 +1,9 @@
 var request = require('request');
+var config = require('../config');
 
-var baseUrl = "http://223.252.199.7";
+var ip = config.forceIp ? config.forceIp : '223.252.199.7';
+
+var baseUrl = "http://" + ip;
 
 var proxy = function(req, res, next){
   var url = req.originalUrl;

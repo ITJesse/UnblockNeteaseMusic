@@ -1,10 +1,13 @@
 var express = require('express');
 var router = express.Router();
-var Utils = require('../utils');
 var colors = require('colors');
 var waterfall = require("async/waterfall");
 
-var utils = new Utils();
+var Utils = require('../utils');
+var config = require('../config');
+
+var ip = config.forceIp ? config.forceIp : '223.252.199.7';
+var utils = new Utils(ip);
 
 router.post('/eapi/v3/song/detail', function(req, res, next) {
   res.defaultBody = utils.netease.modifyDetailApi(res.defaultBody);

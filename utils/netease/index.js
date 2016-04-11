@@ -2,8 +2,8 @@ var colors = require('colors');
 var request = require('request');
 var crypto = require('crypto');
 
-var netease = function() {
-  this.baseUrl = "http://223.252.199.7";
+var netease = function(ip) {
+  this.baseUrl = "http://" + ip;
 };
 
 netease.prototype.getPlaybackBitrate = function(body) {
@@ -70,7 +70,7 @@ netease.prototype.getSongDetail = function(songId, callback) {
   };
 
   var options = {
-    url: _this.baseUrl + "/api/song/detail/?ids=[" + songId + "]&id=" + songId,
+    url: _this.baseUrl + "/api/song/detail/?ids=[" + songId + "]",
     headers: header,
     method: 'get',
     gzip: true,
@@ -124,6 +124,7 @@ netease.prototype.getFallbackQuality = function(pageContent) {
 }
 
 netease.prototype.generateFallbackUrl = function(dfsId) {
+  console.log('Fallback to netease low quality.'.yellow)
   var s = (new Date()).getSeconds() % 2 + 1;
   var encId = this.getEncId(dfsId);
   var url = "http://m" + s + ".music.126.net/" + encId + "/" + dfsId + ".mp3";
