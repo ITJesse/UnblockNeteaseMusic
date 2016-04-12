@@ -11,6 +11,20 @@ A proxy server for Netease Music...
 1. `npm install unblock-netease-music -g`
 2. `unblockneteasemusic`
 
+## Configuration
+
+```
+unblockneteasemusic -h
+
+  Usage: unblockneteasemusic [options]
+
+  Options:
+
+    -h, --help           output usage information
+    -p, --port <port>    Specific server port.
+    -f, --force-ip <ip>  Force the netease server ip.
+```
+
 ## Windows users (fixed)
 
 Just simply change your proxy to `127.0.0.1:8123` and restart client.
