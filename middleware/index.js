@@ -16,6 +16,7 @@ var proxy = function(req, res, next){
       url: url,
       headers: req.headers,
       method: 'post',
+      followRedirect: false,
       gzip: true
     };
     if(!!req.body.length){
@@ -41,7 +42,8 @@ var proxy = function(req, res, next){
     var options = {
       url: url,
       headers: req.headers,
-      method: 'get'
+      method: 'get',
+      followRedirect: false,
     };
     request(options)
       .on('error', function(err) {

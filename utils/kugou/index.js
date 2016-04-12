@@ -23,6 +23,7 @@ kugou.prototype.search = function(name, artist, callback) {
             var hash = hash320;
             var bitrate = 320000;
             var filesize = data['data']['info'][0]['320filesize'];
+            callback(null, hash, bitrate, filesize);
           } else {
             // var hash = hash128;
             // var bitrate = 128000;
@@ -30,7 +31,6 @@ kugou.prototype.search = function(name, artist, callback) {
             console.error('No resource found on kugou.'.yellow)
             callback('No resource found on kugou.');
           }
-          callback(null, hash, bitrate, filesize);
         } else {
           console.error('No resource found on kugou.'.yellow)
           callback('No resource found on kugou.');

@@ -6,19 +6,19 @@ var netease = function(ip) {
   this.baseUrl = "http://" + ip;
 };
 
-netease.prototype.getPlaybackBitrate = function(body) {
+netease.prototype.getPlaybackBitrate = function(body, index) {
   var body = JSON.parse(body);
-  return body["data"][0]["br"];
+  return body["data"][index]["br"];
 }
 
-netease.prototype.getPlaybackReturnCode = function(body) {
+netease.prototype.getPlaybackReturnCode = function(body, index) {
   var body = JSON.parse(body);
-  return body["data"][0]["code"];
+  return body["data"][index]["code"];
 }
 
-netease.prototype.getPlaybackUrl = function(body) {
+netease.prototype.getPlaybackUrl = function(body, index) {
   var body = JSON.parse(body);
-  return body["data"][0]["url"];
+  return body["data"][index]["url"];
 }
 
 netease.prototype.getDownloadBitrate = function(body) {
@@ -117,7 +117,7 @@ netease.prototype.getFallbackQuality = function(pageContent) {
   }
 
   if (nQuality == "audition" && !!!body["songs"][0]["audition"]) {
-    console.log('Song url not found.'.red)
+    console.log('No resource found on netease.'.yellow)
   }
 
   return body["songs"][0][nQuality];
@@ -141,21 +141,20 @@ netease.prototype.modifyDetailApi = function(body) {
     .replace(/\"subp\":\d+/g, '"subp":1');
 }
 
-netease.prototype.modifyPlayerApiCustom = function(newUrl, hash, bitrate, filesize, body) {
+netease.prototype.modifyPlayerApiCustom = function(newUrl, hash, bitrate, filesize, body, index) {
   console.log("Player API Injected".green);
 
   var _this = this;
 
   var body = JSON.parse(body);
-
-  var newUrl = newUrl;
+  
   console.log("New URL is ".green + newUrl.green);
-  body["data"][0]["url"] = newUrl;
-  body["data"][0]["br"] = bitrate;
-  body["data"][0]["code"] = "200";
-  body["data"][0]["size"] = filesize;
-  body["data"][0]["md5"] = hash;
-  body["data"][0]["type"] = "mp3";
+  body["data"][index]["url"] = newUrl;
+  body["data"][index]["br"] = bitrate;
+  body["data"][index]["code"] = "200";
+  body["data"][index]["size"] = filesize;
+  body["data"][index]["md5"] = hash;
+  body["data"][index]["type"] = "mp3";
 
   return JSON.stringify(body);
 }
@@ -167,7 +166,6 @@ netease.prototype.modifyDownloadApiCustom = function(newUrl, hash, bitrate, file
 
   var body = JSON.parse(body);
 
-  var newUrl = newUrl;
   console.log("New URL is ".green + newUrl.green);
   body["data"]["url"] = newUrl;
   body["data"]["br"] = bitrate;

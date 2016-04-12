@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var colors = require('colors');
-var waterfall = require("async/waterfall");
 
 var Utils = require('../utils');
 var config = require('../config');
@@ -55,123 +54,39 @@ router.post('/eapi/v1/play/record', function(req, res, next) {
 });
 
 router.post('/eapi/song/enhance/player/url', function(req, res, next) {
-  if (utils.netease.getPlaybackReturnCode(res.defaultBody) != 200 || utils.netease.getPlaybackBitrate(res.defaultBody) < 320000) {
-    waterfall([
-      function(callback) {
-        var songId = utils.netease.getPlaybackSongId(res.defaultBody);
-        callback(null, songId);
-      },
-      function(songId, callback) {
-        utils.netease.getSongDetail(songId, function(err, detail) {
-          if (err) {
-            callback(err);
-            console.error(err);
-          } else {
-            callback(null, detail);
-          }
-        });
-      },
-      function(detail, callback) {
-        var songName = utils.netease.getSongName(detail);
-        var artist = utils.netease.getArtistName(detail);
-        utils.kugou.search(songName, artist, function(err, hash, bitrate, filesize) {
-          if (err) {
-            var quality = utils.netease.getFallbackQuality(detail);
-            callback(null, 'netease', null, quality.bitrate.toString(), quality.size.toString(), quality.dfsId.toString());
-          } else {
-            callback(null, 'kugou', hash, bitrate, filesize, null);
-          }
-        });
-      },
-      function(type, hash, bitrate, filesize, dfsId, callback) {
-        switch (type) {
-          case 'netease':
-            var url = utils.netease.generateFallbackUrl(dfsId);
-            callback(null, url, null, bitrate, filesize);
-            break;
-          case 'kugou':
-            utils.kugou.getUrl(hash, function(err, url) {
-              if (err) {
-                callback(err);
-                console.error(err);
-              } else {
-                callback(null, url, hash, bitrate, filesize);
-              }
-            });
-            break;
+  var amount = JSON.parse(res.defaultBody)["data"].length;
+  var count = 0;
+  function complete(){
+    count++;
+    if(count == amount){
+      next();
+    }
+  }
+
+  for(var i=0; i<amount; i++){
+    if (utils.netease.getPlaybackReturnCode(res.defaultBody, i) != 200 || utils.netease.getPlaybackBitrate(res.defaultBody, i) < 320000) {
+      var songId = utils.netease.getPlaybackSongId(res.defaultBody, i);
+      utils.getUrlInfo(songId, i, function(err, url, hash, bitrate, filesize, index){
+        if(!err){
+          res.defaultBody = utils.netease.modifyPlayerApiCustom(url, hash, bitrate, filesize, res.defaultBody, index);
         }
-      }
-    ], function(err, url, hash, bitrate, filesize) {
-      if (err) {
-        console.error(err);
-        res.status = 500;
-        res.send();
-      } else {
-        res.defaultBody = utils.netease.modifyPlayerApiCustom(url, hash, bitrate, filesize, res.defaultBody);
-        next();
-      }
-    });
-  } else {
-    console.log('Playback bitrate is not changed. The song URL is '.green + utils.netease.getPlaybackUrl(res.defaultBody).green);
-    next();
+        complete();
+      });
+    } else {
+      console.log('Playback bitrate is not changed. The song URL is '.green + utils.netease.getPlaybackUrl(res.defaultBody, i).green);
+      complete();
+    }
   }
 });
 
 router.post('/eapi/song/enhance/download/url', function(req, res, next) {
   if (utils.netease.getDownloadReturnCode(res.defaultBody) != 200 || utils.netease.getDownloadBitrate(res.defaultBody) < 320000) {
-    waterfall([
-      function(callback) {
-        var songId = utils.netease.getDownloadSongId(res.defaultBody);
-        callback(null, songId);
-      },
-      function(songId, callback) {
-        utils.netease.getSongDetail(songId, function(err, detail) {
-          if (err) {
-            console.error(err);
-          } else {
-            callback(null, detail);
-          }
-        });
-      },
-      function(detail, callback) {
-        var songName = utils.netease.getSongName(detail);
-        var artist = utils.netease.getArtistName(detail);
-        utils.kugou.search(songName, artist, function(err, hash, bitrate, filesize) {
-          if (err) {
-            var quality = utils.netease.getFallbackQuality(detail);
-            callback(null, 'netease', null, quality.bitrate.toString(), quality.size.toString(), quality.dfsId.toString());
-          } else {
-            callback(null, 'kugou', hash, bitrate, filesize, null);
-          }
-        });
-      },
-      function(type, hash, bitrate, filesize, dfsId, callback) {
-        switch (type) {
-          case 'netease':
-            var url = utils.netease.generateFallbackUrl(dfsId);
-            callback(null, url, null, bitrate, filesize);
-            break;
-          case 'kugou':
-            utils.kugou.getUrl(hash, function(err, url) {
-              if (err) {
-                callback(err);
-                console.error(err);
-              } else {
-                callback(null, url, hash, bitrate, filesize);
-              }
-            });
-            break;
-        }
-      }
-    ], function(err, url, hash, bitrate, filesize) {
-      if (err) {
-        console.error(err);
-        res.status = 500;
-        res.send();
-      } else {
+    var songId = utils.netease.getDownloadSongId(res.defaultBody);
+    utils.getUrlInfo(songId, null, function(err, url, hash, bitrate, filesize){
+      if(!err){
         res.defaultBody = utils.netease.modifyDownloadApiCustom(url, hash, bitrate, filesize, res.defaultBody);
-        next();
       }
+      next();
     });
   } else {
     console.log('Download bitrate is not changed. The song URL is '.green + utils.netease.getDownloadUrl(res.defaultBody).green);
