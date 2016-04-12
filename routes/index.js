@@ -64,7 +64,7 @@ router.post('/eapi/song/enhance/player/url', function(req, res, next) {
   }
 
   for(var i=0; i<amount; i++){
-    if (utils.netease.getPlaybackReturnCode(res.defaultBody, i) != 200 || utils.netease.getPlaybackBitrate(res.defaultBody, i) < 320000) {
+    if (utils.netease.getPlaybackReturnCode(res.defaultBody, i) != 200) {
       var songId = utils.netease.getPlaybackSongId(res.defaultBody, i);
       utils.getUrlInfo(songId, i, function(err, url, hash, bitrate, filesize, index){
         if(!err){
@@ -80,7 +80,7 @@ router.post('/eapi/song/enhance/player/url', function(req, res, next) {
 });
 
 router.post('/eapi/song/enhance/download/url', function(req, res, next) {
-  if (utils.netease.getDownloadReturnCode(res.defaultBody) != 200 || utils.netease.getDownloadBitrate(res.defaultBody) < 320000) {
+  if (utils.netease.getDownloadReturnCode(res.defaultBody) != 200) {
     var songId = utils.netease.getDownloadSongId(res.defaultBody);
     utils.getUrlInfo(songId, null, function(err, url, hash, bitrate, filesize){
       if(!err){
