@@ -8,9 +8,15 @@ var utils = function(ip) {
   this.kugou = new kugou();
 }
 
+/*
+  Get song url from kugou.
+  If failed, fallback to netease low-res api.
+*/
+
 utils.prototype.getUrlInfo = function(songId, index, callback) {
   var _this = this;
   waterfall([
+    // get song detail by song id from netease
     function(cb) {
       _this.netease.getSongDetail(songId, function(err, detail) {
         if (err) {
@@ -21,11 +27,13 @@ utils.prototype.getUrlInfo = function(songId, index, callback) {
         }
       });
     },
+    // search 'Artist Songname' on kugou or fallback to netease low-res api
     function(detail, cb) {
       var songName = _this.netease.getSongName(detail);
       var artist = _this.netease.getArtistName(detail);
       _this.kugou.search(songName, artist, function(err, hash, bitrate, filesize) {
         if (err) {
+          // fallback to netease low-res api
           var quality = _this.netease.getFallbackQuality(detail);
           if(!!quality){
             cb(null, 'netease', null, quality.bitrate.toString(), quality.size.toString(), quality.dfsId.toString());
@@ -33,10 +41,12 @@ utils.prototype.getUrlInfo = function(songId, index, callback) {
             cb('No resource.')
           }
         } else {
+          // matched
           cb(null, 'kugou', hash, bitrate, filesize, null);
         }
       });
     },
+    // get song url from kugou/netease
     function(type, hash, bitrate, filesize, dfsId, cb) {
       switch (type) {
         case 'netease':

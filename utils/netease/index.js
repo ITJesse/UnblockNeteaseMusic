@@ -98,8 +98,8 @@ netease.prototype.getEncId = function(dfsId){
   return result;
 }
 
-netease.prototype.getFallbackQuality = function(pageContent) {
-  var body = JSON.parse(pageContent);
+netease.prototype.getFallbackQuality = function(body) {
+  var body = JSON.parse(body);
 
   // Downgrade if we don't have higher quality...
   var nQuality = 'hMusic';
@@ -147,7 +147,7 @@ netease.prototype.modifyPlayerApiCustom = function(newUrl, hash, bitrate, filesi
   var _this = this;
 
   var body = JSON.parse(body);
-  
+
   console.log("New URL is ".green + newUrl.green);
   body["data"][index]["url"] = newUrl;
   body["data"][index]["br"] = bitrate;

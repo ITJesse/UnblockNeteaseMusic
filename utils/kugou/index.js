@@ -25,6 +25,7 @@ kugou.prototype.search = function(name, artist, callback) {
             var filesize = data['data']['info'][0]['320filesize'];
             callback(null, hash, bitrate, filesize);
           } else {
+            // throw kugou 128k resources away due to low accuracy.
             // var hash = hash128;
             // var bitrate = 128000;
             // var filesize = data['data']['info'][0]['filesize'];

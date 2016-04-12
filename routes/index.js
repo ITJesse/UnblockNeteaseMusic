@@ -54,6 +54,12 @@ router.post('/eapi/v1/play/record', function(req, res, next) {
 });
 
 router.post('/eapi/song/enhance/player/url', function(req, res, next) {
+  /*
+    Mobile client will get more than one song's info in a request randomly. 
+    But we cannot know which is the one we need.
+    The only thing we can do is hack all of them..... :-(
+  */
+
   var amount = JSON.parse(res.defaultBody)["data"].length;
   var count = 0;
   function complete(){
