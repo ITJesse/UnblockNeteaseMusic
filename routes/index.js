@@ -32,10 +32,6 @@ router.post('/eapi/v1/artist', function(req, res, next) {
   res.defaultBody = utils.netease.modifyDetailApi(res.defaultBody);
   next();
 });
-router.post('/eapi/batch', function(req, res, next) {
-  res.defaultBody = utils.netease.modifyDetailApi(res.defaultBody);
-  next();
-});
 router.post('/eapi/v1/search/get', function(req, res, next) {
   res.defaultBody = utils.netease.modifyDetailApi(res.defaultBody);
   next();
@@ -55,7 +51,7 @@ router.post('/eapi/v1/play/record', function(req, res, next) {
 
 router.post('/eapi/song/enhance/player/url', function(req, res, next) {
   /*
-    Mobile client will get more than one song's info in a request randomly. 
+    Mobile client will get more than one song's info in a request randomly.
     But we cannot know which is the one we need.
     The only thing we can do is hack all of them..... :-(
   */
