@@ -54,54 +54,23 @@ server {
   
 # Build your own proxy server
 
-1. Build nginx with `ngx_http_substitutions_filter_module` enabled.
+1. Install nginx and Node.js
 2. Nginx conf file
   
   ```
   server {
-          listen 80;
-          server_name music.163.com;
-          resolver 114.114.114.114;
-          set $backend_upstream "http://music.163.com";
-          
-          location /* {
-                 if ($http_host !~* ^(music.163.com)$){
-                        return 500;
-                 }
+      listen 80;
+      server_name music.163.com;
+  
+      location / {
+          if ($http_host !~* ^(music.163.com)$){
+              return 500;
           }
-  
-          location / {
-                 proxy_pass $backend_upstream;
-                 proxy_set_header Host $host;
-                 proxy_set_header X-Real-IP $remote_addr;
-                 proxy_set_header Accept-Encoding "";
-  
-                 subs_filter_types *;
-  
-                 subs_filter '"st":-.+?,' '"st":0,' ir;
-                 subs_filter '"pl":0' '"pl":320000';
-                 subs_filter '"dl":0' '"dl":320000';
-                 subs_filter '"sp":0' '"sp":7';
-                 subs_filter '"cp":0' '"cp":1';
-                 subs_filter '"subp":0' '"subp":1';
-                 subs_filter '"fl":0' '"fl":320000';
-                 subs_filter '"fee":.+?,' '"fee":0,' ir;
-                 subs_filter '"abroad":1,' '';
-          }
-  
-          location /eapi/song/enhance/player/url {
-                 proxy_set_header Host $host;
-                 proxy_set_header X-Real-IP $remote_addr;
-                 proxy_set_header Accept-Encoding "";
-                 proxy_pass http://localhost:8123;
-          }
-  
-          location /eapi/song/enhance/download/url {
-                 proxy_set_header Host $host;
-                 proxy_set_header X-Real-IP $remote_addr;
-                 proxy_set_header Accept-Encoding "";
-                 proxy_pass http://localhost:8123;
-          }
+          proxy_pass http://localhost:8123;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header Accept-Encoding "";
+      }
   }
   ```
 
@@ -132,8 +101,9 @@ server {
   }
   ```
 
-4. Run proxy server `unblockneteasemusic`.
-5. Done!
+4. Install proxy server with command `sudo npm install unblock-netease-music -g`
+5. Run proxy server `unblockneteasemusic`.
+6. Done!
 
 # Preview
 
