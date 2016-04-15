@@ -50,7 +50,60 @@ server {
         proxy_set_header Accept-Encoding "";
     }
 }
-```
+  ```
+  
+# Build your own proxy server
+
+1. Install nginx and Node.js
+2. Nginx conf file
+  
+  ```
+  server {
+      listen 80;
+      server_name music.163.com;
+  
+      location / {
+          if ($http_host !~* ^(music.163.com)$){
+              return 500;
+          }
+          proxy_pass http://localhost:8123;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header Accept-Encoding "";
+      }
+  }
+  ```
+
+3. Setup sniproxy
+
+  ```
+  user daemon
+  pidfile /var/run/sniproxy.pid
+  
+  error_log {
+      syslog daemon
+      priority notice
+  }
+  
+  listen <YOUR_SERVER_IP>:443 {
+      proto tls
+      table https_hosts
+  
+      access_log {
+          filename /var/log/sniproxy/https_access.log
+          priority notice
+      }
+      fallback 127.0.0.1:443
+  }
+  
+  table https_hosts {
+      music.163.com 223.252.199.7:443
+  }
+  ```
+
+4. Install proxy server with command `sudo npm install unblock-netease-music -g`
+5. Run proxy server `unblockneteasemusic`.
+6. Done!
 
 # Preview
 
@@ -60,6 +113,7 @@ server {
 
 1. This project is based on EraserKing's [CloudMusicGear](https://github.com/EraserKing/CloudMusicGear).
 2. Thanks for yanunon's [API documents](https://github.com/yanunon/NeteaseCloudMusic/wiki/%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90API%E5%88%86%E6%9E%90).
+3. Thanks for Chion82's conf files.
 
 # License
 
