@@ -46,9 +46,9 @@ netease.prototype.getArtistName = function(body) {
   return body["songs"][0]['artists'][0]['name'];
 }
 
-netease.prototype.getPlaybackSongId = function(body) {
+netease.prototype.getPlaybackSongId = function(body, index) {
   var body = JSON.parse(body);
-  return body["data"][0]["id"];
+  return body["data"][index]["id"];
 }
 
 netease.prototype.getDownloadSongId = function(body) {
