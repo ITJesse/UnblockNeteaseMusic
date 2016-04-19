@@ -16,7 +16,11 @@ kugou.prototype.search = function(name, artist) {
         console.error(err);
         reject(err);
       } else {
-        var data = JSON.parse(body);
+        try {
+          var data = JSON.parse(body);
+        } catch (err) {
+          return reject(err);
+        }
         if (data.status == 1 && !!data['data']['info'].length) {
           if (data['data']['info'][0]['songname'].indexOf(name) != -1) {
             var hash320 = data['data']['info'][0]['320hash'];

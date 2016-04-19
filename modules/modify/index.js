@@ -36,7 +36,11 @@ var modify = function*(next) {
       if (playbackReturnCode != 200) {
         var songId = row.id;
         var urlInfo = yield utils.getUrlInfo(songId);
-        row = utils.netease.modifyPlayerApiCustom(urlInfo, row);
+        if (urlInfo) {
+          row = utils.netease.modifyPlayerApiCustom(urlInfo, row);
+        } else {
+          console.log('No resource.'.red);
+        }
       } else {
         console.log('Playback bitrate is not changed. The song URL is '.green + row.url);
       }
@@ -50,8 +54,12 @@ var modify = function*(next) {
 
     if (utils.netease.getDownloadReturnCode(_this.defaultBody) != 200) {
       var songId = utils.netease.getDownloadSongId(_this.defaultBody);
-      var urlInfo = utils.getUrlInfo(songId);
-      _this.defaultBody = utils.netease.modifyDownloadApiCustom(urlInfo, _this.defaultBody);
+      var urlInfo = yield utils.getUrlInfo(songId);
+      if (urlInfo) {
+        _this.defaultBody = utils.netease.modifyDownloadApiCustom(urlInfo, _this.defaultBody);
+      } else {
+        console.log('No resource.'.red);
+      }
       yield next;
     } else {
       console.log('Download bitrate is not changed. The song URL is '.green + utils.netease.getDownloadUrl(_this.defaultBody).green);

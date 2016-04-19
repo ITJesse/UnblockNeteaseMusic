@@ -26,36 +26,36 @@ utils.prototype.getUrlInfo = function(songId) {
       var artist = _this.netease.getArtistName(detail);
       var songInfo = yield _this.kugou.search(songName, artist);
 
-      if(songInfo){
+      if (songInfo) {
         // get song url from kugou
         var bitrate = songInfo.bitrate;
         var filesize = songInfo.filesize;
         var hash = songInfo.hash;
         var url = yield _this.kugou.getUrl(hash);
-      }else{
+      } else {
         // if no resource found on kugou fallback to netease low-res api
-        var quality = yield _this.netease.getFallbackQuality(detail);
-        if(!!quality){
+        var quality = _this.netease.getFallbackQuality(detail);
+        if (!!quality) {
           // get song url from netease
           var bitrate = quality.bitrate.toString();
           var filesize = quality.size.toString();
-          var dfsId =  quality.dfsId.toString();
+          var dfsId = quality.dfsId.toString();
           var url = _this.netease.generateFallbackUrl(dfsId);
-        }else{
-          // both failed, reject
-          return reject('No resource.')
         }
       }
-      var result = {
-        bitrate: bitrate,
-        filesize: filesize,
-        url: url,
-        hash: hash ? hash : null
+      if (url) {
+        var result = {
+          bitrate: bitrate,
+          filesize: filesize,
+          url: url,
+          hash: hash ? hash : null
+        }
+        resolve(result);
+      } else {
+        resolve(null);
       }
-      resolve(result);
-
     }).catch((err) => {
-      console.log(err.red);
+      console.log(err);
       reject(err);
     });
   })
