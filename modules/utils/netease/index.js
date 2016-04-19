@@ -6,36 +6,6 @@ var netease = function(ip) {
   this.baseUrl = "http://" + ip;
 };
 
-netease.prototype.getPlaybackBitrate = function(body, index) {
-  var body = JSON.parse(body);
-  return body["data"][index]["br"];
-}
-
-netease.prototype.getPlaybackReturnCode = function(body, index) {
-  var body = JSON.parse(body);
-  return body["data"][index]["code"];
-}
-
-netease.prototype.getPlaybackUrl = function(body, index) {
-  var body = JSON.parse(body);
-  return body["data"][index]["url"];
-}
-
-netease.prototype.getDownloadBitrate = function(body) {
-  var body = JSON.parse(body);
-  return body["data"]["br"];
-}
-
-netease.prototype.getDownloadReturnCode = function(body) {
-  var body = JSON.parse(body);
-  return body["data"]["code"];
-}
-
-netease.prototype.getDownloadUrl = function(body) {
-  var body = JSON.parse(body);
-  return body["data"]["url"];
-}
-
 netease.prototype.getSongName = function(body) {
   var body = JSON.parse(body);
   return body["songs"][0]['name'];
@@ -46,17 +16,12 @@ netease.prototype.getArtistName = function(body) {
   return body["songs"][0]['artists'][0]['name'];
 }
 
-netease.prototype.getPlaybackSongId = function(body) {
-  var body = JSON.parse(body);
-  return body["data"][0]["id"];
-}
-
 netease.prototype.getDownloadSongId = function(body) {
   var body = JSON.parse(body);
   return body["data"]["id"];
 }
 
-netease.prototype.getSongDetail = function(songId, callback) {
+netease.prototype.getSongDetail = function(songId) {
   var _this = this;
 
   var data = [{
@@ -75,23 +40,24 @@ netease.prototype.getSongDetail = function(songId, callback) {
     method: 'get',
     gzip: true,
   };
-  request(options, function(err, res, body) {
-    if (err) {
-      console.error(err.red);
-      return callback(err);
-    } else {
-      // console.log(body)
-      return callback(null, body);
-    }
+  return new Promise((resolve, reject) => {
+    request(options, function(err, res, body) {
+      if (err) {
+        console.error(err.red);
+        reject(err);
+      } else {
+        resolve(body);
+      }
+    });
   });
 }
 
-netease.prototype.getEncId = function(dfsId){
+netease.prototype.getEncId = function(dfsId) {
   var byte1 = new Buffer('3go8&$8*3*3h0k(2)2');
   var byte2 = new Buffer(dfsId);
   var byte1_len = byte1.length;
-  for(var i=0; i<byte2.length; i++){
-    byte2[i] = byte2[i]^byte1[i%byte1_len];
+  for (var i = 0; i < byte2.length; i++) {
+    byte2[i] = byte2[i] ^ byte1[i % byte1_len];
   }
   var md5 = crypto.createHash('md5').update(byte2).digest('base64');
   var result = md5.replace(/\//g, '_').replace(/\+/g, '-');
@@ -118,6 +84,7 @@ netease.prototype.getFallbackQuality = function(body) {
 
   if (nQuality == "audition" && !!!body["songs"][0]["audition"]) {
     console.log('No resource found on netease.'.yellow)
+    return null;
   }
 
   return body["songs"][0][nQuality];
@@ -141,37 +108,35 @@ netease.prototype.modifyDetailApi = function(body) {
     .replace(/\"subp\":\d+/g, '"subp":1');
 }
 
-netease.prototype.modifyPlayerApiCustom = function(newUrl, hash, bitrate, filesize, body, index) {
+netease.prototype.modifyPlayerApiCustom = function(urlInfo, body) {
   console.log("Player API Injected".green);
 
   var _this = this;
 
-  var body = JSON.parse(body);
+  console.log("New URL is ".green + urlInfo.url.green);
+  body["url"] = urlInfo.url;
+  body["br"] = urlInfo.bitrate;
+  body["code"] = "200";
+  body["size"] = urlInfo.filesize;
+  body["md5"] = urlInfo.hash;
+  body["type"] = "mp3";
 
-  console.log("New URL is ".green + newUrl.green);
-  body["data"][index]["url"] = newUrl;
-  body["data"][index]["br"] = bitrate;
-  body["data"][index]["code"] = "200";
-  body["data"][index]["size"] = filesize;
-  body["data"][index]["md5"] = hash;
-  body["data"][index]["type"] = "mp3";
-
-  return JSON.stringify(body);
+  return body;
 }
 
-netease.prototype.modifyDownloadApiCustom = function(newUrl, hash, bitrate, filesize, body) {
+netease.prototype.modifyDownloadApiCustom = function(urlInfo, body) {
   console.log("Download API Injected".green);
 
   var _this = this;
 
   var body = JSON.parse(body);
 
-  console.log("New URL is ".green + newUrl.green);
-  body["data"]["url"] = newUrl;
-  body["data"]["br"] = bitrate;
+  console.log("New URL is ".green + urlInfo.url.green);
+  body["data"]["url"] = urlInfo.url;
+  body["data"]["br"] = urlInfo.bitrate;
   body["data"]["code"] = "200";
-  body["data"]["size"] = filesize;
-  body["data"]["md5"] = hash;
+  body["data"]["size"] = urlInfo.filesize;
+  body["data"]["md5"] = urlInfo.hash;
   body["data"]["type"] = "mp3";
 
   return JSON.stringify(body);

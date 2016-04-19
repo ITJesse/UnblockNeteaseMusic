@@ -7,7 +7,7 @@
 var app = require('../app');
 var http = require('http');
 var colors = require('colors');
-var config = require('../config');
+var config = require('../modules/config');
 
 /**
  * Get port from environment and store in Express.
