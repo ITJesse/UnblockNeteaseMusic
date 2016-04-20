@@ -6,6 +6,16 @@ var netease = function(ip) {
   this.baseUrl = "http://" + ip;
 };
 
+netease.prototype.getDownloadReturnCode = function(body) {
+  var body = JSON.parse(body);
+  return body["data"]["code"];
+}
+
+netease.prototype.getDownloadUrl = function(body) {
+  var body = JSON.parse(body);
+  return body["data"]["url"];
+}
+
 netease.prototype.getSongName = function(body) {
   var body = JSON.parse(body);
   return body["songs"][0]['name'];
