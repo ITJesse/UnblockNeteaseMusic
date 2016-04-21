@@ -1,19 +1,19 @@
 # UnblockNeteaseMusic
 
-一个基于 koa 的网易云音乐的代理……
+A proxy server for Netease Music based on koa....
 
-English version [here](https://github.com/ITJesse/UnblockNeteaseMusic/blob/master/README_en.md).
+[中文版](https://github.com/ITJesse/UnblockNeteaseMusic/blob/master/README.md)
 
-# 依赖
+# Dependencies
 
 1. Node.js 4.x+
 
-# 使用方法
+# How to use
 
 1. `npm install unblock-netease-music -g`
 2. `unblockneteasemusic`
 
-## 配置参数
+## Configuration
 
 ```
 unblockneteasemusic -h
@@ -27,18 +27,18 @@ unblockneteasemusic -h
     -f, --force-ip <ip>  Force the netease server ip.
 ```
 
-## Windows 用户
+## Windows users (fixed)
 
-在客户端中设置代理为 `127.0.0.1:8123`，并重启客户端
+Just simply change your proxy to `127.0.0.1:8123` and restart client.
 
-## 其他用户（使用 nginx 反代）
+## Others (reverse proxy by nginx)
 
-1. 安装 nginx
-2. 使用下面的配置新建一个 vhost
-3. 启动 nginx.
-4. 向 /etc/hosts 文件中添加一行：`127.0.0.1 music.163.com`
+1. Install nginx.
+2. Create a new vhost with the conf file below.
+3. Start nginx.
+4. Add a line into /etc/hosts `127.0.0.1 music.163.com`
 
-# Nginx 配置
+# Nginx conf file
 
 ```
 server {
@@ -54,10 +54,10 @@ server {
 }
   ```
 
-# 搭建自己的代理服务器
+# Build your own proxy server
 
-1. 安装 nginx 和 Node.js
-2. Nginx 配置如下
+1. Install nginx and Node.js
+2. Nginx conf file
 
   ```
   server {
@@ -76,7 +76,7 @@ server {
   }
   ```
 
-3. 安装 sniproxy，配置如下
+3. Setup sniproxy
 
   ```
   user daemon
@@ -103,19 +103,19 @@ server {
   }
   ```
 
-4. 安装本代理 `sudo npm install unblock-netease-music -g`
-5. 运行 `unblockneteasemusic`.
-6. 完成！
+4. Install proxy server with command `sudo npm install unblock-netease-music -g`
+5. Run proxy server `unblockneteasemusic`.
+6. Done!
 
-# 预览
+# Preview
 
 ![](https://dn-itjesse.qbox.me/github%2Fphoto_2016-03-31_01-11-14.jpg)
 
-# 感谢
+# Thanks
 
-1. 这个项目最初的想法及实现来源于 EraserKing 的 [CloudMusicGear](https://github.com/EraserKing/CloudMusicGear).
-2. 感谢 yanunon 的 API 文档 [API documents](https://github.com/yanunon/NeteaseCloudMusic/wiki/%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90API%E5%88%86%E6%9E%90).
-3. 感谢 Chion82 的配置文件
+1. This project is based on EraserKing's [CloudMusicGear](https://github.com/EraserKing/CloudMusicGear).
+2. Thanks for yanunon's [API documents](https://github.com/yanunon/NeteaseCloudMusic/wiki/%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90API%E5%88%86%E6%9E%90).
+3. Thanks for Chion82's conf files.
 
 # License
 
