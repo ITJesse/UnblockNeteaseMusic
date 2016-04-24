@@ -34,7 +34,7 @@ unblockneteasemusic -h
 ## 其他用户
 
 1. 向 /etc/hosts 文件中添加一行：`127.0.0.1 music.163.com`
-2. 使用 80 端口启动代理服务 `unblockneteasemusic -p 80`
+2. 使用 80 端口启动代理服务 `sudo unblockneteasemusic -p 80`
 
 ## 使用 nginx 反代
 
