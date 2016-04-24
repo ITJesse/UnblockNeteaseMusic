@@ -31,10 +31,20 @@ unblockneteasemusic -h
 
 在客户端中设置代理为 `127.0.0.1:8123`，并重启客户端
 
-## 其他用户
+## OSX 用户
 
 1. 向 /etc/hosts 文件中添加一行：`127.0.0.1 music.163.com`
 2. 使用 80 端口启动代理服务 `sudo unblockneteasemusic -p 80`
+
+## Android 用户
+
+1. 自建服务器（见后文）
+2. 向 /etc/hosts 文件中添加一行：`<服务器 IP> music.163.com`
+
+## iOS 用户
+
+1. 自建服务器（见后文）
+2. 使用 Surge 等代理软件重定向 `music.163.com` 的流量到自建服务器
 
 ## 使用 nginx 反代
 
