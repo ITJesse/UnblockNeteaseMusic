@@ -1,11 +1,24 @@
 var colors = require('colors');
-var netease = require('./netease');
-var kugou = require('./kugou');
 var co = require('co');
 
+var config = require('../config');
+var netease = require('./netease');
+var kugou = require('./kugou');
+var dongting = require('./dongting');
+
 var utils = function(ip) {
+  var ip = config.forceIp ? config.forceIp : '223.252.199.7';
+
   this.netease = new netease(ip);
-  this.kugou = new kugou();
+  this.kugou = null;
+  this.dongting = null;
+
+  if (config.kugou) {
+    this.kugou = new kugou();
+  }
+  if (config.dongting) {
+    this.dongting = new dongting();
+  }
 }
 
 /*
@@ -20,37 +33,24 @@ utils.prototype.getUrlInfo = function(songId) {
     co(function*() {
       // get song detail by song id from netease
       var detail = yield _this.netease.getSongDetail(songId);
-
-      // search 'Artist Songname' on kugou
       var songName = _this.netease.getSongName(detail);
       var artist = _this.netease.getArtistName(detail);
-      var songInfo = yield _this.kugou.search(songName, artist);
+      var songInfo = null;
 
-      if (songInfo) {
-        // get song url from kugou
-        var bitrate = songInfo.bitrate;
-        var filesize = songInfo.filesize;
-        var hash = songInfo.hash;
-        var url = yield _this.kugou.getUrl(hash);
-      } else {
-        // if no resource found on kugou fallback to netease low-res api
-        var quality = _this.netease.getFallbackQuality(detail);
-        if (!!quality) {
-          // get song url from netease
-          var bitrate = quality.bitrate.toString();
-          var filesize = quality.size.toString();
-          var dfsId = quality.dfsId.toString();
-          var url = _this.netease.generateFallbackUrl(dfsId);
+      if (_this.kugou) {
+        // search 'Artist Songname' on kugou
+        songInfo = yield _this.kugou.search(songName, artist);
+        if (songInfo) {
+          songInfo.url = yield _this.kugou.getUrl(songInfo.hash);
         }
       }
-      if (url) {
-        var result = {
-          bitrate: bitrate,
-          filesize: filesize,
-          url: url,
-          hash: hash ? hash : null
-        }
-        resolve(result);
+
+      if (!songInfo && _this.dongting) {
+        songInfo = yield _this.dongting.search(songName, artist);
+      }
+
+      if (songInfo) {
+        resolve(songInfo);
       } else {
         resolve(null);
       }

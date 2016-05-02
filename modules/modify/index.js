@@ -1,15 +1,15 @@
 var colors = require('colors');
 
-var config = require('../config');
 var Utils = require('../utils');
 
-var ip = config.forceIp ? config.forceIp : '223.252.199.7';
-var utils = new Utils(ip);
+var utils = new Utils();
 
 var modify = function*(next) {
   var _this = this;
   var req = _this.request;
   var res = _this.response;
+
+  req.url = req.url.replace(/^http:\/\/music.163.com/, '');
 
   if (/^\/eapi\/v3\/song\/detail/.test(req.url) ||
     /^\/eapi\/v3\/playlist\/detail/.test(req.url) ||
@@ -27,7 +27,12 @@ var modify = function*(next) {
 
   } else if (/^\/eapi\/song\/enhance\/player\/url/.test(req.url)) {
 
-    var data = JSON.parse(_this.defaultBody);
+    try {
+      var data = JSON.parse(_this.defaultBody);
+    } catch (err) {
+      console.error(err);
+      return next;
+    }
     var newData = [];
     for (var row of data["data"]) {
       var playbackReturnCode = row.code;
