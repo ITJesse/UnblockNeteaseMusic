@@ -41,16 +41,16 @@ utils.prototype.getUrlInfo = function(songId) {
       var artist = _this.netease.getArtistName(detail);
       var songInfo = null;
 
-      if (_this.kugou) {
+      if (_this.qq) {
+        songInfo = yield _this.qq.search(songName, artist);
+      }
+
+      if (!songInfo && _this.kugou) {
         // search 'Artist Songname' on kugou
         songInfo = yield _this.kugou.search(songName, artist);
         if (songInfo) {
           songInfo.url = yield _this.kugou.getUrl(songInfo.hash);
         }
-      }
-
-      if (!songInfo && _this.qq) {
-        songInfo = yield _this.qq.search(songName, artist);
       }
 
       if (!songInfo && _this.dongting) {

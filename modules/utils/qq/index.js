@@ -28,12 +28,11 @@ qq.prototype.search = function(name, artist) {
 
         var list = data.data.song.list[0].f.split('|');
         var result = {
-          url: 'http://tsmusic24.tc.qq.com/' + list[0] + '.mp3',
+          url: 'http://music.163.com/qqmusic/' + list[0] + '.mp3',
           bitrate: list[13],
           filesize: list[11],
           hash: null
         }
-        console.log(result);
         return resolve(result);
       } else {
         console.log("No resource found from QQ Music".yellow);

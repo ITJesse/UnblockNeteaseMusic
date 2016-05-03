@@ -3,6 +3,7 @@ var getRawBody = require('raw-body');
 var extend = require('extend');
 var zlib = require('zlib');
 var Readable = require('stream').Readable;
+var PassThrough = require('stream').PassThrough;
 
 var config = require('../config');
 
@@ -65,24 +66,43 @@ var middleware = function*(next) {
   var req = _this.request;
   var res = _this.reponse;
 
-  if (!/^http/.test(req.url)) {
-    var url = 'http://' + ip + req.url;
-  } else {
-    var url = req.url;
-  }
-
   // console.log(url);
   // console.log(req.headers);
 
   if (req.method == 'GET') {
-    var result = yield get(url, req.headers);
-    var headers = result[0].headers;
-    var body = result[1];
-    _this.set(headers);
-    _this.body = body;
+    yield next;
+
+    if (!/^http/.test(req.url)) {
+      req.url = 'http://' + ip + req.url;
+    }
+
+    _this.body = PassThrough();
+
+    var options = {
+      url: req.url,
+      headers: req.headers,
+      method: "get",
+      timeout: 5000
+    }
+
+    request(options)
+      .on('error', (err) => {
+        console.log(err);
+        return reject(err);
+      })
+      .on('response', (response) => {
+        _this.status = response.statusCode;
+        _this.set(response.headers);
+      })
+      .pipe(_this.body);
   }
 
   if (req.method == 'POST') {
+    if (!/^http/.test(req.url)) {
+      var url = 'http://' + ip + req.url;
+    } else {
+      var url = req.url;
+    }
     var rawBody = yield getRawBody(_this.req, {
       length: _this.length,
       encoding: _this.charset
@@ -91,7 +111,6 @@ var middleware = function*(next) {
     var headers = result[0].headers;
     var body = result[1];
     // console.log(body);
-    delete headers['content-encoding']; // 删除 header 中 gzip 标识，因为 body 已经被解压了
     _this.set(headers);
     _this.defaultBody = body;
 

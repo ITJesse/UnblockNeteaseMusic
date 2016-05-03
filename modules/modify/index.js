@@ -11,6 +11,13 @@ var modify = function*(next) {
 
   req.url = req.url.replace(/^http:\/\/music.163.com/, '');
 
+  if (/^\/qqmusic/.test(req.url)) {
+    req.headers['user-agent'] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.86 Safari/537.36";
+    req.headers['host'] = "tsmusic24.tc.qq.com";
+    req.url = "http://tsmusic24.tc.qq.com" + req.url.replace("/qqmusic", "");
+    yield next;
+  }
+
   if (/^\/eapi\/v3\/song\/detail/.test(req.url) ||
     /^\/eapi\/v3\/playlist\/detail/.test(req.url) ||
     /^\/eapi\/v1\/album/.test(req.url) ||

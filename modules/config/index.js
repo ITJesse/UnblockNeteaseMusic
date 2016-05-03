@@ -19,16 +19,16 @@ if (program.forceIp && !/\d+\.\d+\.\d+\.\d+/.test(program.forceIp)) {
 }
 
 if(program.kugou){
-  console.log('Finding copyright music on kugou.'.green);
+  console.log('Finding copyright music on Kugou.'.green);
 }
 if(program.dongting){
-  console.log('Finding copyright music on dongting.'.green);
-}
-if(!program.kugou && !program.dongting && !program.qq){
-  console.log('Proxy will do nothing with copyright music.'.yellow);
+  console.log('Finding copyright music on TianTianDongTing.'.green);
 }
 if(program.qq){
   console.log('Finding copyright music on QQ Music.'.green);
+}
+if(!program.kugou && !program.dongting && !program.qq){
+  console.log('Proxy will do nothing with copyright music.'.yellow);
 }
 
 module.exports = program;
