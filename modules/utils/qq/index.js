@@ -15,7 +15,7 @@ qq.prototype.search = function(name, artist) {
   console.log("Artist: ".green + artist);
   var songName = encodeURIComponent(artist + " " + name);
   var options = {
-    url: "http://s.music.qq.com/fcgi-bin/music_search_new_platform?n=1&loginUin=0&format=json&inCharset=utf-8&outCharset=utf-8&p=1&catZhida=0&w=" + songName
+    url: "http://s.music.qq.com/fcgi-bin/music_search_new_platform?n=1&cr=1&loginUin=0&format=json&inCharset=utf-8&outCharset=utf-8&p=1&catZhida=0&w=" + songName
   };
 
   return new Promise((resolve, reject) => {
@@ -36,7 +36,7 @@ qq.prototype.search = function(name, artist) {
         console.log(result);
         return resolve(result);
       } else {
-        console.log("No resource found from dongting".yellow);
+        console.log("No resource found from QQ Music".yellow);
         return resolve(null);
       }
     }).catch((err) => {
