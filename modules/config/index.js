@@ -4,8 +4,9 @@ var colors = require('colors');
 program
   .option('-p, --port <port>', 'Specific server port.')
   .option('-f, --force-ip <ip>', 'Force the netease server ip.')
-  .option('-k, --kugou', 'Find copyright music on kugou.')
-  .option('-d, --dongting', 'Find copyright music on dongting.')
+  .option('-k, --kugou', 'Find copyright music on Kugou.')
+  .option('-d, --dongting', 'Find copyright music on TianTianDongTing.')
+  .option('-q, --qq', 'Find copyright music on QQ Music.')
   .parse(process.argv);
 
 if (program.port && (program.port < 1 || program.port > 65535)) {
@@ -23,8 +24,11 @@ if(program.kugou){
 if(program.dongting){
   console.log('Finding copyright music on dongting.'.green);
 }
-if(!program.kugou && !program.dongting){
+if(!program.kugou && !program.dongting && !program.qq){
   console.log('Proxy will do nothing with copyright music.'.yellow);
+}
+if(program.qq){
+  console.log('Finding copyright music on QQ Music.'.green);
 }
 
 module.exports = program;

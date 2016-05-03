@@ -25,8 +25,9 @@ unblockneteasemusic -h
     -h, --help           output usage information
     -p, --port <port>    Specific server port.
     -f, --force-ip <ip>  Force the netease server ip.
-    -k, --kugou          Find music on kugou.
-    -d, --dongting       Find music on dongting.
+    -k, --kugou          Find copyright music on Kugou.
+    -d, --dongting       Find copyright music on TianTianDongTing.
+    -q, --qq             Find copyright music on QQ Music.
 ```
 
 ## Windows 用户

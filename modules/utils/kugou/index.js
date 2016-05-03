@@ -8,7 +8,7 @@ var common = require('../common');
 var kugou = function() {};
 
 kugou.prototype.search = function(name, artist) {
-  console.log("Search from kugou.".green);
+  console.log("Search from Kugou.".green);
   console.log("Song name: ".green + name);
   console.log("Artist: ".green + artist);
   var songName = encodeURIComponent(artist + " " + name);

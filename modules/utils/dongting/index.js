@@ -31,7 +31,7 @@ dongting.prototype.qualityFallback = function(data) {
 dongting.prototype.search = function(name, artist) {
   var _this = this;
 
-  console.log("Search from dongting.".green);
+  console.log("Search from TianTianDongTing.".green);
   console.log("Song name: ".green + name);
   console.log("Artist: ".green + artist);
   var songName = encodeURIComponent(artist + " " + name);

@@ -5,6 +5,7 @@ var config = require('../config');
 var netease = require('./netease');
 var kugou = require('./kugou');
 var dongting = require('./dongting');
+var qq = require('./qq');
 
 var utils = function(ip) {
   var ip = config.forceIp ? config.forceIp : '223.252.199.7';
@@ -18,6 +19,9 @@ var utils = function(ip) {
   }
   if (config.dongting) {
     this.dongting = new dongting();
+  }
+  if (config.qq) {
+    this.qq = new qq();
   }
 }
 
@@ -43,6 +47,10 @@ utils.prototype.getUrlInfo = function(songId) {
         if (songInfo) {
           songInfo.url = yield _this.kugou.getUrl(songInfo.hash);
         }
+      }
+
+      if (!songInfo && _this.qq) {
+        songInfo = yield _this.qq.search(songName, artist);
       }
 
       if (!songInfo && _this.dongting) {
