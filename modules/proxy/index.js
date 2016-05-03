@@ -65,16 +65,16 @@ var middleware = function*(next) {
   var req = _this.request;
   var res = _this.reponse;
 
-  if (!/^http/.test(req.url)) {
-    var url = 'http://' + ip + req.url;
-  } else {
-    var url = req.url;
-  }
-
   // console.log(url);
   // console.log(req.headers);
 
   if (req.method == 'GET') {
+    yield next;
+    if (!/^http/.test(req.url)) {
+      var url = 'http://' + ip + req.url;
+    } else {
+      var url = req.url;
+    }
     var result = yield get(url, req.headers);
     var headers = result[0].headers;
     var body = result[1];
@@ -83,6 +83,11 @@ var middleware = function*(next) {
   }
 
   if (req.method == 'POST') {
+    if (!/^http/.test(req.url)) {
+      var url = 'http://' + ip + req.url;
+    } else {
+      var url = req.url;
+    }
     var rawBody = yield getRawBody(_this.req, {
       length: _this.length,
       encoding: _this.charset
@@ -91,7 +96,6 @@ var middleware = function*(next) {
     var headers = result[0].headers;
     var body = result[1];
     // console.log(body);
-    delete headers['content-encoding']; // 删除 header 中 gzip 标识，因为 body 已经被解压了
     _this.set(headers);
     _this.defaultBody = body;
 
