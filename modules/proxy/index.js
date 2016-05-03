@@ -1,6 +1,8 @@
 var request = require('request');
 var getRawBody = require('raw-body');
 var extend = require('extend');
+var zlib = require('zlib');
+var Readable = require('stream').Readable;
 
 var config = require('../config');
 
@@ -97,7 +99,14 @@ var middleware = function*(next) {
     yield next;
     // console.log("after: " +  _this.defaultBody);
 
-    _this.body = _this.defaultBody;
+    var stream = new Readable;
+    stream.push(_this.defaultBody);
+    stream.push(null);
+
+    var gzip = zlib.createGzip();
+    _this.set('Content-Encoding', 'gzip');
+    _this.body = gzip;
+    stream.pipe(gzip);
   }
 }
 
