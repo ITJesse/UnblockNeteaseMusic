@@ -1,6 +1,9 @@
 # UnblockNeteaseMusic
 
-一个基于 koa 的网易云音乐的代理……
+> 一个基于 koa 的网易云音乐的代理……
+
+1. 替换版权曲目播放地址
+2. 禁止客户端更新
 
 English version [here](https://github.com/ITJesse/UnblockNeteaseMusic/blob/master/README_en.md).
 
@@ -12,6 +15,10 @@ English version [here](https://github.com/ITJesse/UnblockNeteaseMusic/blob/maste
 
 1. `npm install unblock-netease-music -g`
 2. `unblockneteasemusic`
+
+## 测试服务
+
+向 /etc/hosts 文件中添加一行：`119.29.65.105 music.163.com`
 
 ## 配置参数
 
@@ -40,6 +47,8 @@ unblockneteasemusic -h
 
 1. 向 /etc/hosts 文件中添加一行：`127.0.0.1 music.163.com`
 2. 使用 80 端口启动代理服务 `sudo unblockneteasemusic -p 80`
+
+P.S. 请务必不要更新客户端到 1.2.3 以上的版本。 下载连接： http://pan.baidu.com/s/1kUDqgWB
 
 ## Android 用户
 
