@@ -4,7 +4,6 @@ var extend = require('extend');
 var zlib = require('zlib');
 var Readable = require('stream').Readable;
 var PassThrough = require('stream').PassThrough;
-var http = require('http');
 
 var config = require('../config');
 

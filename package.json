@@ -10,7 +10,6 @@
   "dependencies": {
     "async": "^2.0.0-rc.2",
     "co": "^4.6.0",
-    "co-request": "^1.0.0",
     "colors": "^1.1.2",
     "commander": "^2.9.0",
     "extend": "^3.0.0",
