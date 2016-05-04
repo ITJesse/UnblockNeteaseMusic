@@ -123,7 +123,7 @@ netease.prototype.modifyPlayerApiCustom = function(urlInfo, body) {
 
   var _this = this;
 
-  console.log("New URL is ".green + urlInfo.url.green);
+  console.log("New URL is ".green + urlInfo.url);
   body["url"] = urlInfo.url;
   body["br"] = urlInfo.bitrate;
   body["code"] = "200";
@@ -141,7 +141,7 @@ netease.prototype.modifyDownloadApiCustom = function(urlInfo, body) {
 
   var body = JSON.parse(body);
 
-  console.log("New URL is ".green + urlInfo.url.green);
+  console.log("New URL is ".green + urlInfo.url);
   body["data"]["url"] = urlInfo.url;
   body["data"]["br"] = urlInfo.bitrate;
   body["data"]["code"] = "200";

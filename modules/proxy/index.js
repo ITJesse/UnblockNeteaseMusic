@@ -78,7 +78,14 @@ var middleware = function*(next) {
 
     _this.body = PassThrough();
 
-    request.get(req.url)
+    var options = {
+      url: req.url,
+      headers: req.headers,
+      method: "get",
+      timeout: 5000
+    }
+
+    request(options)
       .on('error', (err) => {
         console.log(err);
         return reject(err);
