@@ -33,7 +33,6 @@ qq.prototype.search = function(name, artist) {
           filesize: list[11],
           hash: null
         }
-        console.log(result);
         return resolve(result);
       } else {
         console.log("No resource found from QQ Music".yellow);

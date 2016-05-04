@@ -3,6 +3,8 @@ var getRawBody = require('raw-body');
 var extend = require('extend');
 var zlib = require('zlib');
 var Readable = require('stream').Readable;
+var PassThrough = require('stream').PassThrough;
+var http = require('http');
 
 var config = require('../config');
 
@@ -70,16 +72,23 @@ var middleware = function*(next) {
 
   if (req.method == 'GET') {
     yield next;
+
     if (!/^http/.test(req.url)) {
-      var url = 'http://' + ip + req.url;
-    } else {
-      var url = req.url;
+      req.url = 'http://' + ip + req.url;
     }
-    var result = yield get(url, req.headers);
-    var headers = result[0].headers;
-    var body = result[1];
-    _this.set(headers);
-    _this.body = body;
+
+    _this.body = PassThrough();
+
+    request.get(req.url)
+      .on('error', (err) => {
+        console.log(err);
+        return reject(err);
+      })
+      .on('response', (response) => {
+        _this.status = response.statusCode;
+        _this.set(response.headers);
+      })
+      .pipe(_this.body);
   }
 
   if (req.method == 'POST') {
