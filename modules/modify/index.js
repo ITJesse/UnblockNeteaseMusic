@@ -18,6 +18,13 @@ var modify = function*(next) {
     yield next;
   }
 
+  if (/^\/eapi\/osx\/version/.test(req.url)) {
+    var v = JSON.parse(_this.defaultBody);
+    v.updateFiles = [];
+    _this.defaultBody = JSON.stringify(v);
+    yield next;
+  }
+
   if (/^\/eapi\/v3\/song\/detail/.test(req.url) ||
     /^\/eapi\/v3\/playlist\/detail/.test(req.url) ||
     /^\/eapi\/v1\/album/.test(req.url) ||
