@@ -13,7 +13,7 @@ var sendRequest = function(options) {
   var defaults = {
     method: 'get',
     followRedirect: false,
-    timeout: 2000
+    timeout: 10000
   }
   options = extend(false, defaults, options);
   return new Promise((resolve, reject) => {
@@ -82,7 +82,7 @@ var middleware = function*(next) {
       url: req.url,
       headers: req.headers,
       method: "get",
-      timeout: 5000
+      timeout: 10000
     }
 
     request(options)
