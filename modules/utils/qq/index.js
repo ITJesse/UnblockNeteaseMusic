@@ -31,8 +31,8 @@ qq.prototype.search = function(name, artist) {
           url: 'http://music.163.com/qqmusic/' + list[0] + '.mp3',
           bitrate: list[13],
           filesize: list[11],
-          hash: null
-        }
+          hash: md5(list[0])
+        };
         return resolve(result);
       } else {
         console.log("No resource found from QQ Music".yellow);

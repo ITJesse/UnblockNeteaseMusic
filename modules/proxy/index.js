@@ -14,7 +14,7 @@ var sendRequest = function(options) {
     method: 'get',
     followRedirect: false,
     timeout: 10000
-  }
+  };
   options = extend(false, defaults, options);
   return new Promise((resolve, reject) => {
     request(options, function(err, res, body) {
@@ -25,22 +25,22 @@ var sendRequest = function(options) {
       }
     });
   });
-}
+};
 
 // 封装 request get
 var get = function(url, headers) {
   var options = {
     url: url,
     headers: headers,
-    encoding: null, // 不解析 get 请求，直接返回 Buffer
-  }
+    encoding: null // 不解析 get 请求，直接返回 Buffer
+  };
 
   return new Promise((resolve, reject) => {
     sendRequest(options)
       .then((res) => resolve(res))
       .catch((err) => reject(err));
   });
-}
+};
 
 // 封装 request post
 var post = function(url, headers, body) {
@@ -48,7 +48,7 @@ var post = function(url, headers, body) {
     url: url,
     headers: headers,
     method: 'post',
-    gzip: true,
+    gzip: true
   };
   if (!!body) {
     options.body = body;
@@ -59,7 +59,7 @@ var post = function(url, headers, body) {
       .then((res) => resolve(res))
       .catch((err) => reject(err));
   });
-}
+};
 
 var middleware = function*(next) {
   var _this = this;
@@ -87,8 +87,7 @@ var middleware = function*(next) {
 
     request(options)
       .on('error', (err) => {
-        console.log(err);
-        return reject(err);
+        return console.log(err);
       })
       .on('response', (response) => {
         _this.status = response.statusCode;
@@ -110,6 +109,7 @@ var middleware = function*(next) {
     var result = yield post(url, req.headers, rawBody);
     var headers = result[0].headers;
     var body = result[1];
+    delete headers['content-encoding'];
     // console.log(body);
     _this.set(headers);
     _this.defaultBody = body;
@@ -118,15 +118,17 @@ var middleware = function*(next) {
     yield next;
     // console.log("after: " +  _this.defaultBody);
 
-    var stream = new Readable;
-    stream.push(_this.defaultBody);
-    stream.push(null);
+    // var stream = new Readable;
+    // stream.push(_this.defaultBody);
+    // stream.push(null);
 
-    var gzip = zlib.createGzip();
-    _this.set('Content-Encoding', 'gzip');
-    _this.body = gzip;
-    stream.pipe(gzip);
+    // var gzip = zlib.createGzip();
+    // _this.set('Content-Encoding', 'gzip');
+    // _this.body = gzip;
+    // stream.pipe(gzip);
+
+    _this.body = _this.defaultBody;
   }
-}
+};
 
 module.exports = middleware;

@@ -9,27 +9,27 @@ var netease = function(ip) {
 netease.prototype.getDownloadReturnCode = function(body) {
   var body = JSON.parse(body);
   return body["data"]["code"];
-}
+};
 
 netease.prototype.getDownloadUrl = function(body) {
   var body = JSON.parse(body);
   return body["data"]["url"];
-}
+};
 
 netease.prototype.getSongName = function(body) {
   var body = JSON.parse(body);
   return body["songs"][0]['name'];
-}
+};
 
 netease.prototype.getArtistName = function(body) {
   var body = JSON.parse(body);
   return body["songs"][0]['artists'][0]['name'];
-}
+};
 
 netease.prototype.getDownloadSongId = function(body) {
   var body = JSON.parse(body);
   return body["data"]["id"];
-}
+};
 
 netease.prototype.getSongDetail = function(songId) {
   var _this = this;
@@ -48,7 +48,7 @@ netease.prototype.getSongDetail = function(songId) {
     url: _this.baseUrl + "/api/song/detail/?ids=[" + songId + "]&id=" + songId,
     headers: header,
     method: 'get',
-    gzip: true,
+    gzip: true
   };
   return new Promise((resolve, reject) => {
     request(options, function(err, res, body) {
@@ -60,7 +60,7 @@ netease.prototype.getSongDetail = function(songId) {
       }
     });
   });
-}
+};
 
 netease.prototype.getEncId = function(dfsId) {
   var byte1 = new Buffer('3go8&$8*3*3h0k(2)2');
@@ -72,7 +72,7 @@ netease.prototype.getEncId = function(dfsId) {
   var md5 = crypto.createHash('md5').update(byte2).digest('base64');
   var result = md5.replace(/\//g, '_').replace(/\+/g, '-');
   return result;
-}
+};
 
 netease.prototype.getFallbackQuality = function(body) {
   var body = JSON.parse(body);
@@ -93,20 +93,20 @@ netease.prototype.getFallbackQuality = function(body) {
   }
 
   if (nQuality == "audition" && !!!body["songs"][0]["audition"]) {
-    console.log('No resource found on netease.'.yellow)
+    console.log('No resource found on netease.'.yellow);
     return null;
   }
 
   return body["songs"][0][nQuality];
-}
+};
 
 netease.prototype.generateFallbackUrl = function(dfsId) {
-  console.log('Fallback to netease low quality.'.yellow)
+  console.log('Fallback to netease low quality.'.yellow);
   var s = (new Date()).getSeconds() % 2 + 1;
   var encId = this.getEncId(dfsId);
   var url = "http://m" + s + ".music.126.net/" + encId + "/" + dfsId + ".mp3";
   return url;
-}
+};
 
 netease.prototype.modifyDetailApi = function(body) {
   console.log("Song Detail API Injected".green);
@@ -116,7 +116,7 @@ netease.prototype.modifyDetailApi = function(body) {
     .replace(/\"dl\":\d+/g, '"dl":320000')
     .replace(/\"st\":-?\d+/g, '"st":0')
     .replace(/\"subp\":\d+/g, '"subp":1');
-}
+};
 
 netease.prototype.modifyPlayerApiCustom = function(urlInfo, body) {
   console.log("Player API Injected".green);
@@ -132,7 +132,7 @@ netease.prototype.modifyPlayerApiCustom = function(urlInfo, body) {
   body["type"] = "mp3";
 
   return body;
-}
+};
 
 netease.prototype.modifyDownloadApiCustom = function(urlInfo, body) {
   console.log("Download API Injected".green);
@@ -150,6 +150,6 @@ netease.prototype.modifyDownloadApiCustom = function(urlInfo, body) {
   body["data"]["type"] = "mp3";
 
   return JSON.stringify(body);
-}
+};
 
 module.exports = netease;
