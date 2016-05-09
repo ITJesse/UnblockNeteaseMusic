@@ -5,6 +5,8 @@
 1. 替换版权曲目播放地址
 2. 禁止客户端更新
 
+[![NPM](https://nodei.co/npm/unblock-netease-music.png?downloads=true&downloadRank=true)](https://nodei.co/npm/unblock-netease-music/)
+
 English version [here](https://github.com/ITJesse/UnblockNeteaseMusic/blob/master/README_en.md).
 
 # 依赖
