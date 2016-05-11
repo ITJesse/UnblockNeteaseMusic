@@ -74,6 +74,8 @@ var middleware = function*(next) {
 
     if (!/^http/.test(req.url)) {
       req.url = 'http://' + ip + req.url;
+    } else {
+      req.url = req.url.replace('music.163.com', ip);
     }
 
     _this.body = PassThrough();
@@ -100,7 +102,7 @@ var middleware = function*(next) {
     if (!/^http/.test(req.url)) {
       var url = 'http://' + ip + req.url;
     } else {
-      var url = req.url;
+      var url = req.url.replace('music.163.com', ip);
     }
     var rawBody = yield getRawBody(_this.req, {
       length: _this.length,
