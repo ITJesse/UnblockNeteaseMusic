@@ -20,7 +20,9 @@ English version [here](https://github.com/ITJesse/UnblockNeteaseMusic/blob/maste
 
 ## 测试服务
 
-向 /etc/hosts 文件中添加一行：`119.29.65.105 music.163.com`
+~~向 /etc/hosts 文件中添加一行：`119.29.65.105 music.163.com`~~
+
+本人实在是没有精力维护了，故关闭了测试服务。
 
 ## 配置参数
 
@@ -39,12 +41,6 @@ unblockneteasemusic -h
     -q, --qq             Find copyright music on QQ Music.
 ```
 
-## Windows 用户
-
-~~在客户端中设置代理为 `127.0.0.1:8123`，并重启客户端~~
-
-新客户端 API 有改动，已经用不了了
-
 ## OSX 用户
 
 1. 向 /etc/hosts 文件中添加一行：`127.0.0.1 music.163.com`
@@ -52,15 +48,9 @@ unblockneteasemusic -h
 
 P.S. 请务必不要更新客户端到 1.4.3 以上的版本。 [下载连接](http://s1.music.126.net/download/osx/NeteaseMusic_1.4.3_452_web.dmg)
 
-## Android 用户
+## 其他用户
 
-1. 自建服务器（见后文）
-2. 向 /etc/hosts 文件中添加一行：`<服务器 IP> music.163.com`
-
-## iOS 用户
-
-1. 自建服务器（见后文）
-2. 使用 Surge 等代理软件重定向 `music.163.com` 的流量到自建服务器
+新客户端 API 有改动，已经用不了了
 
 ## 使用 nginx 反代
 
