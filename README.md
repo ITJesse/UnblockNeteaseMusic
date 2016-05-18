@@ -5,6 +5,8 @@
 1. 替换版权曲目播放地址
 2. 禁止客户端更新
 
+[![NPM](https://nodei.co/npm/unblock-netease-music.png?downloads=true&downloadRank=true)](https://nodei.co/npm/unblock-netease-music/)
+
 English version [here](https://github.com/ITJesse/UnblockNeteaseMusic/blob/master/README_en.md).
 
 # 依赖
@@ -48,7 +50,7 @@ unblockneteasemusic -h
 1. 向 /etc/hosts 文件中添加一行：`127.0.0.1 music.163.com`
 2. 使用 80 端口启动代理服务 `sudo unblockneteasemusic -p 80`
 
-P.S. 请务必不要更新客户端到 1.2.3 以上的版本。 下载连接： http://pan.baidu.com/s/1kUDqgWB
+P.S. 请务必不要更新客户端到 1.4.3 以上的版本。 [下载连接](http://s1.music.126.net/download/osx/NeteaseMusic_1.4.3_452_web.dmg)
 
 ## Android 用户
 
