@@ -80,12 +80,15 @@ var middleware = function*(next) {
 
     _this.body = PassThrough();
 
+    // console.log(req.headers);
+
     var options = {
       url: req.url,
       headers: req.headers,
       method: "get",
+      followRedirect: false,
       timeout: 10000
-    }
+    };
 
     request(options)
       .on('error', (err) => {
@@ -99,10 +102,11 @@ var middleware = function*(next) {
   }
 
   if (req.method == 'POST') {
+    var url = '';
     if (!/^http/.test(req.url)) {
-      var url = 'http://' + ip + req.url;
+      url = 'http://' + ip + req.url;
     } else {
-      var url = req.url.replace('music.163.com', ip);
+      url = req.url.replace('music.163.com', ip);
     }
     var rawBody = yield getRawBody(_this.req, {
       length: _this.length,
