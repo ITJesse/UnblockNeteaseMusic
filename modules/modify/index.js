@@ -11,6 +11,7 @@ var modify = function*(next) {
 
   req.url = req.url.replace(/^http:\/\/music.163.com/, '');
 
+  // 魔改 QQ Music 的下载请求，避免被 ban
   if (/^\/qqmusic/.test(req.url)) {
     req.headers['user-agent'] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.86 Safari/537.36";
     req.headers['host'] = "tsmusic24.tc.qq.com";
@@ -18,7 +19,9 @@ var modify = function*(next) {
     yield next;
   }
 
-  if (/^\/eapi\/osx\/version/.test(req.url)) {
+  // 禁止客户端自动更新提示
+  if (/^\/eapi\/osx\/version/.test(req.url) ||
+      /^\/eapi\/pc\/version/.test(req.url)) {
     var v = JSON.parse(_this.defaultBody);
     v.updateFiles = [];
     _this.defaultBody = JSON.stringify(v);
