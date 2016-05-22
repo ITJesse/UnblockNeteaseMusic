@@ -46,7 +46,15 @@ unblockneteasemusic -h
 1. 向 /etc/hosts 文件中添加一行：`127.0.0.1 music.163.com`
 2. 使用 80 端口启动代理服务 `sudo unblockneteasemusic -p 80`
 
-P.S. 请务必不要更新客户端到 1.4.3 以上的版本。 [下载连接](http://s1.music.126.net/download/osx/NeteaseMusic_1.4.3_452_web.dmg)
+P.S. 请务必不要更新客户端到 1.4.3 以上的版本。 [下载链接](http://s1.music.126.net/download/osx/NeteaseMusic_1.4.3_452_web.dmg)
+
+## Windows 用户
+
+1. 使用任意端口启动代理服务 `unblockneteasemusic`
+3. 在客户端内配置代理服务器为 `127.0.0.1:8123`
+
+P.S. 请务必不要更新客户端到 2.0.2 以上的版本。
+[下载链接](http://s1.music.126.net/download/pc/cloudmusicsetup_2_0_2[128316].exe)
 
 ## 其他用户
 
