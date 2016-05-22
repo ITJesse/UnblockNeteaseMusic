@@ -20,7 +20,9 @@ English version [here](https://github.com/ITJesse/UnblockNeteaseMusic/blob/maste
 
 ## 测试服务
 
-向 /etc/hosts 文件中添加一行：`119.29.65.105 music.163.com`
+~~向 /etc/hosts 文件中添加一行：`119.29.65.105 music.163.com`~~
+
+本人实在是没有精力维护了，故关闭了测试服务。
 
 ## 配置参数
 
@@ -39,28 +41,24 @@ unblockneteasemusic -h
     -q, --qq             Find copyright music on QQ Music.
 ```
 
-## Windows 用户
-
-~~在客户端中设置代理为 `127.0.0.1:8123`，并重启客户端~~
-
-新客户端 API 有改动，已经用不了了
-
 ## OSX 用户
 
 1. 向 /etc/hosts 文件中添加一行：`127.0.0.1 music.163.com`
 2. 使用 80 端口启动代理服务 `sudo unblockneteasemusic -p 80`
 
-P.S. 请务必不要更新客户端到 1.4.3 以上的版本。 [下载连接](http://s1.music.126.net/download/osx/NeteaseMusic_1.4.3_452_web.dmg)
+P.S. 请务必不要更新客户端到 1.4.3 以上的版本。 [下载链接](http://s1.music.126.net/download/osx/NeteaseMusic_1.4.3_452_web.dmg)
 
-## Android 用户
+## Windows 用户
 
-1. 自建服务器（见后文）
-2. 向 /etc/hosts 文件中添加一行：`<服务器 IP> music.163.com`
+1. 使用任意端口启动代理服务 `unblockneteasemusic`
+3. 在客户端内配置代理服务器为 `127.0.0.1:8123`
 
-## iOS 用户
+P.S. 请务必不要更新客户端到 2.0.2 以上的版本。
+[下载链接](http://s1.music.126.net/download/pc/cloudmusicsetup_2_0_2[128316].exe)
 
-1. 自建服务器（见后文）
-2. 使用 Surge 等代理软件重定向 `music.163.com` 的流量到自建服务器
+## 其他用户
+
+新客户端 API 有改动，已经用不了了
 
 ## 使用 nginx 反代
 
@@ -79,8 +77,6 @@ server {
     location / {
         proxy_pass http://127.0.0.1:8123;
         proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header Accept-Encoding "";
     }
 }
   ```
@@ -101,8 +97,6 @@ server {
           }
           proxy_pass http://localhost:8123;
           proxy_set_header Host $host;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header Accept-Encoding "";
       }
   }
   ```
