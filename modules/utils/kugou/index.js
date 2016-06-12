@@ -4,6 +4,7 @@ var request = require('request');
 var co = require('co');
 
 var common = require('../common');
+var config = require('../../config');
 
 var kugou = function() {};
 
@@ -26,14 +27,14 @@ kugou.prototype.search = function(name, artist) {
         data['data']['info'][0]['songname'].indexOf(name) != -1) {
 
         var hash320 = data['data']['info'][0]['320hash'];
-        var result = {
+        result = {
           hash: hash320,
           bitrate: 320000,
           filesize: data['data']['info'][0]['320filesize']
         };
         return resolve(result);
       } else {
-        console.error('No resource found on kugou.'.yellow)
+        console.error('No resource found on kugou.'.yellow);
         return resolve(null);
       }
     }).catch((err) => {
@@ -55,6 +56,12 @@ kugou.prototype.getUrl = function(hash) {
       var data = JSON.parse(result[1]);
       if (data.status == 1) {
         var url = data['url'];
+
+        // 魔改 URL 应对某司防火墙
+        if(config.rewriteUrl) {
+          url = url.replace('fs.web.kugou.com', 'music.163.com/kugou');
+        }
+
         resolve(url);
       } else {
         console.error(data['error']);

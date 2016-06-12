@@ -7,6 +7,7 @@ program
   .option('-k, --kugou', 'Find copyright music on Kugou.')
   .option('-d, --dongting', 'Find copyright music on TianTianDongTing.')
   .option('-q, --qq', 'Find copyright music on QQ Music.')
+  .option('-r, --rewrite-url', 'Rewrite music download url, let client download file through proxy.')
   .parse(process.argv);
 
 if (program.port && (program.port < 1 || program.port > 65535)) {
@@ -18,16 +19,19 @@ if (program.forceIp && !/\d+\.\d+\.\d+\.\d+/.test(program.forceIp)) {
   process.exit(1);
 }
 
-if(program.kugou){
+if (program.rewriteUrl) {
+  console.log('Rewrite music download url.'.green);
+}
+if (program.kugou) {
   console.log('Finding copyright music on Kugou.'.green);
 }
-if(program.dongting){
+if (program.dongting) {
   console.log('Finding copyright music on TianTianDongTing.'.green);
 }
-if(program.qq){
+if (program.qq) {
   console.log('Finding copyright music on QQ Music.'.green);
 }
-if(!program.kugou && !program.dongting && !program.qq){
+if (!program.kugou && !program.dongting && !program.qq) {
   console.log('Proxy will do nothing with copyright music.'.yellow);
 }
 

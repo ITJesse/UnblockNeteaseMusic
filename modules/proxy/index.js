@@ -87,7 +87,7 @@ var middleware = function*(next) {
       headers: req.headers,
       method: "get",
       followRedirect: false,
-      timeout: 10000
+      timeout: 3000
     };
 
     request(options)

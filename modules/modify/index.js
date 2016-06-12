@@ -19,6 +19,14 @@ var modify = function*(next) {
     yield next;
   }
 
+  // 魔改 Kugou 的下载请求，应对某司防火墙
+  if (/^\/kugou/.test(req.url)) {
+    req.headers['user-agent'] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.86 Safari/537.36";
+    req.headers['host'] = "fs.web.kugou.com";
+    req.url = "http://fs.web.kugou.com" + req.url.replace("/kugou", "");
+    yield next;
+  }
+
   // 禁止客户端自动更新提示
   if (/^\/eapi\/osx\/version/.test(req.url) ||
       /^\/eapi\/pc\/version/.test(req.url)) {

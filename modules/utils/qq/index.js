@@ -27,7 +27,7 @@ qq.prototype.search = function(name, artist) {
         data.data.song.list[0].fsong.indexOf(name) != -1) {
 
         var list = data.data.song.list[0].f.split('|');
-        var result = {
+        result = {
           url: 'http://music.163.com/qqmusic/' + list[0] + '.mp3',
           bitrate: list[13],
           filesize: list[11],
