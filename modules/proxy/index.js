@@ -112,6 +112,7 @@ var middleware = function*(next) {
       length: _this.length,
       encoding: _this.charset
     });
+    // console.log(rawBody.toString());
     var result = yield post(url, req.headers, rawBody);
     var headers = result[0].headers;
     var body = result[1];

@@ -112,10 +112,16 @@ netease.prototype.modifyDetailApi = function(body) {
   console.log("Song Detail API Injected".green);
 
   return body
-    .replace(/\"pl\":\d+/g, '"pl":320000')
-    .replace(/\"dl\":\d+/g, '"dl":320000')
+    .replace(/\"pl\":0/g, '"pl":320000')
+    .replace(/\"dl\":0/g, '"dl":320000')
+    .replace(/\"fl\":0/g, '"fl":320000')
     .replace(/\"st\":-?\d+/g, '"st":0')
-    .replace(/\"subp\":\d+/g, '"subp":1');
+    .replace(/\"subp\":\d+/g, '"subp":1')
+    .replace(/\"sp\":0/g, '"sp":7')
+    .replace(/\"cp\":0/g, '"cp":1')
+    .replace(/\"fee\":\d+/g, '"fee":0')
+    .replace(/\"abroad\":1,/g, '')
+    .replace(/\"paid\":false/g, '"paid":true');
 };
 
 netease.prototype.modifyPlayerApiCustom = function(urlInfo, body) {

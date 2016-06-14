@@ -37,20 +37,22 @@ var modify = function*(next) {
   }
 
   if (/^\/eapi\/v3\/song\/detail/.test(req.url) ||
-    /^\/eapi\/v3\/playlist\/detail/.test(req.url) ||
-    /^\/eapi\/v1\/album/.test(req.url) ||
-    /^\/eapi\/batch/.test(req.url) ||
-    /^\/eapi\/cloudsearch\/pc/.test(req.url) ||
-    /^\/eapi\/v1\/artist/.test(req.url) ||
-    /^\/eapi\/v1\/search\/get/.test(req.url) ||
-    /^\/eapi\/song\/enhance\/privilege/.test(req.url) ||
-    /^\/eapi\/v1\/discovery\/new\/songs/.test(req.url) ||
-    /^\/eapi\/v1\/play\/record/.test(req.url)) {
+      /^\/eapi\/v3\/playlist\/detail/.test(req.url) ||
+      /^\/eapi\/v1\/album/.test(req.url) ||
+      /^\/eapi\/batch/.test(req.url) ||
+      /^\/eapi\/cloudsearch\/pc/.test(req.url) ||
+      /^\/eapi\/v1\/artist/.test(req.url) ||
+      /^\/eapi\/v1\/search\/get/.test(req.url) ||
+      /^\/eapi\/song\/enhance\/privilege/.test(req.url) ||
+      /^\/eapi\/v1\/discovery\/new\/songs/.test(req.url) ||
+      /^\/eapi\/v1\/play\/record/.test(req.url)) {
 
     _this.defaultBody = utils.netease.modifyDetailApi(this.defaultBody);
     yield next;
 
-  } else if (/^\/eapi\/song\/enhance\/player\/url/.test(req.url)) {
+  }
+
+  else if (/^\/eapi\/song\/enhance\/player\/url/.test(req.url)) {
 
     try {
       var data = JSON.parse(_this.defaultBody);
@@ -80,7 +82,9 @@ var modify = function*(next) {
     _this.defaultBody = JSON.stringify(data);
     yield next;
 
-  } else if (/^\/eapi\/song\/enhance\/download\/url/.test(req.url)) {
+  }
+
+  else if (/^\/eapi\/song\/enhance\/download\/url/.test(req.url)) {
 
     if (utils.netease.getDownloadReturnCode(_this.defaultBody) != 200) {
       var songId = utils.netease.getDownloadSongId(_this.defaultBody);
@@ -96,6 +100,10 @@ var modify = function*(next) {
       yield next;
     }
   }
+
+  // else if (/^\/eapi\/v1\/playlist\/manipulate\/tracks/.test(req.url)) {
+  //   console.log(_this.defaultBody);
+  // }
 }
 
 module.exports = modify;
