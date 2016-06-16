@@ -7,15 +7,13 @@
 
 [![NPM](https://nodei.co/npm/unblock-netease-music.png?downloads=true&downloadRank=true)](https://nodei.co/npm/unblock-netease-music/)
 
-English version [here](https://github.com/ITJesse/UnblockNeteaseMusic/blob/master/README_en.md).
-
 # 依赖
 
 1. Node.js 4.x+
 
 # 使用方法
 
-1. `npm install unblock-netease-music -g`
+1. `npm install unblock-netease-music@1.2.9 -g`
 2. `unblockneteasemusic`
 
 ## 测试服务
@@ -39,6 +37,7 @@ unblockneteasemusic -h
     -k, --kugou          Find copyright music on Kugou.
     -d, --dongting       Find copyright music on TianTianDongTing.
     -q, --qq             Find copyright music on QQ Music.
+    -r, --rewrite-url    Rewrite music download url, let client download file through proxy.
 ```
 
 ## OSX 用户
@@ -83,54 +82,7 @@ server {
 
 # 搭建自己的代理服务器
 
-1. 安装 nginx 和 Node.js
-2. Nginx 配置如下
-
-  ```
-  server {
-      listen 80;
-      server_name music.163.com;
-
-      location / {
-          if ($http_host !~* ^(music.163.com)$){
-              return 500;
-          }
-          proxy_pass http://localhost:8123;
-          proxy_set_header Host $host;
-      }
-  }
-  ```
-
-3. 安装 sniproxy，配置如下
-
-  ```
-  user daemon
-  pidfile /var/run/sniproxy.pid
-
-  error_log {
-      syslog daemon
-      priority notice
-  }
-
-  listen <YOUR_SERVER_IP>:443 {
-      proto tls
-      table https_hosts
-
-      access_log {
-          filename /var/log/sniproxy/https_access.log
-          priority notice
-      }
-      fallback 127.0.0.1:443
-  }
-
-  table https_hosts {
-      music.163.com 223.252.199.7:443
-  }
-  ```
-
-4. 安装本代理 `sudo npm install unblock-netease-music -g`
-5. 运行 `unblockneteasemusic`.
-6. 完成！
+请查阅 master 分支。
 
 # 预览
 
