@@ -1,0 +1,53 @@
+server {
+    listen 80;
+    server_name music.163.com;
+    resolver 114.114.114.114;
+
+    location /* {
+        if ($http_host !~* ^(music.163.com)$){
+            return 500;
+        }
+    }
+
+    location / {
+        proxy_pass http://music.163.com;
+        proxy_next_upstream      error timeout invalid_header http_500;
+        proxy_connect_timeout    6s;
+        proxy_send_timeout       6s;
+        proxy_read_timeout       6s;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Accept-Encoding "";
+        subs_filter_types *;
+        subs_filter '"st":-.+?,' '"st":0,' ir;
+        subs_filter '"pl":0' '"pl":320000';
+        subs_filter '"dl":0' '"dl":320000';
+        subs_filter '"sp":0' '"sp":7';
+        subs_filter '"cp":0' '"cp":1';
+        subs_filter '"subp":0' '"subp":1';
+        subs_filter '"fl":0' '"fl":320000';
+        subs_filter '"fee":.+?,' '"fee":0,' ir;
+        subs_filter '"abroad":1,' '';
+    }
+
+    location /eapi/song/enhance/player/url {
+        proxy_pass http://localhost:8123;
+    }
+
+    location /eapi/song/enhance/download/url {
+        proxy_pass http://localhost:8123;
+    }
+
+    location /kugou {
+        rewrite '^/kugou/(.*)' /$1 break;
+        proxy_pass http://fs.web.kugou.com;
+        proxy_set_header Host fs.web.kugou.com;
+    }
+
+    location /qqmusic {
+        rewrite '^/qqmusic/(.*)' /$1 break;
+        proxy_pass http://tsmusic24.tc.qq.com;
+        proxy_set_header "User-Agent" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.86 Safari/537.36";
+        proxy_set_header Host tsmusic24.tc.qq.com;
+    }
+}

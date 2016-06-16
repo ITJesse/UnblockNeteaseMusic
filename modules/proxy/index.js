@@ -1,13 +1,9 @@
 var request = require('request');
 var getRawBody = require('raw-body');
 var extend = require('extend');
-var zlib = require('zlib');
-var Readable = require('stream').Readable;
-var PassThrough = require('stream').PassThrough;
 
 var config = require('../config');
 
-var ip = config.forceIp ? config.forceIp : '223.252.199.7';
 
 var sendRequest = function(options) {
   var defaults = {
@@ -24,21 +20,6 @@ var sendRequest = function(options) {
         resolve([res, body]);
       }
     });
-  });
-};
-
-// 封装 request get
-var get = function(url, headers) {
-  var options = {
-    url: url,
-    headers: headers,
-    encoding: null // 不解析 get 请求，直接返回 Buffer
-  };
-
-  return new Promise((resolve, reject) => {
-    sendRequest(options)
-      .then((res) => resolve(res))
-      .catch((err) => reject(err));
   });
 };
 
@@ -66,48 +47,11 @@ var middleware = function*(next) {
   var req = _this.request;
   var res = _this.reponse;
 
-  // console.log(url);
-  // console.log(req.headers);
-
-  if (req.method == 'GET') {
-    yield next;
-
-    if (!/^http/.test(req.url)) {
-      req.url = 'http://' + ip + req.url;
-    } else {
-      req.url = req.url.replace('music.163.com', ip);
-    }
-
-    _this.body = PassThrough();
-
-    // console.log(req.headers);
-
-    var options = {
-      url: req.url,
-      headers: req.headers,
-      method: "get",
-      followRedirect: false,
-      timeout: 3000
-    };
-
-    request(options)
-      .on('error', (err) => {
-        return console.log(err);
-      })
-      .on('response', (response) => {
-        _this.status = response.statusCode;
-        _this.set(response.headers);
-      })
-      .pipe(_this.body);
-  }
-
   if (req.method == 'POST') {
-    var url = '';
-    if (!/^http/.test(req.url)) {
-      url = 'http://' + ip + req.url;
-    } else {
-      url = req.url.replace('music.163.com', ip);
-    }
+    var ip = config.forceIp ? config.forceIp : '223.252.199.7';
+    var url = 'http://' + ip + req.url;
+    req.headers['host'] = 'music.163.com';
+
     var rawBody = yield getRawBody(_this.req, {
       length: _this.length,
       encoding: _this.charset
@@ -124,15 +68,6 @@ var middleware = function*(next) {
     // console.log("before: " +  _this.defaultBody);
     yield next;
     // console.log("after: " +  _this.defaultBody);
-
-    // var stream = new Readable;
-    // stream.push(_this.defaultBody);
-    // stream.push(null);
-
-    // var gzip = zlib.createGzip();
-    // _this.set('Content-Encoding', 'gzip');
-    // _this.body = gzip;
-    // stream.pipe(gzip);
 
     _this.body = _this.defaultBody;
   }

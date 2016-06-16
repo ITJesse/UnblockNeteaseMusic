@@ -7,22 +7,26 @@
 
 [![NPM](https://nodei.co/npm/unblock-netease-music.png?downloads=true&downloadRank=true)](https://nodei.co/npm/unblock-netease-music/)
 
-English version [here](https://github.com/ITJesse/UnblockNeteaseMusic/blob/master/README_en.md).
-
 # 依赖
 
 1. Node.js 4.x+
+2. Nginx with subs-filter module configured.
+
+# 注意
+
+从 2.0 版本开始，本代理仅支持服务端部署。本地使用请查阅 standalone 分支，或使用 1.x 版本。
 
 # 使用方法
+1. 安装 Nginx 和 Node.js
+2. Nginx 配置参考 `/server_config/nginx.conf.sample`
+3. 安装 sniproxy，配置参考 `/server_config/sniproxy.conf.sample`
+4. 安装本代理 `sudo npm install unblock-netease-music -g`
+5. 后台运行 `nohup unblockneteasemusic &`.
+6. 完成！
+
 
 1. `npm install unblock-netease-music -g`
 2. `unblockneteasemusic`
-
-## 测试服务
-
-~~向 /etc/hosts 文件中添加一行：`119.29.65.105 music.163.com`~~
-
-本人实在是没有精力维护了，故关闭了测试服务。
 
 ## 配置参数
 
@@ -37,100 +41,20 @@ unblockneteasemusic -h
     -p, --port <port>    Specific server port.
     -f, --force-ip <ip>  Force the netease server ip.
     -k, --kugou          Find copyright music on Kugou.
-    -d, --dongting       Find copyright music on TianTianDongTing.
     -q, --qq             Find copyright music on QQ Music.
+    -r, --rewrite-url    Rewrite music download url, let client download file through proxy.
 ```
 
-## OSX 用户
+## OSX 与 Windows 用户
 
-1. 向 /etc/hosts 文件中添加一行：`127.0.0.1 music.163.com`
-2. 使用 80 端口启动代理服务 `sudo unblockneteasemusic -p 80`
+向 hosts 文件中添加一行：`<Server IP> music.163.com`
 
-P.S. 请务必不要更新客户端到 1.4.3 以上的版本。 [下载链接](http://s1.music.126.net/download/osx/NeteaseMusic_1.4.3_452_web.dmg)
-
-## Windows 用户
-
-1. 使用任意端口启动代理服务 `unblockneteasemusic`
-3. 在客户端内配置代理服务器为 `127.0.0.1:8123`
-
-P.S. 请务必不要更新客户端到 2.0.2 以上的版本。
-[下载链接](http://s1.music.126.net/download/pc/cloudmusicsetup_2_0_2[128316].exe)
+> OSX 用户请务必不要更新客户端到 1.4.3 以上的版本。 [下载链接](http://s1.music.126.net/download/osx/NeteaseMusic_1.4.3_452_web.dmg)
+> Windows 用户请务必不要更新客户端到 2.0.2 以上的版本。 [下载链接](http://s1.music.126.net/download/pc/cloudmusicsetup_2_0_2[128316].exe)
 
 ## 其他用户
 
 新客户端 API 有改动，已经用不了了
-
-## 使用 nginx 反代
-
-1. 安装 nginx
-2. 使用下面的配置新建一个 vhost
-3. 启动 nginx.
-4. 向 /etc/hosts 文件中添加一行：`127.0.0.1 music.163.com`
-
-# Nginx 配置
-
-```
-server {
-    listen 80;
-    server_name music.163.com;
-
-    location / {
-        proxy_pass http://127.0.0.1:8123;
-        proxy_set_header Host $host;
-    }
-}
-  ```
-
-# 搭建自己的代理服务器
-
-1. 安装 nginx 和 Node.js
-2. Nginx 配置如下
-
-  ```
-  server {
-      listen 80;
-      server_name music.163.com;
-
-      location / {
-          if ($http_host !~* ^(music.163.com)$){
-              return 500;
-          }
-          proxy_pass http://localhost:8123;
-          proxy_set_header Host $host;
-      }
-  }
-  ```
-
-3. 安装 sniproxy，配置如下
-
-  ```
-  user daemon
-  pidfile /var/run/sniproxy.pid
-
-  error_log {
-      syslog daemon
-      priority notice
-  }
-
-  listen <YOUR_SERVER_IP>:443 {
-      proto tls
-      table https_hosts
-
-      access_log {
-          filename /var/log/sniproxy/https_access.log
-          priority notice
-      }
-      fallback 127.0.0.1:443
-  }
-
-  table https_hosts {
-      music.163.com 223.252.199.7:443
-  }
-  ```
-
-4. 安装本代理 `sudo npm install unblock-netease-music -g`
-5. 运行 `unblockneteasemusic`.
-6. 完成！
 
 # 预览
 

@@ -1,0 +1,22 @@
+user daemon
+pidfile /var/run/sniproxy.pid
+
+error_log {
+    syslog daemon
+    priority notice
+}
+
+listen <YOUR_SERVER_IP>:443 {
+    proto tls
+    table https_hosts
+
+    access_log {
+        filename /var/log/sniproxy/https_access.log
+        priority notice
+    }
+    fallback 127.0.0.1:443
+}
+
+table https_hosts {
+    music.163.com 223.252.199.7:443
+}

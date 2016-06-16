@@ -4,7 +4,6 @@ var co = require('co');
 var config = require('../config');
 var netease = require('./netease');
 var kugou = require('./kugou');
-var dongting = require('./dongting');
 var qq = require('./qq');
 
 var utils = function(ip) {
@@ -23,11 +22,10 @@ var utils = function(ip) {
   if (config.qq) {
     this.qq = new qq();
   }
-}
+};
 
 /*
-  Get song url from kugou.
-  If failed, fallback to netease low-res api.
+  Get song url.
 */
 
 utils.prototype.getUrlInfo = function(songId) {
@@ -53,10 +51,6 @@ utils.prototype.getUrlInfo = function(songId) {
         }
       }
 
-      if (!songInfo && _this.dongting) {
-        songInfo = yield _this.dongting.search(songName, artist);
-      }
-
       if (songInfo) {
         resolve(songInfo);
       } else {
@@ -66,7 +60,7 @@ utils.prototype.getUrlInfo = function(songId) {
       console.log(err);
       reject(err);
     });
-  })
-}
+  });
+};
 
 module.exports = utils;
