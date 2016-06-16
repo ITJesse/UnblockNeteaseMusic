@@ -21,12 +21,8 @@
 2. Nginx 配置参考 `/server_config/nginx.conf.sample`
 3. 安装 sniproxy，配置参考 `/server_config/sniproxy.conf.sample`
 4. 安装本代理 `sudo npm install unblock-netease-music -g`
-5. 后台运行 `nohup unblockneteasemusic &`.
+5. 后台运行 `nohup unblockneteasemusic &`
 6. 完成！
-
-
-1. `npm install unblock-netease-music -g`
-2. `unblockneteasemusic`
 
 ## 配置参数
 
@@ -50,6 +46,7 @@ unblockneteasemusic -h
 向 hosts 文件中添加一行：`<Server IP> music.163.com`
 
 > OSX 用户请务必不要更新客户端到 1.4.3 以上的版本。 [下载链接](http://s1.music.126.net/download/osx/NeteaseMusic_1.4.3_452_web.dmg)
+> 
 > Windows 用户请务必不要更新客户端到 2.0.2 以上的版本。 [下载链接](http://s1.music.126.net/download/pc/cloudmusicsetup_2_0_2[128316].exe)
 
 ## 其他用户
@@ -58,7 +55,7 @@ unblockneteasemusic -h
 
 # 预览
 
-![](https://dn-itjesse.qbox.me/github%2Fphoto_2016-03-31_01-11-14.jpg)
+![](https://dn-itjesse.qbox.me/github/QQ20160616-0.png)
 
 # 感谢
 
