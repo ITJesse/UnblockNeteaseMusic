@@ -28,6 +28,7 @@ server {
         subs_filter '"fl":0' '"fl":320000';
         subs_filter '"fee":.+?,' '"fee":0,' ir;
         subs_filter '"abroad":1,' '';
+        subs_filter '"updateFiles":\[.*\]' '"updateFiles":[]' ir;
     }
 
     location /eapi/song/enhance/player/url {
