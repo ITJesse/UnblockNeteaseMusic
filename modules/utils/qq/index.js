@@ -22,9 +22,11 @@ qq.prototype.search = function(name, artist) {
     co(function*() {
       var result = yield common.sendRequest(options);
       var data = JSON.parse(result[1]);
-      if (data.code == 0 &&
-        data.data.song.list.length > 0 &&
-        data.data.song.list[0].fsong.indexOf(name) != -1) {
+      var keyword = name.replace(/\s/g, '').toLowerCase();
+      var fsong = data.data.song.list[0].fsong.replace(/\s/g, '').toLowerCase();
+      if (data.code === 0 &&
+          data.data.song.list.length > 0 &&
+          fsong.indexOf(keyword) != -1) {
 
         var list = data.data.song.list[0].f.split('|');
         result = {
