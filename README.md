@@ -24,8 +24,8 @@
 5. 后台运行 `nohup unblockneteasemusic &`
 6. 完成！
 
-# Docker 部署
-`docker run -d -p 80:80/tcp --restart=always --name unblockneteasemusic itjesse/unblockneteasemusic`
+## Docker 部署
+docker run -d -p 80:80/tcp --restart=always --name unblockneteasemusic itjesse/unblockneteasemusic
 
 ## 配置参数
 
