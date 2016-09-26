@@ -1,0 +1,8 @@
+[supervisord]
+nodaemon=true
+
+[program:nginx]
+command=/usr/local/nginx/sbin/nginx
+
+[program:unblockneteasemusic]
+command=/usr/bin/unblockneteasemusic -p 8123 -k -q -r
