@@ -9,8 +9,9 @@ COPY ./server_config/supervisord.conf.sample /etc/supervisor/conf.d/supervisord.
 
 RUN apt-get update && apt-get install -y build-essential libpcre3 libpcre3-dev wget git curl zlib1g-dev \
 	&& curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash - \
-	&& sed -i 's/deb.nodesource.com\/node/mirrors.tuna.tsinghua.edu.cn\/nodesource\/deb/g' /etc/apt/sources.list.d/nodesource.list \
-	&& apt-get update && apt-get install -y nodejs \
+	# && sed -i 's/deb.nodesource.com\/node/mirrors.tuna.tsinghua.edu.cn\/nodesource\/deb/g' /etc/apt/sources.list.d/nodesource.list \
+	# && apt-get update && apt-get install -y nodejs \
+	&& apt-get install -y nodejs \
 
 
 	&& wget http://nginx.org/download/nginx-1.10.1.tar.gz \
