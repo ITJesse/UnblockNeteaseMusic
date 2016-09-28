@@ -2,18 +2,18 @@
   "name": "unblock-netease-music",
   "version": "2.0.1",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "babel-node -- src/bin/www -p 8123 -k -q -r",
+    "build": "babel src --out-dir dist --source-maps"
   },
   "bin": {
-    "unblockneteasemusic": "bin/www"
+    "unblockneteasemusic": "dist/bin/unblockneteasemusic.js"
   },
   "dependencies": {
-    "co": "^4.6.0",
     "colors": "^1.1.2",
     "commander": "^2.9.0",
     "extend": "^3.0.0",
-    "koa": "^1.2.0",
-    "koa-logger": "^1.3.0",
+    "koa": "^2.0.0-alpha.7",
+    "koa-logger": "^2.0.0",
     "md5": "^2.1.0",
     "raw-body": "^2.1.6",
     "request": "^2.69.0"
@@ -25,8 +25,21 @@
     "neteaseunblock"
   ],
   "description": "A proxy server for Netease Music...",
-  "main": "app.js",
-  "devDependencies": {},
+  "main": "dist/bin/unblockneteasemusic.js",
+  "devDependencies": {
+    "babel-cli": "^6.11.4",
+    "babel-core": "^6.13.2",
+    "babel-plugin-syntax-async-functions": "^6.13.0",
+    "babel-plugin-transform-es2015-destructuring": "^6.9.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.11.5",
+    "babel-plugin-transform-es2015-parameters": "^6.11.4",
+    "babel-plugin-transform-es2015-spread": "^6.8.0",
+    "babel-plugin-transform-regenerator": "^6.11.4",
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-plugin-transform-strict-mode": "^6.11.3",
+    "babel-polyfill": "^6.13.0",
+    "babel-preset-es2015": "^6.14.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ITJesse/UnblockNeteaseMusic.git"
