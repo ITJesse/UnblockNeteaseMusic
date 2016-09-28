@@ -47,8 +47,8 @@ server {
 
     location /qqmusic {
         rewrite '^/qqmusic/(.*)' /$1 break;
-        proxy_pass http://tsmusic24.tc.qq.com;
+        proxy_pass http://cc.stream.qqmusic.qq.com;
         proxy_set_header "User-Agent" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.86 Safari/537.36";
-        proxy_set_header Host tsmusic24.tc.qq.com;
+        proxy_set_header Host cc.stream.qqmusic.qq.com;
     }
 }

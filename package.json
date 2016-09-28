@@ -2,7 +2,7 @@
   "name": "unblock-netease-music",
   "version": "2.0.1",
   "scripts": {
-    "start": "babel-node -- src/bin/www -p 8123 -k -q -r",
+    "start": "babel-node -- src/bin/unblockneteasemusic -p 8123 -k -q -r",
     "build": "babel src --out-dir dist --source-maps"
   },
   "bin": {
