@@ -30,6 +30,9 @@ RUN apt-get update && apt-get install -y build-essential libpcre3 libpcre3-dev w
         && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/src/*
 
 COPY dist /usr/src
+COPY package.json /usr/src/package.json
+
+ENV NODE_ENV production
 RUN cd /usr/src \
 	&& npm install && npm cache clean
 

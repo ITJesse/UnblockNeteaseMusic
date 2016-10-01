@@ -59,8 +59,7 @@ var kugou = function () {
       };
 
       return new _promise2.default(function _callee(resolve, reject) {
-        var _result, data, hash320;
-
+        var result, data, hash320;
         return _regenerator2.default.async(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -70,22 +69,11 @@ var kugou = function () {
                 return _regenerator2.default.awrap(_common2.default.sendRequest(options));
 
               case 3:
-                _result = _context.sent;
-                _context.next = 10;
-                break;
-
-              case 6:
-                _context.prev = 6;
-                _context.t0 = _context['catch'](0);
-
-                console.log(_context.t0);
-                return _context.abrupt('return', reject(_context.t0));
-
-              case 10:
+                result = _context.sent;
                 data = JSON.parse(result[1]);
 
                 if (!(data.status == 1 && !!data['data']['info'].length && !!data['data']['info'][0]['320hash'].length && data['data']['info'][0]['songname'].indexOf(name) != -1)) {
-                  _context.next = 17;
+                  _context.next = 11;
                   break;
                 }
 
@@ -98,16 +86,27 @@ var kugou = function () {
                 };
                 return _context.abrupt('return', resolve(result));
 
-              case 17:
+              case 11:
                 console.error('No resource found on kugou.'.yellow);
                 return _context.abrupt('return', resolve(null));
+
+              case 13:
+                _context.next = 19;
+                break;
+
+              case 15:
+                _context.prev = 15;
+                _context.t0 = _context['catch'](0);
+
+                console.log(_context.t0);
+                return _context.abrupt('return', reject(_context.t0));
 
               case 19:
               case 'end':
                 return _context.stop();
             }
           }
-        }, null, this, [[0, 6]]);
+        }, null, this, [[0, 15]]);
       });
     }
   }, {
@@ -119,8 +118,7 @@ var kugou = function () {
       };
 
       return new _promise2.default(function _callee2(resolve, reject) {
-        var _result2, data, url;
-
+        var result, data, url;
         return _regenerator2.default.async(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -130,22 +128,11 @@ var kugou = function () {
                 return _regenerator2.default.awrap(_common2.default.sendRequest(options));
 
               case 3:
-                _result2 = _context2.sent;
-                _context2.next = 10;
-                break;
-
-              case 6:
-                _context2.prev = 6;
-                _context2.t0 = _context2['catch'](0);
-
-                console.log(_context2.t0);
-                return _context2.abrupt('return', reject(_context2.t0));
-
-              case 10:
+                result = _context2.sent;
                 data = JSON.parse(result[1]);
 
                 if (!(data.status == 1)) {
-                  _context2.next = 17;
+                  _context2.next = 11;
                   break;
                 }
 
@@ -159,16 +146,27 @@ var kugou = function () {
 
                 return _context2.abrupt('return', resolve(url));
 
-              case 17:
+              case 11:
                 console.error(data['error']);
                 return _context2.abrupt('return', reject(data['error']));
+
+              case 13:
+                _context2.next = 19;
+                break;
+
+              case 15:
+                _context2.prev = 15;
+                _context2.t0 = _context2['catch'](0);
+
+                console.log(_context2.t0);
+                return _context2.abrupt('return', reject(_context2.t0));
 
               case 19:
               case 'end':
                 return _context2.stop();
             }
           }
-        }, null, this, [[0, 6]]);
+        }, null, this, [[0, 15]]);
       });
     }
   }]);
@@ -176,4 +174,3 @@ var kugou = function () {
 }();
 
 exports.default = kugou;
-//# sourceMappingURL=index.js.map

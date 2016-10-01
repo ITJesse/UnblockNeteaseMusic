@@ -29,4 +29,3 @@ app.use(_proxy2.default);
 app.use(_modify2.default);
 
 exports.default = app;
-//# sourceMappingURL=app.js.map

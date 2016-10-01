@@ -127,4 +127,3 @@ var middleware = function _callee(ctx, next) {
 };
 
 exports.default = middleware;
-//# sourceMappingURL=index.js.map

@@ -162,4 +162,3 @@ var Utils = function () {
 }();
 
 exports.default = Utils;
-//# sourceMappingURL=index.js.map

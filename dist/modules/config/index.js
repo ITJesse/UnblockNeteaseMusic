@@ -39,4 +39,3 @@ if (!_commander2.default.kugou && !_commander2.default.qq) {
 }
 
 exports.default = _commander2.default;
-//# sourceMappingURL=index.js.map

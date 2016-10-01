@@ -39,4 +39,3 @@ common.sendRequest = function (options) {
 };
 
 exports.default = common;
-//# sourceMappingURL=index.js.map

@@ -209,4 +209,3 @@ var modify = function _callee(ctx, next) {
 };
 
 exports.default = modify;
-//# sourceMappingURL=index.js.map

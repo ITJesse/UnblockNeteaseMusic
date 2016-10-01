@@ -144,4 +144,3 @@ var netease = function () {
 }();
 
 exports.default = netease;
-//# sourceMappingURL=index.js.map
