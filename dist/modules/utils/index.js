@@ -24,10 +24,6 @@ var _colors = require('colors');
 
 var _colors2 = _interopRequireDefault(_colors);
 
-var _co = require('co');
-
-var _co2 = _interopRequireDefault(_co);
-
 var _config = require('../config');
 
 var _config2 = _interopRequireDefault(_config);

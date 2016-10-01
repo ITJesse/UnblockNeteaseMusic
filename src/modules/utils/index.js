@@ -1,5 +1,4 @@
 import colors from 'colors';
-import co from 'co';
 
 import config from '../config';
 import netease from './netease';
