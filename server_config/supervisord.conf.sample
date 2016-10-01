@@ -5,4 +5,4 @@ nodaemon=true
 command=/usr/local/nginx/sbin/nginx
 
 [program:unblockneteasemusic]
-command=/usr/src/bin/unblockneteasemusic -p 8123 -k -q -r
+command=/usr/src/bin/unblockneteasemusic.js -p 8123 -k -q -r
