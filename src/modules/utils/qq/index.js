@@ -96,7 +96,7 @@ export default class QQ {
             url: url,
             bitrate: bitrate,
             filesize: list[11],
-            hash: md5(list[0])
+            hash: ''
           };
           return resolve(result);
         } else {

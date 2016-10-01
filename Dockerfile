@@ -20,9 +20,6 @@ RUN apt-get update && apt-get install -y build-essential libpcre3 libpcre3-dev w
 	&& cd nginx-1.10.1 && ./configure --prefix=/usr/local/nginx --with-http_sub_module --add-module=../ngx_http_substitutions_filter_module/ \
 	&& make && make install \
 
-	# && cat 'registry = https://registry.npm.taobao.org' > /root/.npmrc \
-	&& npm install unblock-netease-music -g && npm cache clean \
-
 	&& sed -i  "s/#gzip  on;/gzip  on;\ninclude \'.\/vhost\/*\';/" /usr/local/nginx/conf/nginx.conf \
 	&& sed -i "s/worker_processes  1;/worker_processes  1;\ndaemon off;/" /usr/local/nginx/conf/nginx.conf \
 
@@ -31,6 +28,10 @@ RUN apt-get update && apt-get install -y build-essential libpcre3 libpcre3-dev w
 	&& apt-get autoremove wget curl git build-essential --purge -y \
         && apt-get clean \
         && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/src/*
+
+COPY dist /usr/src
+RUN cd /usr/src \
+	&& npm install && npm cache clean
 
 EXPOSE 80
 
