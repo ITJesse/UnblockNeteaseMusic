@@ -8,17 +8,18 @@ let modify = async function(ctx, next) {
   let res = ctx.response;
 
   let songId,
-      urlInfo;
+      urlInfo,
+      data;
+
+  try {
+    data = JSON.parse(ctx.defaultBody.toString());
+  } catch (err) {
+    console.error("Parse JSON failed, return with no modify.".yellow);
+    return next;
+  }
 
   if (/^\/eapi\/song\/enhance\/player\/url/.test(req.url)) {
-    let data = '';
 
-    try {
-      data = JSON.parse(ctx.defaultBody.toString());
-    } catch (err) {
-      console.error("Parse JSON failed, return with no modify.".yellow);
-      return next;
-    }
     let newData = [];
     for(let row of data["data"]) {
       let playbackReturnCode = row.code;
@@ -48,21 +49,21 @@ let modify = async function(ctx, next) {
 
   else if (/^\/eapi\/song\/enhance\/download\/url/.test(req.url)) {
 
-    if (utils.netease.getDownloadReturnCode(ctx.defaultBody) != 200) {
-      songId = utils.netease.getDownloadSongId(ctx.defaultBody);
+    if (utils.netease.getDownloadReturnCode(data) != 200) {
+      songId = utils.netease.getDownloadSongId(data);
       try{
         urlInfo = await utils.getUrlInfo(songId);
       } catch(err) {
         return console.log(err);
       }
       if (urlInfo) {
-        ctx.defaultBody = utils.netease.modifyDownloadApiCustom(urlInfo, ctx.defaultBody);
+        ctx.defaultBody = utils.netease.modifyDownloadApiCustom(urlInfo, data);
       } else {
         console.log('No resource.'.red);
       }
       return next;
     } else {
-      console.log('Download bitrate is not changed. The song URL is '.green + utils.netease.getDownloadUrl(ctx.defaultBody).green);
+      console.log('Download bitrate is not changed. The song URL is '.green + utils.netease.getDownloadUrl(data).green);
       return next;
     }
   }

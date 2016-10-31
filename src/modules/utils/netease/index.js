@@ -8,12 +8,10 @@ export default class netease {
   }
 
   getDownloadReturnCode(body) {
-    body = JSON.parse(body);
     return body["data"]["code"];
   };
 
   getDownloadUrl(body) {
-    body = JSON.parse(body);
     return body["data"]["url"];
   };
 
@@ -28,7 +26,6 @@ export default class netease {
   };
 
   getDownloadSongId(body) {
-    body = JSON.parse(body);
     return body["data"]["id"];
   };
 
@@ -83,8 +80,6 @@ export default class netease {
     console.log("Download API Injected".green);
 
     let self = this;
-
-    body = JSON.parse(body);
 
     console.log("New URL is ".green + urlInfo.url);
     body["data"]["url"] = urlInfo.url;

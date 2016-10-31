@@ -44,13 +44,11 @@ var netease = function () {
   (0, _createClass3.default)(netease, [{
     key: 'getDownloadReturnCode',
     value: function getDownloadReturnCode(body) {
-      body = JSON.parse(body);
       return body["data"]["code"];
     }
   }, {
     key: 'getDownloadUrl',
     value: function getDownloadUrl(body) {
-      body = JSON.parse(body);
       return body["data"]["url"];
     }
   }, {
@@ -68,7 +66,6 @@ var netease = function () {
   }, {
     key: 'getDownloadSongId',
     value: function getDownloadSongId(body) {
-      body = JSON.parse(body);
       return body["data"]["id"];
     }
   }, {
@@ -126,8 +123,6 @@ var netease = function () {
       console.log("Download API Injected".green);
 
       var self = this;
-
-      body = JSON.parse(body);
 
       console.log("New URL is ".green + urlInfo.url);
       body["data"]["url"] = urlInfo.url;
