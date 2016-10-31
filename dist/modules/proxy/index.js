@@ -8,10 +8,6 @@ var _regenerator = require('babel-runtime/regenerator');
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
-var _promise = require('babel-runtime/core-js/promise');
-
-var _promise2 = _interopRequireDefault(_promise);
-
 var _request = require('request');
 
 var _request2 = _interopRequireDefault(_request);
@@ -34,30 +30,8 @@ var _common2 = _interopRequireDefault(_common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// 封装 request post
-var post = function post(url, headers, body) {
-  var options = {
-    url: url,
-    headers: headers,
-    method: 'post',
-    encoding: null,
-    gzip: true
-  };
-  if (!!body) {
-    options.body = body;
-  }
-
-  return new _promise2.default(function (resolve, reject) {
-    _common2.default.sendRequest(options).then(function (res) {
-      return resolve(res);
-    }).catch(function (err) {
-      return reject(err);
-    });
-  });
-};
-
 var middleware = function _callee(ctx, next) {
-  var req, res, ip, url, rawBody, result, headers, body;
+  var req, res, ip, url, rawBody, options, result, headers, body;
   return _regenerator2.default.async(function _callee$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
@@ -66,7 +40,7 @@ var middleware = function _callee(ctx, next) {
           res = ctx.reponse;
 
           if (!(req.method == 'POST')) {
-            _context.next = 20;
+            _context.next = 23;
             break;
           }
 
@@ -83,10 +57,24 @@ var middleware = function _callee(ctx, next) {
 
         case 8:
           rawBody = _context.sent;
-          _context.next = 11;
-          return _regenerator2.default.awrap(post(url, req.headers, rawBody));
 
-        case 11:
+
+          delete req.headers['x-real-ip'];
+          options = {
+            url: url,
+            headers: req.headers,
+            method: 'post',
+            encoding: null,
+            gzip: true
+          };
+
+          if (!!rawBody) {
+            options.body = rawBody;
+          }
+          _context.next = 14;
+          return _regenerator2.default.awrap(_common2.default.sendRequest(url, options));
+
+        case 14:
           result = _context.sent;
           headers = result.res.headers;
           body = result.body;
@@ -97,15 +85,15 @@ var middleware = function _callee(ctx, next) {
           ctx.defaultBody = body;
 
           // console.log("before: " +  ctx.defaultBody);
-          _context.next = 19;
+          _context.next = 22;
           return _regenerator2.default.awrap(next());
 
-        case 19:
+        case 22:
           // console.log("after: " +  ctx.defaultBody);
 
           ctx.body = ctx.defaultBody;
 
-        case 20:
+        case 23:
         case 'end':
           return _context.stop();
       }
