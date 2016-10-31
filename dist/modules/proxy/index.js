@@ -72,7 +72,7 @@ var middleware = function _callee(ctx, next) {
             options.body = rawBody;
           }
           _context.next = 14;
-          return _regenerator2.default.awrap(_common2.default.sendRequest(url, options));
+          return _regenerator2.default.awrap(_common2.default.sendRequest(options));
 
         case 14:
           result = _context.sent;
