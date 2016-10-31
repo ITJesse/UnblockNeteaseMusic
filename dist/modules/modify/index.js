@@ -47,7 +47,7 @@ var modify = function _callee(ctx, next) {
           data = '';
           _context.prev = 5;
 
-          data = JSON.parse(ctx.defaultBody);
+          data = JSON.parse(ctx.defaultBody.toString());
           _context.next = 13;
           break;
 
@@ -55,7 +55,7 @@ var modify = function _callee(ctx, next) {
           _context.prev = 9;
           _context.t0 = _context['catch'](5);
 
-          console.error(_context.t0);
+          console.error("Parse JSON failed, return with no modify.".yellow);
           return _context.abrupt('return', next);
 
         case 13:

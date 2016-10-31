@@ -70,7 +70,7 @@ var kugou = function () {
 
               case 3:
                 result = _context.sent;
-                data = JSON.parse(result[1]);
+                data = JSON.parse(result.body);
 
                 if (!(data.status == 1 && !!data['data']['info'].length && !!data['data']['info'][0]['320hash'].length && data['data']['info'][0]['songname'].indexOf(name) != -1)) {
                   _context.next = 11;
@@ -129,7 +129,7 @@ var kugou = function () {
 
               case 3:
                 result = _context2.sent;
-                data = JSON.parse(result[1]);
+                data = JSON.parse(result.body);
 
                 if (!(data.status == 1)) {
                   _context2.next = 11;

@@ -86,8 +86,8 @@ var QQ = function () {
               case 3:
                 result = _context.sent;
 
-                result[1] = result[1].replace(/^jsonCallback\(/, '').replace(/\);$/, '');
-                data = JSON.parse(result[1]);
+                result.body = result.body.replace(/^jsonCallback\(/, '').replace(/\);$/, '');
+                data = JSON.parse(result.body);
                 return _context.abrupt('return', resolve(data.key));
 
               case 9:
@@ -135,7 +135,7 @@ var QQ = function () {
 
               case 3:
                 result = _context2.sent;
-                data = JSON.parse(result[1]);
+                data = JSON.parse(result.body);
                 keyword = name.replace(/\s/g, '').toLowerCase();
                 fsong = data.data.song.list[0].fsong.replace(/\s/g, '').toLowerCase();
 

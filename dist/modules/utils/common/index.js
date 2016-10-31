@@ -32,7 +32,11 @@ common.sendRequest = function (options) {
       if (err) {
         reject(err);
       } else {
-        resolve([res, body]);
+        var result = {
+          res: res,
+          body: body
+        };
+        resolve(result);
       }
     });
   });

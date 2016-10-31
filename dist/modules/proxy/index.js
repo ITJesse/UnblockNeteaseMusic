@@ -28,25 +28,11 @@ var _config = require('../config');
 
 var _config2 = _interopRequireDefault(_config);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _common = require('../utils/common');
 
-var sendRequest = function sendRequest(options) {
-  var defaults = {
-    method: 'get',
-    followRedirect: false,
-    timeout: 10000
-  };
-  options = (0, _extend2.default)(false, defaults, options);
-  return new _promise2.default(function (resolve, reject) {
-    (0, _request2.default)(options, function (err, res, body) {
-      if (err) {
-        reject(err);
-      } else {
-        resolve([res, body]);
-      }
-    });
-  });
-};
+var _common2 = _interopRequireDefault(_common);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // 封装 request post
 var post = function post(url, headers, body) {
@@ -54,6 +40,7 @@ var post = function post(url, headers, body) {
     url: url,
     headers: headers,
     method: 'post',
+    encoding: null,
     gzip: true
   };
   if (!!body) {
@@ -61,7 +48,7 @@ var post = function post(url, headers, body) {
   }
 
   return new _promise2.default(function (resolve, reject) {
-    sendRequest(options).then(function (res) {
+    _common2.default.sendRequest(options).then(function (res) {
       return resolve(res);
     }).catch(function (err) {
       return reject(err);
@@ -101,8 +88,8 @@ var middleware = function _callee(ctx, next) {
 
         case 11:
           result = _context.sent;
-          headers = result[0].headers;
-          body = result[1];
+          headers = result.res.headers;
+          body = result.body;
 
           delete headers['content-encoding'];
           // console.log(body);
