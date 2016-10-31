@@ -4,27 +4,6 @@ import extend from 'extend';
 import config from '../config';
 import common from '../utils/common';
 
-
-// 封装 request post
-let post = function(url, headers, body) {
-  let options = {
-    url: url,
-    headers: headers,
-    method: 'post',
-    encoding: null,
-    gzip: true
-  };
-  if (!!body) {
-    options.body = body;
-  }
-
-  return new Promise((resolve, reject) => {
-    common.sendRequest(options)
-      .then((res) => resolve(res))
-      .catch((err) => reject(err));
-  });
-};
-
 let middleware = async function(ctx, next) {
   let req = ctx.request;
   let res = ctx.reponse;
@@ -38,7 +17,20 @@ let middleware = async function(ctx, next) {
       length: ctx.length,
       encoding: ctx.charset
     });
-    let result = await post(url, req.headers, rawBody);
+
+    delete req.headers['x-real-ip'];
+    let options = {
+      url: url,
+      headers: req.headers,
+      method: 'post',
+      encoding: null,
+      gzip: true
+    };
+    if (!!rawBody) {
+      options.body = rawBody;
+    }
+    let result = await common.sendRequest(url, options);
+
     let headers = result.res.headers;
     let body = result.body;
     delete headers['content-encoding'];
