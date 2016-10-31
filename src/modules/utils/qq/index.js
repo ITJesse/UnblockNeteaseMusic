@@ -35,10 +35,10 @@ export default class QQ {
     return new Promise(async function(resolve, reject) {
       try {
         let result = await common.sendRequest(options);
-        result[1] = result[1]
+        result.body = result.body
           .replace(/^jsonCallback\(/, '')
           .replace(/\);$/, '');
-        let data = JSON.parse(result[1]);
+        let data = JSON.parse(result.body);
         return resolve(data.key);
       }catch(err) {
         console.log(err);
@@ -63,7 +63,7 @@ export default class QQ {
     return new Promise(async function(resolve, reject) {
       try {
         let result = await common.sendRequest(options);
-        let data = JSON.parse(result[1]);
+        let data = JSON.parse(result.body);
         let keyword = name.replace(/\s/g, '').toLowerCase();
         let fsong = data.data.song.list[0].fsong.replace(/\s/g, '').toLowerCase();
         if (data.code === 0 &&

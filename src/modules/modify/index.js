@@ -14,9 +14,9 @@ let modify = async function(ctx, next) {
     let data = '';
 
     try {
-      data = JSON.parse(ctx.defaultBody);
+      data = JSON.parse(ctx.defaultBody.toString());
     } catch (err) {
-      console.error(err);
+      console.error("Parse JSON failed, return with no modify.".yellow);
       return next;
     }
     let newData = [];

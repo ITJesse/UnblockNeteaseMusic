@@ -17,7 +17,7 @@ export default class kugou {
     return new Promise(async function(resolve, reject) {
       try {
         let result = await common.sendRequest(options);
-        let data = JSON.parse(result[1]);
+        let data = JSON.parse(result.body);
         if (data.status == 1 &&
             !!data['data']['info'].length &&
             !!data['data']['info'][0]['320hash'].length &&
@@ -50,7 +50,7 @@ export default class kugou {
     return new Promise(async function(resolve, reject) {
       try {
         let result = await common.sendRequest(options);
-        let data = JSON.parse(result[1]);
+        let data = JSON.parse(result.body);
         if (data.status == 1) {
           let url = data['url'];
 

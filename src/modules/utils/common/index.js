@@ -15,7 +15,11 @@ common.sendRequest = function(options) {
       if (err) {
         reject(err);
       } else {
-        resolve([res, body]);
+        let result = {
+          res: res,
+          body: body
+        };
+        resolve(result);
       }
     });
   });
