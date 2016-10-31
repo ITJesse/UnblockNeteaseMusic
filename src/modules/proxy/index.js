@@ -29,7 +29,7 @@ let middleware = async function(ctx, next) {
     if (!!rawBody) {
       options.body = rawBody;
     }
-    let result = await common.sendRequest(url, options);
+    let result = await common.sendRequest(options);
 
     let headers = result.res.headers;
     let body = result.body;
