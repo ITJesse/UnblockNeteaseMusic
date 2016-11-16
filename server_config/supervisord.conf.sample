@@ -5,4 +5,6 @@ nodaemon=true
 command=/usr/local/nginx/sbin/nginx
 
 [program:unblockneteasemusic]
+stdout_logfile=/dev/stdout
+stdout_logfile_maxbytes=0
 command=/usr/src/bin/unblockneteasemusic.js -p 8123 -k -q -r
