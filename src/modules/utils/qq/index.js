@@ -8,17 +8,22 @@ let qq = function() {};
 
 export default class QQ {
   constructor() {
-    this.guid = this.getGUid();
+    this.guid = null;
+    this.vkey = null;
+    this.updateTime = null;
+  }
 
+  async getVKey() {
     let self = this;
-    this.getVKey()
-      .then((vkey) => {
-        self.vkey = vkey;
-        console.log("QQ Music module is ready.".green);
-      })
-      .catch((err) => {
+    if(!this.updateTime || this.updateTime + 3600 * 1000 < (new Date()).valueOf()) {
+      try {
+        self.vkey = await self.updateVKey();
+        self.updateTime = (new Date()).valueOf();
+      } catch(err) {
         console.log(err);
-      });
+      }
+    }
+    return self.vkey;
   }
 
   getGUid() {
@@ -26,8 +31,10 @@ export default class QQ {
     return parseInt(Math.round(Math.random() * 2147483647) * currentMs % 0x1E10);
   }
 
-  getVKey() {
+  updateVKey() {
     let self = this;
+
+    self.guid = self.getGUid();
     let options = {
       url: "http://base.music.qq.com/fcgi-bin/fcg_musicexpress.fcg?json=3&guid=" + self.guid
     };
@@ -47,9 +54,16 @@ export default class QQ {
     });
   };
 
-  search(name, artist) {
+  async search(name, artist) {
     let self = this;
-    if(self.vkey.length != 112) {
+
+    try {
+      await self.getVKey();
+    } catch(err) {
+      return console.log("QQ Music module initial failed.".red);
+    }
+
+    if(!self.vkey || self.vkey.length != 112) {
       return console.log("QQ Music module is not ready.".red);
     }
     console.log("Search from QQ Music.".green);
@@ -74,7 +88,7 @@ export default class QQ {
           let mid = list[20];
           let bitrate = list[13];
           let prefix,
-              ext;
+          ext;
           if(bitrate == '320000') {
             prefix = 'M800';
             ext = 'mp3';
