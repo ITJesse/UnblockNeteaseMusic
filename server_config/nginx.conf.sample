@@ -1,7 +1,9 @@
 server {
     listen 80;
     server_name music.163.com;
-    resolver 114.114.114.114;
+    resolver 114.114.114.114 223.5.5.5;
+
+    set $backend "http://music.163.com";
 
     location /* {
         if ($http_host !~* ^(music.163.com)$){
@@ -10,8 +12,7 @@ server {
     }
 
     location / {
-        proxy_pass http://music.163.com;
-        proxy_next_upstream      error timeout invalid_header http_500;
+        proxy_pass $backend;
         proxy_connect_timeout    6s;
         proxy_send_timeout       6s;
         proxy_read_timeout       6s;
