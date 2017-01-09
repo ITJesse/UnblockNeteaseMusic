@@ -8,17 +8,13 @@ var _regenerator = require('babel-runtime/regenerator');
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
-var _request = require('request');
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
-var _request2 = _interopRequireDefault(_request);
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
 var _rawBody = require('raw-body');
 
 var _rawBody2 = _interopRequireDefault(_rawBody);
-
-var _extend = require('extend');
-
-var _extend2 = _interopRequireDefault(_extend);
 
 var _config = require('../config');
 
@@ -30,75 +26,80 @@ var _common2 = _interopRequireDefault(_common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var middleware = function _callee(ctx, next) {
-  var req, res, ip, url, rawBody, options, result, headers, body;
-  return _regenerator2.default.async(function _callee$(_context) {
-    while (1) {
-      switch (_context.prev = _context.next) {
-        case 0:
-          req = ctx.request;
-          res = ctx.reponse;
+var middleware = function () {
+  var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(ctx, next) {
+    var req, ip, url, rawBody, options, result, headers, body;
+    return _regenerator2.default.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            req = ctx.request;
 
-          if (!(req.method == 'POST')) {
-            _context.next = 23;
-            break;
-          }
+            if (!(req.method === 'POST')) {
+              _context.next = 22;
+              break;
+            }
 
-          ip = _config2.default.forceIp ? _config2.default.forceIp : '223.252.199.7';
-          url = 'http://' + ip + req.url;
+            ip = _config2.default.forceIp ? _config2.default.forceIp : '223.252.199.7';
+            url = 'http://' + ip + req.url;
 
-          req.headers['host'] = 'music.163.com';
+            req.headers.host = 'music.163.com';
 
-          _context.next = 8;
-          return _regenerator2.default.awrap((0, _rawBody2.default)(ctx.req, {
-            length: ctx.length,
-            encoding: ctx.charset
-          }));
+            _context.next = 7;
+            return (0, _rawBody2.default)(ctx.req, {
+              length: ctx.length,
+              encoding: ctx.charset
+            });
 
-        case 8:
-          rawBody = _context.sent;
+          case 7:
+            rawBody = _context.sent;
 
 
-          delete req.headers['x-real-ip'];
-          options = {
-            url: url,
-            headers: req.headers,
-            method: 'post',
-            encoding: null,
-            gzip: true
-          };
+            delete req.headers['x-real-ip'];
+            options = {
+              url: url,
+              headers: req.headers,
+              method: 'post',
+              encoding: null,
+              gzip: true
+            };
 
-          if (!!rawBody) {
-            options.body = rawBody;
-          }
-          _context.next = 14;
-          return _regenerator2.default.awrap(_common2.default.sendRequest(options));
+            if (rawBody) {
+              options.body = rawBody;
+            }
+            _context.next = 13;
+            return _common2.default.sendRequest(options);
 
-        case 14:
-          result = _context.sent;
-          headers = result.res.headers;
-          body = result.body;
+          case 13:
+            result = _context.sent;
+            headers = result.res.headers;
+            body = result.body;
 
-          delete headers['content-encoding'];
-          // console.log(body);
-          ctx.set(headers);
-          ctx.defaultBody = body;
+            delete headers['content-encoding'];
+            // console.log(body);
+            ctx.set(headers);
+            ctx.defaultBody = body;
 
-          // console.log("before: " +  ctx.defaultBody);
-          _context.next = 22;
-          return _regenerator2.default.awrap(next());
+            // console.log("before: " +  ctx.defaultBody);
+            _context.next = 21;
+            return next();
 
-        case 22:
-          // console.log("after: " +  ctx.defaultBody);
+          case 21:
+            // console.log("after: " +  ctx.defaultBody);
 
-          ctx.body = ctx.defaultBody;
+            ctx.body = ctx.defaultBody;
 
-        case 23:
-        case 'end':
-          return _context.stop();
+          case 22:
+          case 'end':
+            return _context.stop();
+        }
       }
-    }
-  }, null, this);
-};
+    }, _callee, this);
+  }));
+
+  return function middleware(_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+}();
 
 exports.default = middleware;

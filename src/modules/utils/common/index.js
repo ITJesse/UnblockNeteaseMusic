@@ -1,23 +1,25 @@
 import request from 'request';
-import extend from 'extend';
 
-let common = {};
+const common = {};
 
-common.sendRequest = function(options) {
-  let defaults = {
+common.sendRequest = (options) => {
+  const defaults = {
     method: 'get',
     followRedirect: true,
-    timeout: 5000
+    timeout: 5000,
   };
-  options = extend(false, defaults, options);
+  options = {
+    ...defaults,
+    ...options,
+  };
   return new Promise((resolve, reject) => {
-    request(options, function(err, res, body) {
+    request(options, (err, res, body) => {
       if (err) {
         reject(err);
       } else {
-        let result = {
-          res: res,
-          body: body
+        const result = {
+          res,
+          body,
         };
         resolve(result);
       }

@@ -8,9 +8,7 @@ var _commander = require('commander');
 
 var _commander2 = _interopRequireDefault(_commander);
 
-var _colors = require('colors');
-
-var _colors2 = _interopRequireDefault(_colors);
+require('colors');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

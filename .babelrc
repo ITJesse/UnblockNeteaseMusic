@@ -1,13 +1,9 @@
 {
-  "presets": ["es2015"],
+  "presets": [
+    "es2015",
+    "stage-0"
+  ],
   "plugins": [
-    "transform-runtime",
-    "transform-strict-mode",
-    "transform-es2015-modules-commonjs",
-    "transform-es2015-spread",
-    "transform-es2015-destructuring",
-    "transform-es2015-parameters",
-    "syntax-async-functions",
-    "transform-regenerator"
+    "transform-runtime"
   ]
 }
