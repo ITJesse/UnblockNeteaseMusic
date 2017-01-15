@@ -1,26 +1,23 @@
-import colors from 'colors';
+import 'colors';
 
+import Netease from './netease';
+import Kugou from './kugou';
+import QQ from './qq';
 import config from '../config';
-import netease from './netease';
-import kugou from './kugou';
-import qq from './qq';
 
 export default class Utils {
   constructor() {
-    let ip = config.forceIp ? config.forceIp : '223.252.199.7';
+    const ip = config.forceIp ? config.forceIp : '223.252.199.7';
 
-    this.netease = new netease(ip);
+    this.netease = new Netease(ip);
     this.kugou = null;
     this.dongting = null;
 
     if (config.kugou) {
-      this.kugou = new kugou();
-    }
-    if (config.dongting) {
-      this.dongting = new dongting();
+      this.kugou = new Kugou();
     }
     if (config.qq) {
-      this.qq = new qq();
+      this.qq = new QQ();
     }
   }
 
@@ -28,37 +25,34 @@ export default class Utils {
     Get song url.
   */
   getUrlInfo(songId) {
-    let self = this;
-
-    return new Promise(async function(resolve, reject) {
+    return new Promise(async (resolve, reject) => {
       // get song detail by song id from netease
       try {
-        let detail = await self.netease.getSongDetail(songId);
-        let songName = self.netease.getSongName(detail);
-        let artist = self.netease.getArtistName(detail);
+        const detail = await this.netease.getSongDetail(songId);
+        const songName = Netease.getSongName(detail);
+        const artist = Netease.getArtistName(detail);
         let songInfo = null;
 
-        if (self.qq) {
-          songInfo = await self.qq.search(songName, artist);
+        if (this.qq) {
+          songInfo = await this.qq.search(songName, artist);
         }
 
-        if (!songInfo && self.kugou) {
+        if (!songInfo && this.kugou) {
           // search 'Artist Songname' on kugou
-          songInfo = await self.kugou.search(songName, artist);
+          songInfo = await this.kugou.search(songName, artist);
           if (songInfo) {
-            songInfo.url = await self.kugou.getUrl(songInfo.hash);
+            songInfo.url = await this.kugou.getUrl(songInfo.hash);
           }
         }
 
         if (songInfo) {
           return resolve(songInfo);
-        } else {
-          return resolve(null);
         }
-      } catch(err) {
+        return resolve(null);
+      } catch (err) {
         console.log(err);
         return reject(err);
       }
     });
-  };
+  }
 }

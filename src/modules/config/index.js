@@ -1,5 +1,5 @@
 import program from 'commander';
-import colors from 'colors';
+import 'colors';
 
 program
   .option('-p, --port <port>', 'Specific server port.')

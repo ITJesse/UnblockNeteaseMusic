@@ -1,34 +1,32 @@
-import colors from 'colors';
+import 'colors';
 import Utils from '../utils';
 
-let utils = new Utils();
+const utils = new Utils();
 
-let modify = async function(ctx, next) {
-  let req = ctx.request;
-  let res = ctx.response;
+const modify = async (ctx, next) => {
+  const req = ctx.request;
 
-  let songId,
-      urlInfo,
-      data;
+  let songId;
+  let urlInfo;
+  let data;
 
   try {
     data = JSON.parse(ctx.defaultBody.toString());
   } catch (err) {
-    console.error("Parse JSON failed, return with no modify.".yellow);
+    console.error('Parse JSON failed, return with no modify.'.yellow);
     return next;
   }
 
   if (/^\/eapi\/song\/enhance\/player\/url/.test(req.url)) {
-
-    let newData = [];
-    for(let row of data["data"]) {
-      let playbackReturnCode = row.code;
+    const newData = [];
+    for (let row of data.data) {
+      const playbackReturnCode = row.code;
       songId = row.id;
 
-      if (playbackReturnCode != 200) {
-        try{
+      if (playbackReturnCode !== 200) {
+        try {
           urlInfo = await utils.getUrlInfo(songId);
-        } catch(err) {
+        } catch (err) {
           return console.log(err);
         }
         if (urlInfo) {
@@ -41,19 +39,15 @@ let modify = async function(ctx, next) {
       }
       newData.push(row);
     }
-    data["data"] = newData;
+    data.data = newData;
     ctx.defaultBody = JSON.stringify(data);
     return next;
-
-  }
-
-  else if (/^\/eapi\/song\/enhance\/download\/url/.test(req.url)) {
-
-    if (utils.netease.getDownloadReturnCode(data) != 200) {
+  } else if (/^\/eapi\/song\/enhance\/download\/url/.test(req.url)) {
+    if (utils.netease.getDownloadReturnCode(data) !== 200) {
       songId = utils.netease.getDownloadSongId(data);
-      try{
+      try {
         urlInfo = await utils.getUrlInfo(songId);
-      } catch(err) {
+      } catch (err) {
         return console.log(err);
       }
       if (urlInfo) {
@@ -62,16 +56,11 @@ let modify = async function(ctx, next) {
         console.log('No resource.'.red);
       }
       return next;
-    } else {
-      console.log('Download bitrate is not changed. The song URL is '.green + utils.netease.getDownloadUrl(data).green);
-      return next;
     }
-  }
-
-  else {
+    console.log('Download bitrate is not changed. The song URL is '.green + utils.netease.getDownloadUrl(data).green);
     return next;
   }
-
+  return next;
 };
 
 export default modify;

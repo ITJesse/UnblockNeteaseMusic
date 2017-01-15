@@ -1,17 +1,15 @@
 #!/usr/bin/env node
 'use strict';
 
-var _app = require('../app');
-
-var _app2 = _interopRequireDefault(_app);
-
 var _http = require('http');
 
 var _http2 = _interopRequireDefault(_http);
 
-var _colors = require('colors');
+require('colors');
 
-var _colors2 = _interopRequireDefault(_colors);
+var _app = require('../app');
+
+var _app2 = _interopRequireDefault(_app);
 
 var _config = require('../modules/config');
 
@@ -34,14 +32,6 @@ var port = _config2.default.port || '8123';
  */
 
 var server = _http2.default.createServer(_app2.default.callback());
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
 
 /**
  * Event listener for HTTP server "error" event.
@@ -78,3 +68,11 @@ function onListening() {
   var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
   console.log('Listening on '.yellow + bind.yellow);
 }
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
