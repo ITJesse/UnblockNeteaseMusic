@@ -1,5 +1,6 @@
 import 'colors';
 import Utils from '../utils';
+import Netease from '../utils/netease';
 
 const utils = new Utils();
 
@@ -30,7 +31,7 @@ const modify = async (ctx, next) => {
           return console.log(err);
         }
         if (urlInfo) {
-          row = utils.netease.modifyPlayerApiCustom(urlInfo, row);
+          row = Netease.modifyPlayerApiCustom(urlInfo, row);
         } else {
           console.log('No resource.'.red);
         }
@@ -43,21 +44,21 @@ const modify = async (ctx, next) => {
     ctx.defaultBody = JSON.stringify(data);
     return next;
   } else if (/^\/eapi\/song\/enhance\/download\/url/.test(req.url)) {
-    if (utils.netease.getDownloadReturnCode(data) !== 200) {
-      songId = utils.netease.getDownloadSongId(data);
+    if (Netease.getDownloadReturnCode(data) !== 200) {
+      songId = Netease.getDownloadSongId(data);
       try {
         urlInfo = await utils.getUrlInfo(songId);
       } catch (err) {
         return console.log(err);
       }
       if (urlInfo) {
-        ctx.defaultBody = utils.netease.modifyDownloadApiCustom(urlInfo, data);
+        ctx.defaultBody = Netease.modifyDownloadApiCustom(urlInfo, data);
       } else {
         console.log('No resource.'.red);
       }
       return next;
     }
-    console.log('Download bitrate is not changed. The song URL is '.green + utils.netease.getDownloadUrl(data).green);
+    console.log('Download bitrate is not changed. The song URL is '.green + Netease.getDownloadUrl(data).green);
     return next;
   }
   return next;

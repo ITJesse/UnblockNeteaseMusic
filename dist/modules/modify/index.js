@@ -26,6 +26,10 @@ var _utils = require('../utils');
 
 var _utils2 = _interopRequireDefault(_utils);
 
+var _netease = require('../utils/netease');
+
+var _netease2 = _interopRequireDefault(_netease);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var utils = new _utils2.default();
@@ -100,7 +104,7 @@ var modify = function () {
 
           case 33:
             if (urlInfo) {
-              row = utils.netease.modifyPlayerApiCustom(urlInfo, row);
+              row = _netease2.default.modifyPlayerApiCustom(urlInfo, row);
             } else {
               console.log('No resource.'.red);
             }
@@ -163,12 +167,12 @@ var modify = function () {
               break;
             }
 
-            if (!(utils.netease.getDownloadReturnCode(data) !== 200)) {
+            if (!(_netease2.default.getDownloadReturnCode(data) !== 200)) {
               _context.next = 74;
               break;
             }
 
-            songId = utils.netease.getDownloadSongId(data);
+            songId = _netease2.default.getDownloadSongId(data);
             _context.prev = 63;
             _context.next = 66;
             return utils.getUrlInfo(songId);
@@ -185,14 +189,14 @@ var modify = function () {
 
           case 72:
             if (urlInfo) {
-              ctx.defaultBody = utils.netease.modifyDownloadApiCustom(urlInfo, data);
+              ctx.defaultBody = _netease2.default.modifyDownloadApiCustom(urlInfo, data);
             } else {
               console.log('No resource.'.red);
             }
             return _context.abrupt('return', next);
 
           case 74:
-            console.log('Download bitrate is not changed. The song URL is '.green + utils.netease.getDownloadUrl(data).green);
+            console.log('Download bitrate is not changed. The song URL is '.green + _netease2.default.getDownloadUrl(data).green);
             return _context.abrupt('return', next);
 
           case 76:
