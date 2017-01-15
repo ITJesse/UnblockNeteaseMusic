@@ -73,7 +73,7 @@ unblockneteasemusic -h
 
 # 预览
 
-![](https://dn-itjesse.qbox.me/github/QQ20160616-0.png)
+![](https://github.com/ITJesse/UnblockNeteaseMusic/raw/master/screenshot.png)
 
 # 感谢
 
