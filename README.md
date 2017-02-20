@@ -19,7 +19,7 @@
 # 使用方法
 1. 安装 Nginx 和 Node.js
 2. Nginx 配置参考 `/server_config/nginx.conf.sample`
-3. 安装 sniproxy，配置参考 `/server_config/sniproxy.conf.sample`
+3. 安装 sniproxy，配置参考 `/server_config/sniproxy.conf.sample` （非必须）
 4. 安装本代理 `sudo npm install unblock-netease-music -g`
 5. 后台运行 `nohup unblockneteasemusic &`
 6. 完成！
