@@ -42,6 +42,23 @@ server {
         proxy_pass http://localhost:8123;
     }
 
+    # For linux
+    location  /api/linux/forward {
+        proxy_set_header X-Real-IP "";
+        proxy_pass http://localhost:8123;
+        subs_filter_types *;
+        subs_filter '"st":-.+?,' '"st":0,' ir;
+        subs_filter '"pl":0' '"pl":320000';
+        subs_filter '"dl":0' '"dl":320000';
+        subs_filter '"sp":0' '"sp":7';
+        subs_filter '"cp":0' '"cp":1';
+        subs_filter '"subp":0' '"subp":1';
+        subs_filter '"fl":0' '"fl":320000';
+        subs_filter '"fee":.+?,' '"fee":0,' ir;
+        subs_filter '"abroad":1,' '';
+        subs_filter '"updateFiles":\[.*\]' '"updateFiles":[]' ir;
+    }
+
     location /kugou {
         rewrite '^/kugou/(.*)' /$1 break;
         proxy_set_header X-Real-IP "";
@@ -52,7 +69,7 @@ server {
     location /qqmusic {
         rewrite '^/qqmusic/(.*)' /$1 break;
         proxy_set_header X-Real-IP "";
-        proxy_pass http://cc.stream.qqmusic.qq.com;
+        proxy_pass http://dl.stream.qqmusic.qq.com;
         proxy_set_header "User-Agent" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.86 Safari/537.36";
         proxy_set_header Host cc.stream.qqmusic.qq.com;
     }

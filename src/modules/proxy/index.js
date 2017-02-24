@@ -35,9 +35,9 @@ const middleware = async function (ctx, next) {
     ctx.set(headers);
     ctx.defaultBody = body;
 
-    // console.log("before: " +  ctx.defaultBody);
+    // console.log('before:', ctx.defaultBody);
     await next();
-    // console.log("after: " +  ctx.defaultBody);
+    // console.log('after:', ctx.defaultBody);
 
     ctx.body = ctx.defaultBody;
   }

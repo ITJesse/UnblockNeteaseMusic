@@ -11,35 +11,32 @@ export default class QQ {
   }
 
   async getVKey() {
-    const self = this;
     if (!this.updateTime || this.updateTime + 3600 * 1000 < (new Date()).valueOf()) {
       try {
-        self.vkey = await self.updateVKey();
-        self.updateTime = (new Date()).valueOf();
+        this.vkey = await this.updateVKey();
+        this.updateTime = (new Date()).valueOf();
       } catch (err) {
         console.log(err);
       }
     }
-    return self.vkey;
+    return this.vkey;
   }
 
   static getGUid() {
-    const currentMs = parseInt((new Date()).valueOf() % 1000, 10);
-    return parseInt(Math.round(Math.random() * 2147483647) * currentMs % 0x1E10, 10);
+    const currentMs = (new Date()).getUTCMilliseconds();
+    return Math.round(2147483647 * Math.random()) * currentMs % 1e10;
   }
 
   updateVKey() {
     this.guid = QQ.getGUid();
     const options = {
-      url: `http://base.music.qq.com/fcgi-bin/fcg_musicexpress.fcg?json=3&guid=${this.guid}`,
+      // url: `https://c.y.qq.com/base/fcgi-bin/fcg_musicexpress.fcg?guid=${this.guid}&format=json`,
+      url: `https://c.y.qq.com/base/fcgi-bin/fcg_musicexpress.fcg?json=3&guid=${this.guid}&g_tk=5381&jsonpCallback=jsonCallback&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf8&notice=0&platform=yqq&needNewCode=0`,
     };
 
     return new Promise(async (resolve, reject) => {
       try {
         const result = await common.sendRequest(options);
-        result.body = result.body
-          .replace(/^jsonCallback\(/, '')
-          .replace(/\);$/, '');
         const data = JSON.parse(result.body);
         return resolve(data.key);
       } catch (err) {
@@ -91,10 +88,10 @@ export default class QQ {
             prefix = 'C200';
             ext = 'm4a';
           }
-          let url = `http://cc.stream.qqmusic.qq.com/${prefix}${mid}.${ext}?vkey=${this.vkey}&guid=${this.guid}&fromtag=0`;
+          let url = `http://dl.stream.qqmusic.qq.com/${prefix}${mid}.${ext}?vkey=${this.vkey}&guid=${this.guid}&uin=0&fromtag=30`;
           // 魔改 URL 应对某司防火墙
           if (config.rewriteUrl) {
-            url = url.replace('cc.stream.qqmusic.qq.com', 'music.163.com/qqmusic');
+            url = url.replace('dl.stream.qqmusic.qq.com', 'music.163.com/qqmusic');
           }
           result = {
             url,

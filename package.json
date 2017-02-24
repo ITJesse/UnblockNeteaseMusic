@@ -12,7 +12,6 @@
     "babel-runtime": "^6.11.6",
     "colors": "^1.1.2",
     "commander": "^2.9.0",
-    "extend": "^3.0.0",
     "koa": "^2.0.0-alpha.7",
     "koa-logger": "^2.0.0",
     "md5": "^2.1.0",

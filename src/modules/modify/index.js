@@ -19,31 +19,25 @@ const modify = async (ctx, next) => {
   }
 
   if (/^\/eapi\/song\/enhance\/player\/url/.test(req.url) || /^\/api\/linux\/forward/.test(req.url)) {
-    const newData = [];
-
     // For Linux client support
     if (data.hasOwnProperty('data')) {
-      for (let row of data.data) {
-        const playbackReturnCode = row.code;
-        songId = row.id;
+      const playbackReturnCode = data.data[0].code;
+      songId = data.data[0].id;
 
-        if (playbackReturnCode !== 200) {
-          try {
-            urlInfo = await utils.getUrlInfo(songId);
-          } catch (err) {
-            return console.log(err);
-          }
-          if (urlInfo) {
-            row = Netease.modifyPlayerApiCustom(urlInfo, row);
-          } else {
-            console.log('No resource.'.red);
-          }
-        } else {
-          console.log('Playback bitrate is not changed. The song URL is '.green + row.url);
+      if (playbackReturnCode !== 200) {
+        try {
+          urlInfo = await utils.getUrlInfo(songId);
+        } catch (err) {
+          return console.log(err);
         }
-        newData.push(row);
+        if (urlInfo) {
+          data.data[0] = Netease.modifyPlayerApiCustom(urlInfo, data.data[0]);
+        } else {
+          console.log('No resource.'.red);
+        }
+      } else {
+        console.log('The song URL is '.green + data.data[0].url);
       }
-      data.data = newData;
       ctx.defaultBody = JSON.stringify(data);
     }
     return next;
@@ -62,7 +56,7 @@ const modify = async (ctx, next) => {
       }
       return next;
     }
-    console.log('Download bitrate is not changed. The song URL is '.green + Netease.getDownloadUrl(data).green);
+    console.log('The song URL is '.green + Netease.getDownloadUrl(data).green);
     return next;
   }
   return next;
