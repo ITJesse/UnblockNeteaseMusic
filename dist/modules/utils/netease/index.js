@@ -8,9 +8,13 @@ var _stringify = require('babel-runtime/core-js/json/stringify');
 
 var _stringify2 = _interopRequireDefault(_stringify);
 
-var _promise = require('babel-runtime/core-js/promise');
+var _regenerator = require('babel-runtime/regenerator');
 
-var _promise2 = _interopRequireDefault(_promise);
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
@@ -22,9 +26,9 @@ var _createClass3 = _interopRequireDefault(_createClass2);
 
 require('colors');
 
-var _request = require('request');
+var _requestPromise = require('request-promise');
 
-var _request2 = _interopRequireDefault(_request);
+var _requestPromise2 = _interopRequireDefault(_requestPromise);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -37,29 +41,55 @@ var netease = function () {
 
   (0, _createClass3.default)(netease, [{
     key: 'getSongDetail',
-    value: function getSongDetail(songId) {
-      var header = {
-        host: 'music.163.com',
-        'content-type': 'application/x-www-form-urlencoded'
-      };
+    value: function () {
+      var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(songId) {
+        var header, options, result;
+        return _regenerator2.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                header = {
+                  host: 'music.163.com',
+                  'content-type': 'application/x-www-form-urlencoded'
+                };
+                options = {
+                  url: this.baseUrl + '/api/song/detail/?ids=[' + songId + ']&id=' + songId,
+                  headers: header,
+                  method: 'get',
+                  gzip: true
+                };
+                result = void 0;
+                _context.prev = 3;
+                _context.next = 6;
+                return (0, _requestPromise2.default)(options);
 
-      var options = {
-        url: this.baseUrl + '/api/song/detail/?ids=[' + songId + ']&id=' + songId,
-        headers: header,
-        method: 'get',
-        gzip: true
-      };
-      return new _promise2.default(function (resolve, reject) {
-        (0, _request2.default)(options, function (err, res, body) {
-          if (err) {
-            console.error(err.red);
-            reject(err);
-          } else {
-            resolve(body);
+              case 6:
+                result = _context.sent;
+                _context.next = 12;
+                break;
+
+              case 9:
+                _context.prev = 9;
+                _context.t0 = _context['catch'](3);
+                throw new Error(_context.t0);
+
+              case 12:
+                return _context.abrupt('return', result);
+
+              case 13:
+              case 'end':
+                return _context.stop();
+            }
           }
-        });
-      });
-    }
+        }, _callee, this, [[3, 9]]);
+      }));
+
+      function getSongDetail(_x) {
+        return _ref.apply(this, arguments);
+      }
+
+      return getSongDetail;
+    }()
   }], [{
     key: 'getDownloadReturnCode',
     value: function getDownloadReturnCode(body) {
@@ -97,7 +127,7 @@ var netease = function () {
       body.code = '200';
       body.size = urlInfo.filesize;
       body.md5 = urlInfo.hash;
-      body.type = 'mp3';
+      body.type = urlInfo.type;
 
       return body;
     }

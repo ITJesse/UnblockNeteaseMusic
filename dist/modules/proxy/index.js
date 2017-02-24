@@ -22,7 +22,9 @@ var _config2 = _interopRequireDefault(_config);
 
 var _common = require('../utils/common');
 
-var _common2 = _interopRequireDefault(_common);
+var common = _interopRequireWildcard(_common);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36,7 +38,7 @@ var middleware = function () {
             req = ctx.request;
 
             if (!(req.method === 'POST')) {
-              _context.next = 22;
+              _context.next = 21;
               break;
             }
 
@@ -68,28 +70,21 @@ var middleware = function () {
               options.body = rawBody;
             }
             _context.next = 13;
-            return _common2.default.sendRequest(options);
+            return common.sendRequest(options);
 
           case 13:
             result = _context.sent;
-            headers = result.res.headers;
+            headers = result.headers;
             body = result.body;
 
             delete headers['content-encoding'];
             // console.log(body);
             ctx.set(headers);
-            ctx.defaultBody = body;
-
-            // console.log("before: " +  ctx.defaultBody);
+            ctx.body = body;
             _context.next = 21;
             return next();
 
           case 21:
-            // console.log("after: " +  ctx.defaultBody);
-
-            ctx.body = ctx.defaultBody;
-
-          case 22:
           case 'end':
             return _context.stop();
         }

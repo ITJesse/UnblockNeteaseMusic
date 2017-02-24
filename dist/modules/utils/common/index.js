@@ -3,43 +3,70 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.sendRequest = undefined;
 
-var _promise = require('babel-runtime/core-js/promise');
+var _regenerator = require('babel-runtime/regenerator');
 
-var _promise2 = _interopRequireDefault(_promise);
+var _regenerator2 = _interopRequireDefault(_regenerator);
 
 var _extends2 = require('babel-runtime/helpers/extends');
 
 var _extends3 = _interopRequireDefault(_extends2);
 
-var _request = require('request');
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
-var _request2 = _interopRequireDefault(_request);
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+var _requestPromise = require('request-promise');
+
+var _requestPromise2 = _interopRequireDefault(_requestPromise);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var common = {};
+var sendRequest = exports.sendRequest = function () {
+  var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(options) {
+    var defaults, result;
+    return _regenerator2.default.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            defaults = {
+              method: 'get',
+              followRedirect: true,
+              timeout: 5000,
+              resolveWithFullResponse: true
+            };
 
-common.sendRequest = function (options) {
-  var defaults = {
-    method: 'get',
-    followRedirect: true,
-    timeout: 5000
-  };
-  options = (0, _extends3.default)({}, defaults, options);
-  return new _promise2.default(function (resolve, reject) {
-    (0, _request2.default)(options, function (err, res, body) {
-      if (err) {
-        reject(err);
-      } else {
-        var result = {
-          res: res,
-          body: body
-        };
-        resolve(result);
+            options = (0, _extends3.default)({}, defaults, options);
+            result = void 0;
+            _context.prev = 3;
+            _context.next = 6;
+            return (0, _requestPromise2.default)(options);
+
+          case 6:
+            result = _context.sent;
+            _context.next = 12;
+            break;
+
+          case 9:
+            _context.prev = 9;
+            _context.t0 = _context['catch'](3);
+            throw new Error(_context.t0);
+
+          case 12:
+            return _context.abrupt('return', result);
+
+          case 13:
+          case 'end':
+            return _context.stop();
+        }
       }
-    });
-  });
-};
+    }, _callee, undefined, [[3, 9]]);
+  }));
 
-exports.default = common;
+  return function sendRequest(_x) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+exports.default = sendRequest;
