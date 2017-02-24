@@ -1,58 +1,111 @@
 import 'colors';
+import fs from 'fs';
+import path from 'path';
+import async from 'async';
 
 import Netease from './netease';
-import Kugou from './kugou';
-import QQ from './qq';
 import config from '../config';
 
 export default class Utils {
   constructor() {
     const ip = config.forceIp ? config.forceIp : '223.252.199.7';
-
     this.netease = new Netease(ip);
-    this.kugou = null;
-    this.dongting = null;
+    this.plugins = [];
+    this.initPlugins();
+  }
 
-    if (config.kugou) {
-      this.kugou = new Kugou();
-    }
-    if (config.qq) {
-      this.qq = new QQ();
-    }
+  initPlugins() {
+    fs.readdirSync(path.resolve(__dirname, 'plugins')).forEach((e) => {
+      const Plugin = require(path.resolve(__dirname, 'plugins', e));
+      this.plugins.push(new Plugin());
+    });
+    this.plugins.sort((a, b) => a.order - b.order);
+    // console.log(this.plugins);
+  }
+
+  batchSeachMusic(songName, artist) {
+    return new Promise((resolve, reject) => {
+      async.map(this.plugins, async (plugin, callback) => {
+        console.log(`Search from ${plugin.name}`.green);
+        const searchResult = await plugin.search(songName, artist);
+        const searchName = searchResult[0].name.trim().toLowerCase();
+        const trueName = songName.trim().toLowerCase();
+        if (searchResult.length > 0 && searchName.indexOf(trueName) !== -1) {
+          callback(null, {
+            plugin,
+            searchResult: searchResult[0],
+          });
+        } else {
+          console.log(`No resource found from ${plugin.name}`.yellow);
+          callback(null);
+        }
+      }, (err, result) => {
+        if (err) return reject(err);
+        return resolve(result);
+      });
+    });
   }
 
   /*
     Get song url.
   */
-  getUrlInfo(songId) {
-    return new Promise(async (resolve, reject) => {
-      // get song detail by song id from netease
-      try {
-        const detail = await this.netease.getSongDetail(songId);
-        const songName = Netease.getSongName(detail);
-        const artist = Netease.getArtistName(detail);
-        let songInfo = null;
-
-        if (this.qq) {
-          songInfo = await this.qq.search(songName, artist);
-        }
-
-        if (!songInfo && this.kugou) {
-          // search 'Artist Songname' on kugou
-          songInfo = await this.kugou.search(songName, artist);
-          if (songInfo) {
-            songInfo.url = await this.kugou.getUrl(songInfo.hash);
-          }
-        }
-
-        if (songInfo) {
-          return resolve(songInfo);
-        }
-        return resolve(null);
-      } catch (err) {
-        console.log(err);
-        return reject(err);
+  async getUrlInfo(songId) {
+    let detail;
+    try {
+      detail = await this.netease.getSongDetail(songId);
+    } catch (err) {
+      throw new Error(err);
+    }
+    const songName = Netease.getSongName(detail);
+    const artist = Netease.getArtistName(detail);
+    console.log('Song name: '.green + songName);
+    console.log('Artist: '.green + artist);
+    let result;
+    try {
+      result = await this.batchSeachMusic(songName, artist);
+    } catch (err) {
+      throw new Error(err);
+    }
+    result = result.sort((a, b) => {
+      if (!a) {
+        return 1;
       }
+      if (!b) {
+        return -1;
+      }
+      if (parseInt(a.searchResult.bitrate, 10) > parseInt(b.searchResult.bitrate, 10)) {
+        return -1;
+      }
+      if (parseInt(a.searchResult.bitrate, 10) < parseInt(b.searchResult.bitrate, 10)) {
+        return 1;
+      }
+      if (a.searchResult.bitrate === b.searchResult.bitrate) {
+        return a.searchResult.order - b.searchResult.order;
+      }
+      return 0;
     });
+    if (result[0]) {
+      const plugin = result[0].plugin;
+      const data = result[0].searchResult;
+      const songInfo = {
+        bitrate: data.bitrate,
+        filesize: data.filesize,
+        hash: data.hash,
+        type: data.type,
+      };
+      let url;
+      try {
+        url = await plugin.getUrl(data);
+      } catch (err) {
+        throw new Error(err);
+      }
+      // 魔改 URL 应对某司防火墙
+      if (config.rewriteUrl) {
+        url = url.replace(plugin.baseUrl, `music.163.com/${plugin.name.trim().toLowerCase()}`);
+      }
+      songInfo.url = url;
+      return songInfo;
+    }
+    return null;
   }
 }

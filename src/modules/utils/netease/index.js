@@ -1,5 +1,5 @@
 import 'colors';
-import request from 'request';
+import request from 'request-promise';
 
 export default class netease {
   constructor(ip) {
@@ -36,7 +36,7 @@ export default class netease {
     body.code = '200';
     body.size = urlInfo.filesize;
     body.md5 = urlInfo.hash;
-    body.type = 'mp3';
+    body.type = urlInfo.type;
 
     return body;
   }
@@ -54,7 +54,7 @@ export default class netease {
     return JSON.stringify(body);
   }
 
-  getSongDetail(songId) {
+  async getSongDetail(songId) {
     const header = {
       host: 'music.163.com',
       'content-type': 'application/x-www-form-urlencoded',
@@ -66,16 +66,13 @@ export default class netease {
       method: 'get',
       gzip: true,
     };
-    return new Promise((resolve, reject) => {
-      request(options, (err, res, body) => {
-        if (err) {
-          console.error(err.red);
-          reject(err);
-        } else {
-          resolve(body);
-        }
-      });
-    });
+    let result;
+    try {
+      result = await request(options);
+    } catch (err) {
+      throw new Error(err);
+    }
+    return result;
   }
 
 }

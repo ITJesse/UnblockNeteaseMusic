@@ -1,6 +1,6 @@
 import getRawBody from 'raw-body';
 import config from '../config';
-import common from '../utils/common';
+import * as common from '../utils/common';
 
 const middleware = async function (ctx, next) {
   const req = ctx.request;
@@ -28,18 +28,14 @@ const middleware = async function (ctx, next) {
     }
     const result = await common.sendRequest(options);
 
-    const headers = result.res.headers;
+    const headers = result.headers;
     const body = result.body;
     delete headers['content-encoding'];
     // console.log(body);
     ctx.set(headers);
-    ctx.defaultBody = body;
-
-    // console.log('before:', ctx.defaultBody);
+    ctx.body = body;
     await next();
-    // console.log('after:', ctx.defaultBody);
-
-    ctx.body = ctx.defaultBody;
+    // console.log(ctx.body);
   }
 };
 

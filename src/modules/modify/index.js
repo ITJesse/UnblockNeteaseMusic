@@ -4,62 +4,53 @@ import Netease from '../utils/netease';
 
 const utils = new Utils();
 
-const modify = async (ctx, next) => {
-  const req = ctx.request;
+export const player = async (ctx, next) => {
+  const data = ctx.body;
 
-  let songId;
-  let urlInfo;
-  let data;
-
-  try {
-    data = JSON.parse(ctx.defaultBody.toString());
-  } catch (err) {
-    console.error('Parse JSON failed, return with no modify.'.yellow);
-    return next;
+  // Handle silly linux client forward api
+  if (!Object.prototype.hasOwnProperty.call(data, 'data')) {
+    return next();
   }
 
-  if (/^\/eapi\/song\/enhance\/player\/url/.test(req.url) || /^\/api\/linux\/forward/.test(req.url)) {
-    // For Linux client support
-    if (data.hasOwnProperty('data')) {
-      const playbackReturnCode = data.data[0].code;
-      songId = data.data[0].id;
+  const playbackReturnCode = data.data[0].code;
+  const songId = data.data[0].id;
+  if (playbackReturnCode === 200) {
+    console.log('The song URL is '.green + data.data[0].url);
+    return next();
+  }
 
-      if (playbackReturnCode !== 200) {
-        try {
-          urlInfo = await utils.getUrlInfo(songId);
-        } catch (err) {
-          return console.log(err);
-        }
-        if (urlInfo) {
-          data.data[0] = Netease.modifyPlayerApiCustom(urlInfo, data.data[0]);
-        } else {
-          console.log('No resource.'.red);
-        }
-      } else {
-        console.log('The song URL is '.green + data.data[0].url);
-      }
-      ctx.defaultBody = JSON.stringify(data);
-    }
-    return next;
-  } else if (/^\/eapi\/song\/enhance\/download\/url/.test(req.url)) {
-    if (Netease.getDownloadReturnCode(data) !== 200) {
-      songId = Netease.getDownloadSongId(data);
-      try {
-        urlInfo = await utils.getUrlInfo(songId);
-      } catch (err) {
-        return console.log(err);
-      }
-      if (urlInfo) {
-        ctx.defaultBody = Netease.modifyDownloadApiCustom(urlInfo, data);
-      } else {
-        console.log('No resource.'.red);
-      }
-      return next;
-    }
-    console.log('The song URL is '.green + Netease.getDownloadUrl(data).green);
-    return next;
+  let urlInfo;
+  try {
+    urlInfo = await utils.getUrlInfo(songId);
+  } catch (err) {
+    return console.log(err);
+  }
+  if (urlInfo) {
+    data.data[0] = Netease.modifyPlayerApiCustom(urlInfo, data.data[0]);
+  } else {
+    console.log('No resource.'.red);
+  }
+  ctx.body = JSON.stringify(data);
+  return next();
+};
+
+export const download = async (ctx, next) => {
+  const data = ctx.body;
+
+  if (Netease.getDownloadReturnCode(data) === 200) {
+    return console.log('The song URL is '.green + data.data.url);
+  }
+  const songId = Netease.getDownloadSongId(data);
+  let urlInfo;
+  try {
+    urlInfo = await utils.getUrlInfo(songId);
+  } catch (err) {
+    return console.log(err);
+  }
+  if (urlInfo) {
+    ctx.body = Netease.modifyDownloadApiCustom(urlInfo, data);
+  } else {
+    console.log('No resource.'.red);
   }
   return next;
 };
-
-export default modify;
