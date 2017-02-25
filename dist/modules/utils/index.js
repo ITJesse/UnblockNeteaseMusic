@@ -92,22 +92,29 @@ var Utils = function () {
                   case 3:
                     searchResult = _context.sent;
 
-                    if (searchResult.length > 0) {
-                      searchName = searchResult[0].name.replace(/ /g, '').toLowerCase();
-                      trueName = songName.replace(/ /g, '').toLowerCase();
-
-                      if (searchName.indexOf(trueName) !== -1) {
-                        callback(null, {
-                          plugin: plugin,
-                          searchResult: searchResult[0]
-                        });
-                      }
-                    } else {
-                      console.log(('No resource found from ' + plugin.name).yellow);
-                      callback(null);
+                    if (!(searchResult.length > 0)) {
+                      _context.next = 9;
+                      break;
                     }
 
-                  case 5:
+                    searchName = searchResult[0].name.replace(/ /g, '').toLowerCase();
+                    trueName = songName.replace(/ /g, '').toLowerCase();
+
+                    if (!(searchName.indexOf(trueName) !== -1)) {
+                      _context.next = 9;
+                      break;
+                    }
+
+                    return _context.abrupt('return', callback(null, {
+                      plugin: plugin,
+                      searchResult: searchResult[0]
+                    }));
+
+                  case 9:
+                    console.log(('No resource found from ' + plugin.name).yellow);
+                    callback(null);
+
+                  case 11:
                   case 'end':
                     return _context.stop();
                 }

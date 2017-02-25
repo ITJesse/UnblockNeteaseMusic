@@ -32,15 +32,14 @@ export default class Utils {
           const searchName = searchResult[0].name.replace(/ /g, '').toLowerCase();
           const trueName = songName.replace(/ /g, '').toLowerCase();
           if (searchName.indexOf(trueName) !== -1) {
-            callback(null, {
+            return callback(null, {
               plugin,
               searchResult: searchResult[0],
             });
           }
-        } else {
-          console.log(`No resource found from ${plugin.name}`.yellow);
-          callback(null);
         }
+        console.log(`No resource found from ${plugin.name}`.yellow);
+        callback(null);
       }, (err, result) => {
         if (err) return reject(err);
         return resolve(result);
