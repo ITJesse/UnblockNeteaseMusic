@@ -69,16 +69,26 @@ class QQ {
     if (data.code === 0 && data.data.song.list.length > 0) {
       for (const e of data.data.song.list) {
         const list = data.data.song.list[0].f.split('|');
-        const bitrate = list[13];
-        const prefix = 'M800';
-        const type = 'mp3';
+        const bitrate = parseInt(list[13], 10);
+        let prefix;
+        let type;
+        if (bitrate >= 320000) {
+          prefix = 'M800';
+          type = 'mp3';
+        } else if (bitrate >= 128000) {
+          prefix = 'M500';
+          type = 'mp3';
+        } else {
+          prefix = 'C200';
+          type = 'm4a';
+        }
         result.push({
           name: e.fsong,
           artist: e.fsinger,
           filesize: list[11],
           hash: '',
           mid: list[20],
-          bitrate,
+          bitrate: String(bitrate),
           prefix,
           type,
         });

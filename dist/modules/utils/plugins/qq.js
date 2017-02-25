@@ -199,17 +199,27 @@ var QQ = function () {
                 for (_iterator = (0, _getIterator3.default)(data.data.song.list); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                   e = _step.value;
                   list = data.data.song.list[0].f.split('|');
-                  bitrate = list[13];
-                  prefix = 'M800';
-                  type = 'mp3';
+                  bitrate = parseInt(list[13], 10);
+                  prefix = void 0;
+                  type = void 0;
 
+                  if (bitrate >= 320000) {
+                    prefix = 'M800';
+                    type = 'mp3';
+                  } else if (bitrate >= 128000) {
+                    prefix = 'M500';
+                    type = 'mp3';
+                  } else {
+                    prefix = 'C200';
+                    type = 'm4a';
+                  }
                   result.push({
                     name: e.fsong,
                     artist: e.fsinger,
                     filesize: list[11],
                     hash: '',
                     mid: list[20],
-                    bitrate: bitrate,
+                    bitrate: String(bitrate),
                     prefix: prefix,
                     type: type
                   });

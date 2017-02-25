@@ -34,13 +34,14 @@ class Kugou {
         let filesize;
         let hash;
         let bitrate;
-        let type = 'mp3';
-        if (Object.prototype.hasOwnProperty.call(e, 'sqhash')) {
-          bitrate = '999000';
-          filesize = e.sqfilesize;
-          hash = e.sqhash;
-          type = 'flac';
-        } else if (Object.prototype.hasOwnProperty.call(e, '320hash')) {
+        // if (Object.prototype.hasOwnProperty.call(e, 'sqhash')) {
+        //   bitrate = '999000';
+        //   filesize = e.sqfilesize;
+        //   hash = e.sqhash;
+        //   type = 'flac';
+        // } else if (Object.prototype.hasOwnProperty.call(e, '320hash')) {
+
+        if (Object.prototype.hasOwnProperty.call(e, '320hash')) {
           bitrate = '320000';
           filesize = e['320filesize'];
           hash = e['320hash'];
@@ -54,10 +55,10 @@ class Kugou {
         result.push({
           name: e.filename,
           artist: e.singername,
+          type: 'mp3',
           filesize,
           bitrate,
           hash,
-          type,
         });
       }
     }

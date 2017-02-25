@@ -93,15 +93,16 @@ var Utils = function () {
                     searchResult = _context.sent;
 
                     if (!(searchResult.length > 0)) {
-                      _context.next = 9;
+                      _context.next = 10;
                       break;
                     }
 
+                    console.log(searchResult);
                     searchName = searchResult[0].name.replace(/ /g, '').toLowerCase();
                     trueName = songName.replace(/ /g, '').toLowerCase();
 
                     if (!(searchName.indexOf(trueName) !== -1)) {
-                      _context.next = 9;
+                      _context.next = 10;
                       break;
                     }
 
@@ -110,11 +111,11 @@ var Utils = function () {
                       searchResult: searchResult[0]
                     }));
 
-                  case 9:
+                  case 10:
                     console.log(('No resource found from ' + plugin.name).yellow);
                     callback(null);
 
-                  case 11:
+                  case 12:
                   case 'end':
                     return _context.stop();
                 }

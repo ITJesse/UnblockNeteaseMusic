@@ -53,7 +53,7 @@ var Kugou = function () {
     key: 'search',
     value: function () {
       var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(name, artist) {
-        var songName, options, data, _result, result, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, e, filesize, hash, bitrate, type;
+        var songName, options, data, _result, result, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, e, filesize, hash, bitrate;
 
         return _regenerator2.default.wrap(function _callee$(_context) {
           while (1) {
@@ -84,7 +84,7 @@ var Kugou = function () {
                 result = [];
 
                 if (!(data.status === 1 && data.data.info.length > 0)) {
-                  _context.next = 64;
+                  _context.next = 56;
                   break;
                 }
 
@@ -96,7 +96,7 @@ var Kugou = function () {
 
               case 20:
                 if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
-                  _context.next = 50;
+                  _context.next = 42;
                   break;
                 }
 
@@ -104,105 +104,97 @@ var Kugou = function () {
                 filesize = void 0;
                 hash = void 0;
                 bitrate = void 0;
-                type = 'mp3';
+                // if (Object.prototype.hasOwnProperty.call(e, 'sqhash')) {
+                //   bitrate = '999000';
+                //   filesize = e.sqfilesize;
+                //   hash = e.sqhash;
+                //   type = 'flac';
+                // } else if (Object.prototype.hasOwnProperty.call(e, '320hash')) {
 
-                if (!Object.prototype.hasOwnProperty.call(e, 'sqhash')) {
-                  _context.next = 33;
-                  break;
-                }
-
-                bitrate = '999000';
-                filesize = e.sqfilesize;
-                hash = e.sqhash;
-                type = 'flac';
-                _context.next = 46;
-                break;
-
-              case 33:
                 if (!Object.prototype.hasOwnProperty.call(e, '320hash')) {
-                  _context.next = 39;
+                  _context.next = 31;
                   break;
                 }
 
                 bitrate = '320000';
                 filesize = e['320filesize'];
                 hash = e['320hash'];
-                _context.next = 46;
+                _context.next = 38;
                 break;
 
-              case 39:
+              case 31:
                 if (!Object.prototype.hasOwnProperty.call(e, 'hash')) {
-                  _context.next = 45;
+                  _context.next = 37;
                   break;
                 }
 
                 bitrate = '128000';
                 filesize = e.filesize;
                 hash = e.hash;
-                _context.next = 46;
+                _context.next = 38;
                 break;
 
-              case 45:
-                return _context.abrupt('continue', 47);
+              case 37:
+                return _context.abrupt('continue', 39);
 
-              case 46:
+              case 38:
                 result.push({
                   name: e.filename,
                   artist: e.singername,
+                  type: 'mp3',
                   filesize: filesize,
                   bitrate: bitrate,
-                  hash: hash,
-                  type: type
+                  hash: hash
                 });
 
-              case 47:
+              case 39:
                 _iteratorNormalCompletion = true;
                 _context.next = 20;
                 break;
 
-              case 50:
-                _context.next = 56;
+              case 42:
+                _context.next = 48;
                 break;
 
-              case 52:
-                _context.prev = 52;
+              case 44:
+                _context.prev = 44;
                 _context.t1 = _context['catch'](18);
                 _didIteratorError = true;
                 _iteratorError = _context.t1;
 
-              case 56:
-                _context.prev = 56;
-                _context.prev = 57;
+              case 48:
+                _context.prev = 48;
+                _context.prev = 49;
 
                 if (!_iteratorNormalCompletion && _iterator.return) {
                   _iterator.return();
                 }
 
-              case 59:
-                _context.prev = 59;
+              case 51:
+                _context.prev = 51;
 
                 if (!_didIteratorError) {
-                  _context.next = 62;
+                  _context.next = 54;
                   break;
                 }
 
                 throw _iteratorError;
 
-              case 62:
-                return _context.finish(59);
+              case 54:
+                return _context.finish(51);
 
-              case 63:
-                return _context.finish(56);
+              case 55:
+                return _context.finish(48);
 
-              case 64:
+              case 56:
                 return _context.abrupt('return', result);
 
-              case 65:
+              case 57:
               case 'end':
                 return _context.stop();
             }
           }
-        }, _callee, this, [[3, 10], [18, 52, 56, 64], [57,, 59, 63]]);
+        }, _callee, this, [[3, 10], [18, 44, 48, 56], [49,, 51, 55]]);
       }));
 
       function search(_x, _x2) {
