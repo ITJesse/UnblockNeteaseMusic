@@ -201,19 +201,9 @@ var QQ = function () {
                   e = _step.value;
                   list = data.data.song.list[0].f.split('|');
                   bitrate = list[13];
-                  prefix = void 0;
-                  type = void 0;
+                  prefix = 'M800';
+                  type = 'mp3';
 
-                  if (bitrate === '320000') {
-                    prefix = 'M800';
-                    type = 'mp3';
-                  } else if (bitrate === '128000') {
-                    prefix = 'M500';
-                    type = 'mp3';
-                  } else {
-                    prefix = 'C200';
-                    type = 'm4a';
-                  }
                   result.push({
                     name: e.fsong,
                     artist: e.fsinger,
@@ -284,7 +274,7 @@ var QQ = function () {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                url = 'http://dl.stream.qqmusic.qq.com/' + data.prefix + data.mid + '.' + data.ext + '?vkey=' + this.vkey + '&guid=' + this.guid + '&uin=0&fromtag=30';
+                url = 'http://dl.stream.qqmusic.qq.com/' + data.prefix + data.mid + '.' + data.type + '?vkey=' + this.vkey + '&guid=' + this.guid + '&uin=0&fromtag=30';
                 return _context4.abrupt('return', url);
 
               case 2:

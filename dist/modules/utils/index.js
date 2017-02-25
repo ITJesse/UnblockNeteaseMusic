@@ -91,8 +91,8 @@ var Utils = function () {
 
                   case 3:
                     searchResult = _context.sent;
-                    searchName = searchResult[0].name.trim().toLowerCase();
-                    trueName = songName.trim().toLowerCase();
+                    searchName = searchResult[0].name.replace(/ /g, '').toLowerCase();
+                    trueName = songName.replace(/ /g, '').toLowerCase();
 
                     if (searchResult.length > 0 && searchName.indexOf(trueName) !== -1) {
                       callback(null, {
@@ -222,7 +222,7 @@ var Utils = function () {
               case 39:
                 // 魔改 URL 应对某司防火墙
                 if (_config2.default.rewriteUrl) {
-                  url = url.replace(plugin.baseUrl, 'music.163.com/' + plugin.name.trim().toLowerCase());
+                  url = url.replace(plugin.baseUrl, 'music.163.com/' + plugin.name.replace(/ /g, '').toLowerCase());
                 }
                 songInfo.url = url;
                 return _context2.abrupt('return', songInfo);

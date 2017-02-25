@@ -28,8 +28,8 @@ export default class Utils {
       async.map(this.plugins, async (plugin, callback) => {
         console.log(`Search from ${plugin.name}`.green);
         const searchResult = await plugin.search(songName, artist);
-        const searchName = searchResult[0].name.trim().toLowerCase();
-        const trueName = songName.trim().toLowerCase();
+        const searchName = searchResult[0].name.replace(/ /g, '').toLowerCase();
+        const trueName = songName.replace(/ /g, '').toLowerCase();
         if (searchResult.length > 0 && searchName.indexOf(trueName) !== -1) {
           callback(null, {
             plugin,
@@ -101,7 +101,7 @@ export default class Utils {
       }
       // 魔改 URL 应对某司防火墙
       if (config.rewriteUrl) {
-        url = url.replace(plugin.baseUrl, `music.163.com/${plugin.name.trim().toLowerCase()}`);
+        url = url.replace(plugin.baseUrl, `music.163.com/${plugin.name.replace(/ /g, '').toLowerCase()}`);
       }
       songInfo.url = url;
       return songInfo;

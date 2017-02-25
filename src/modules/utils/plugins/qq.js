@@ -71,18 +71,8 @@ class QQ {
       for (const e of data.data.song.list) {
         const list = data.data.song.list[0].f.split('|');
         const bitrate = list[13];
-        let prefix;
-        let type;
-        if (bitrate === '320000') {
-          prefix = 'M800';
-          type = 'mp3';
-        } else if (bitrate === '128000') {
-          prefix = 'M500';
-          type = 'mp3';
-        } else {
-          prefix = 'C200';
-          type = 'm4a';
-        }
+        const prefix = 'M800';
+        const type = 'mp3';
         result.push({
           name: e.fsong,
           artist: e.fsinger,
@@ -99,7 +89,7 @@ class QQ {
   }
 
   async getUrl(data) {
-    const url = `http://dl.stream.qqmusic.qq.com/${data.prefix}${data.mid}.${data.ext}?vkey=${this.vkey}&guid=${this.guid}&uin=0&fromtag=30`;
+    const url = `http://dl.stream.qqmusic.qq.com/${data.prefix}${data.mid}.${data.type}?vkey=${this.vkey}&guid=${this.guid}&uin=0&fromtag=30`;
     return url;
   }
 }
