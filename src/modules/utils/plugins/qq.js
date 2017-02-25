@@ -32,7 +32,6 @@ class QQ {
   async updateVKey() {
     this.guid = QQ.getGUid();
     const options = {
-      // url: `https://c.y.qq.com/base/fcgi-bin/fcg_musicexpress.fcg?guid=${this.guid}&format=json`,
       url: `https://c.y.qq.com/base/fcgi-bin/fcg_musicexpress.fcg?json=3&guid=${this.guid}&g_tk=5381&jsonpCallback=jsonCallback&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf8&notice=0&platform=yqq&needNewCode=0`,
     };
 

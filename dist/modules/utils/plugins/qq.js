@@ -100,7 +100,6 @@ var QQ = function () {
               case 0:
                 this.guid = QQ.getGUid();
                 options = {
-                  // url: `https://c.y.qq.com/base/fcgi-bin/fcg_musicexpress.fcg?guid=${this.guid}&format=json`,
                   url: 'https://c.y.qq.com/base/fcgi-bin/fcg_musicexpress.fcg?json=3&guid=' + this.guid + '&g_tk=5381&jsonpCallback=jsonCallback&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf8&notice=0&platform=yqq&needNewCode=0'
                 };
                 _context2.prev = 2;

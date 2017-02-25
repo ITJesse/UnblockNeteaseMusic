@@ -15,8 +15,8 @@ export default class Utils {
   }
 
   initPlugins() {
-    fs.readdirSync(path.resolve(__dirname, 'plugins')).forEach((e) => {
-      const Plugin = require(path.resolve(__dirname, 'plugins', e));
+    fs.readdirSync(path.resolve(__dirname, 'plugins')).forEach((file) => {
+      const Plugin = require(path.resolve(__dirname, 'plugins', file));
       this.plugins.push(new Plugin());
     });
     this.plugins.sort((a, b) => a.order - b.order);
@@ -28,13 +28,15 @@ export default class Utils {
       async.map(this.plugins, async (plugin, callback) => {
         console.log(`Search from ${plugin.name}`.green);
         const searchResult = await plugin.search(songName, artist);
-        const searchName = searchResult[0].name.replace(/ /g, '').toLowerCase();
-        const trueName = songName.replace(/ /g, '').toLowerCase();
-        if (searchResult.length > 0 && searchName.indexOf(trueName) !== -1) {
-          callback(null, {
-            plugin,
-            searchResult: searchResult[0],
-          });
+        if (searchResult.length > 0) {
+          const searchName = searchResult[0].name.replace(/ /g, '').toLowerCase();
+          const trueName = songName.replace(/ /g, '').toLowerCase();
+          if (searchName.indexOf(trueName) !== -1) {
+            callback(null, {
+              plugin,
+              searchResult: searchResult[0],
+            });
+          }
         } else {
           console.log(`No resource found from ${plugin.name}`.yellow);
           callback(null);

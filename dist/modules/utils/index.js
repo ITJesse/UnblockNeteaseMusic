@@ -63,8 +63,8 @@ var Utils = function () {
     value: function initPlugins() {
       var _this = this;
 
-      _fs2.default.readdirSync(_path2.default.resolve(__dirname, 'plugins')).forEach(function (e) {
-        var Plugin = require(_path2.default.resolve(__dirname, 'plugins', e));
+      _fs2.default.readdirSync(_path2.default.resolve(__dirname, 'plugins')).forEach(function (file) {
+        var Plugin = require(_path2.default.resolve(__dirname, 'plugins', file));
         _this.plugins.push(new Plugin());
       });
       this.plugins.sort(function (a, b) {
@@ -91,20 +91,23 @@ var Utils = function () {
 
                   case 3:
                     searchResult = _context.sent;
-                    searchName = searchResult[0].name.replace(/ /g, '').toLowerCase();
-                    trueName = songName.replace(/ /g, '').toLowerCase();
 
-                    if (searchResult.length > 0 && searchName.indexOf(trueName) !== -1) {
-                      callback(null, {
-                        plugin: plugin,
-                        searchResult: searchResult[0]
-                      });
+                    if (searchResult.length > 0) {
+                      searchName = searchResult[0].name.replace(/ /g, '').toLowerCase();
+                      trueName = songName.replace(/ /g, '').toLowerCase();
+
+                      if (searchName.indexOf(trueName) !== -1) {
+                        callback(null, {
+                          plugin: plugin,
+                          searchResult: searchResult[0]
+                        });
+                      }
                     } else {
                       console.log(('No resource found from ' + plugin.name).yellow);
                       callback(null);
                     }
 
-                  case 7:
+                  case 5:
                   case 'end':
                     return _context.stop();
                 }
