@@ -1,7 +1,11 @@
 import program from 'commander';
+import pkginfo from 'pkginfo';
 import 'colors';
 
+pkginfo(module);
+
 program
+  .version(module.exports.version)
   .option('-p, --port <port>', 'Specific server port.')
   .option('-f, --force-ip <ip>', 'Force the netease server ip.')
   .option('-r, --rewrite-url', 'Rewrite music download url, let client download file through proxy.')
