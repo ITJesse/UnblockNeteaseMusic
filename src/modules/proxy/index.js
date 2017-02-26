@@ -25,6 +25,11 @@ const middleware = async function (ctx, next) {
     };
     if (rawBody) {
       options.body = rawBody;
+      try {
+        req.body = rawBody.toString();
+      } catch (err) {
+        console.log('Body is not string.');
+      }
     }
     const result = await common.sendRequest(options);
 

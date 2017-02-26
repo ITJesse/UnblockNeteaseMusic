@@ -22,7 +22,7 @@ app.use(async (ctx, next) => {
   }
 });
 app.use(route.post('/eapi/song/enhance/player/url', modify.player));
-app.use(route.post('/api/linux/forward', modify.player));
 app.use(route.post('/eapi/song/enhance/download/url', modify.download));
+app.use(route.post('/api/linux/forward', modify.forward));
 
 export default app;

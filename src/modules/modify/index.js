@@ -7,14 +7,6 @@ const utils = new Utils();
 export const player = async (ctx, next) => {
   const data = ctx.body;
 
-  // Handle silly linux client forward api
-  if (!Object.prototype.hasOwnProperty.call(data, 'data')) {
-    return next();
-  }
-  if (!Object.prototype.hasOwnProperty.call(data.data[0], 'code')) {
-    return next();
-  }
-
   const playbackReturnCode = data.data[0].code;
   const songId = data.data[0].id;
 
@@ -57,4 +49,24 @@ export const download = async (ctx, next) => {
     console.log('No resource.'.red);
   }
   return next;
+};
+
+export const forward = async (ctx, next) => {
+  const req = ctx.request;
+  if (!Object.prototype.hasOwnProperty.call(req, 'body')) {
+    return next();
+  }
+  let url;
+  try {
+    const body = Netease.decryptLinuxForwardApi(req.body.split('=')[1]);
+    const json = JSON.parse(body);
+    url = json.url;
+  } catch (err) {
+    console.log('Parse body failed.');
+  }
+  console.log('API:'.green, url);
+  if (url !== 'http://music.163.com/api/song/enhance/player/url') {
+    return next();
+  }
+  return player(ctx, next);
 };

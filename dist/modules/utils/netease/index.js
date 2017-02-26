@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _getIterator2 = require('babel-runtime/core-js/get-iterator');
+
+var _getIterator3 = _interopRequireDefault(_getIterator2);
+
 var _stringify = require('babel-runtime/core-js/json/stringify');
 
 var _stringify2 = _interopRequireDefault(_stringify);
@@ -29,6 +33,10 @@ require('colors');
 var _requestPromise = require('request-promise');
 
 var _requestPromise2 = _interopRequireDefault(_requestPromise);
+
+var _crypto = require('crypto');
+
+var _crypto2 = _interopRequireDefault(_crypto);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -144,6 +152,44 @@ var netease = function () {
       body.data.type = 'mp3';
 
       return (0, _stringify2.default)(body);
+    }
+  }, {
+    key: 'decryptLinuxForwardApi',
+    value: function decryptLinuxForwardApi(eparams) {
+      var key = new Buffer('7246674226682325323F5E6544673A51', 'hex');
+      var decipher = _crypto2.default.createDecipheriv('aes-128-ecb', key, '');
+      decipher.setAutoPadding(true);
+      var cipherChunks = [];
+      cipherChunks.push(decipher.update(eparams, 'hex'));
+      cipherChunks.push(decipher.final());
+
+      var totalLength = 0;
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = (0, _getIterator3.default)(cipherChunks), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var e = _step.value;
+
+          totalLength += e.length;
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      return Buffer.concat(cipherChunks, totalLength);
     }
   }]);
   return netease;

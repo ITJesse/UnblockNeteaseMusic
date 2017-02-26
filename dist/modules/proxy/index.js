@@ -68,6 +68,11 @@ var middleware = function () {
 
             if (rawBody) {
               options.body = rawBody;
+              try {
+                req.body = rawBody.toString();
+              } catch (err) {
+                console.log('Body is not string.');
+              }
             }
             _context.next = 13;
             return common.sendRequest(options);

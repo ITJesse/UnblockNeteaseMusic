@@ -1,5 +1,6 @@
 import 'colors';
 import request from 'request-promise';
+import crypto from 'crypto';
 
 export default class netease {
   constructor(ip) {
@@ -73,6 +74,21 @@ export default class netease {
       throw new Error(err);
     }
     return result;
+  }
+
+  static decryptLinuxForwardApi(eparams) {
+    const key = new Buffer('7246674226682325323F5E6544673A51', 'hex');
+    const decipher = crypto.createDecipheriv('aes-128-ecb', key, '');
+    decipher.setAutoPadding(true);
+    const cipherChunks = [];
+    cipherChunks.push(decipher.update(eparams, 'hex'));
+    cipherChunks.push(decipher.final());
+
+    let totalLength = 0;
+    for (const e of cipherChunks) {
+      totalLength += e.length;
+    }
+    return Buffer.concat(cipherChunks, totalLength);
   }
 
 }

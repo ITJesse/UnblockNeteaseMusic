@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.download = exports.player = undefined;
+exports.forward = exports.download = exports.player = undefined;
 
 var _regenerator = require('babel-runtime/regenerator');
 
@@ -39,53 +39,34 @@ var player = exports.player = function () {
         switch (_context.prev = _context.next) {
           case 0:
             data = ctx.body;
-
-            // Handle silly linux client forward api
-
-            if (Object.prototype.hasOwnProperty.call(data, 'data')) {
-              _context.next = 3;
-              break;
-            }
-
-            return _context.abrupt('return', next());
-
-          case 3:
-            if (Object.prototype.hasOwnProperty.call(data.data[0], 'code')) {
-              _context.next = 5;
-              break;
-            }
-
-            return _context.abrupt('return', next());
-
-          case 5:
             playbackReturnCode = data.data[0].code;
             songId = data.data[0].id;
 
             if (!(playbackReturnCode === 200)) {
-              _context.next = 10;
+              _context.next = 6;
               break;
             }
 
             console.log('The song URL is '.green + data.data[0].url);
             return _context.abrupt('return', next());
 
-          case 10:
+          case 6:
             urlInfo = void 0;
-            _context.prev = 11;
-            _context.next = 14;
+            _context.prev = 7;
+            _context.next = 10;
             return utils.getUrlInfo(songId);
 
-          case 14:
+          case 10:
             urlInfo = _context.sent;
-            _context.next = 20;
+            _context.next = 16;
             break;
 
-          case 17:
-            _context.prev = 17;
-            _context.t0 = _context['catch'](11);
+          case 13:
+            _context.prev = 13;
+            _context.t0 = _context['catch'](7);
             return _context.abrupt('return', console.log(_context.t0));
 
-          case 20:
+          case 16:
             if (urlInfo) {
               data.data[0] = _netease2.default.modifyPlayerApiCustom(urlInfo, data.data[0]);
             } else {
@@ -94,12 +75,12 @@ var player = exports.player = function () {
             ctx.body = (0, _stringify2.default)(data);
             return _context.abrupt('return', next());
 
-          case 23:
+          case 19:
           case 'end':
             return _context.stop();
         }
       }
-    }, _callee, undefined, [[11, 17]]);
+    }, _callee, undefined, [[7, 13]]);
   }));
 
   return function player(_x, _x2) {
@@ -158,5 +139,57 @@ var download = exports.download = function () {
 
   return function download(_x3, _x4) {
     return _ref2.apply(this, arguments);
+  };
+}();
+
+var forward = exports.forward = function () {
+  var _ref3 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3(ctx, next) {
+    var req, url, body, json;
+    return _regenerator2.default.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            req = ctx.request;
+
+            if (Object.prototype.hasOwnProperty.call(req, 'body')) {
+              _context3.next = 3;
+              break;
+            }
+
+            return _context3.abrupt('return', next());
+
+          case 3:
+            url = void 0;
+
+            try {
+              body = _netease2.default.decryptLinuxForwardApi(req.body.split('=')[1]);
+              json = JSON.parse(body);
+
+              url = json.url;
+            } catch (err) {
+              console.log('Parse body failed.');
+            }
+            console.log('API:'.green, url);
+
+            if (!(url !== 'http://music.163.com/api/song/enhance/player/url')) {
+              _context3.next = 8;
+              break;
+            }
+
+            return _context3.abrupt('return', next());
+
+          case 8:
+            return _context3.abrupt('return', player(ctx, next));
+
+          case 9:
+          case 'end':
+            return _context3.stop();
+        }
+      }
+    }, _callee3, undefined);
+  }));
+
+  return function forward(_x5, _x6) {
+    return _ref3.apply(this, arguments);
   };
 }();
