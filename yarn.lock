@@ -1752,8 +1752,8 @@ is-glob@^2.0.0, is-glob@^2.0.1:
     is-extglob "^1.0.0"
 
 is-my-json-valid@^2.10.0, is-my-json-valid@^2.12.4:
-  version "2.15.0"
-  resolved "https://registry.yarnpkg.com/is-my-json-valid/-/is-my-json-valid-2.15.0.tgz#936edda3ca3c211fd98f3b2d3e08da43f7b2915b"
+  version "2.16.0"
+  resolved "https://registry.yarnpkg.com/is-my-json-valid/-/is-my-json-valid-2.16.0.tgz#f079dd9bfdae65ee2038aae8acbc86ab109e3693"
   dependencies:
     generate-function "^2.0.0"
     generate-object-property "^1.1.0"
@@ -1946,8 +1946,8 @@ koa-route@next:
     path-to-regexp "^1.2.0"
 
 koa@^2.0.0-alpha.7:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/koa/-/koa-2.0.0.tgz#da865ae8ee4afae070425290455d2cdf4885f9dc"
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/koa/-/koa-2.0.1.tgz#c15a0da4d62554c058ae881e76992e3defe45bd8"
   dependencies:
     accepts "^1.2.2"
     content-disposition "~0.5.0"
@@ -2396,7 +2396,7 @@ regenerator-transform@0.9.8:
 
 regex-cache@^0.4.2:
   version "0.4.3"
-  resolved "https://registry.yarnpkg.com/regex-cache/-/regex-cache-0.4.3.tgz#9b1a6c35d4d0dfcef5711ae651e8e9d3d7114145"
+  resolved "http://registry.npmjs.org/regex-cache/-/regex-cache-0.4.3.tgz#9b1a6c35d4d0dfcef5711ae651e8e9d3d7114145"
   dependencies:
     is-equal-shallow "^0.1.3"
     is-primitive "^2.0.0"
