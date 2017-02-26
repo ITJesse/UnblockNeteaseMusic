@@ -29,7 +29,7 @@ export default class Utils {
         console.log(`Search from ${plugin.name}`.green);
         const searchResult = await plugin.search(songName, artist);
         if (searchResult.length > 0) {
-          console.log(searchResult);
+          // console.log(searchResult);
           const searchName = searchResult[0].name.replace(/ /g, '').toLowerCase();
           const trueName = songName.replace(/ /g, '').toLowerCase();
           if (searchName.indexOf(trueName) !== -1) {

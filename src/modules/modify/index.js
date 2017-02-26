@@ -11,9 +11,13 @@ export const player = async (ctx, next) => {
   if (!Object.prototype.hasOwnProperty.call(data, 'data')) {
     return next();
   }
+  if (!Object.prototype.hasOwnProperty.call(data.data[0], 'code')) {
+    return next();
+  }
 
   const playbackReturnCode = data.data[0].code;
   const songId = data.data[0].id;
+
   if (playbackReturnCode === 200) {
     console.log('The song URL is '.green + data.data[0].url);
     return next();

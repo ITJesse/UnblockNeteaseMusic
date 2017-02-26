@@ -50,34 +50,42 @@ var player = exports.player = function () {
             return _context.abrupt('return', next());
 
           case 3:
+            if (Object.prototype.hasOwnProperty.call(data.data[0], 'code')) {
+              _context.next = 5;
+              break;
+            }
+
+            return _context.abrupt('return', next());
+
+          case 5:
             playbackReturnCode = data.data[0].code;
             songId = data.data[0].id;
 
             if (!(playbackReturnCode === 200)) {
-              _context.next = 8;
+              _context.next = 10;
               break;
             }
 
             console.log('The song URL is '.green + data.data[0].url);
             return _context.abrupt('return', next());
 
-          case 8:
+          case 10:
             urlInfo = void 0;
-            _context.prev = 9;
-            _context.next = 12;
+            _context.prev = 11;
+            _context.next = 14;
             return utils.getUrlInfo(songId);
 
-          case 12:
+          case 14:
             urlInfo = _context.sent;
-            _context.next = 18;
+            _context.next = 20;
             break;
 
-          case 15:
-            _context.prev = 15;
-            _context.t0 = _context['catch'](9);
+          case 17:
+            _context.prev = 17;
+            _context.t0 = _context['catch'](11);
             return _context.abrupt('return', console.log(_context.t0));
 
-          case 18:
+          case 20:
             if (urlInfo) {
               data.data[0] = _netease2.default.modifyPlayerApiCustom(urlInfo, data.data[0]);
             } else {
@@ -86,12 +94,12 @@ var player = exports.player = function () {
             ctx.body = (0, _stringify2.default)(data);
             return _context.abrupt('return', next());
 
-          case 21:
+          case 23:
           case 'end':
             return _context.stop();
         }
       }
-    }, _callee, undefined, [[9, 15]]);
+    }, _callee, undefined, [[11, 17]]);
   }));
 
   return function player(_x, _x2) {
