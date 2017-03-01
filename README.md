@@ -51,15 +51,15 @@ unblockneteasemusic -h
 
   Options:
 
-    -h, --help           output usage information
+    -h, --help           output usage information.
     -p, --port <port>    Specific server port.
     -f, --force-ip <ip>  Force the netease server ip.
-    -k, --kugou          Find copyright music on Kugou.
-    -q, --qq             Find copyright music on QQ Music.
+    -k, --kugou          No longer support.
+    -q, --qq             No longer support.
     -r, --rewrite-url    Rewrite music download url, let client download file through proxy.
 ```
 
-## OSX 与 Windows 用户
+## OSX 与 Windows 与 Linux 用户
 
 向 hosts 文件中添加一行：`<Server IP> music.163.com`
 
