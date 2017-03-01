@@ -31,7 +31,7 @@ version: '2'
 services:
   unblockneteasemusic:
     image: itjesse/unblockneteasemusic
-    command: "-k -q -r"
+    command: "-r"
     restart: always
   unblockneteasemusic-nginx:
     image: itjesse/unblockneteasemusic-nginx
