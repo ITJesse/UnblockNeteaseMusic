@@ -8,6 +8,8 @@ program
   .version(module.exports.version)
   .option('-p, --port <port>', 'Specific server port.')
   .option('-f, --force-ip <ip>', 'Force the netease server ip.')
+  .option('-k, --kugou', 'No longer support.')
+  .option('-q, --qq', 'No longer support.')
   .option('-r, --rewrite-url', 'Rewrite music download url, let client download file through proxy.')
   .parse(process.argv);
 
