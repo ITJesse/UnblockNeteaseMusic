@@ -3,6 +3,7 @@ import Koa from 'koa';
 import logger from 'koa-logger';
 import route from 'koa-route';
 
+import config from './modules/config';
 import proxy from './modules/proxy';
 import * as modify from './modules/modify';
 
@@ -16,7 +17,9 @@ app.use(async (ctx, next) => {
     ctx.body = JSON.parse(ctx.body.toString());
     await next();
   } catch (err) {
-    console.log(err);
+    if (config.verbose) {
+      console.log(err);
+    }
     ctx.body = data;
     console.log('Modify failed.'.red);
   }

@@ -11,6 +11,7 @@ program
   .option('-k, --kugou', 'No longer support.')
   .option('-q, --qq', 'No longer support.')
   .option('-r, --rewrite-url', 'Rewrite music download url, let client download file through proxy.')
+  .option('-v, --verbose', 'Display errors.')
   .parse(process.argv);
 
 if (program.kugou || program.qq) {
