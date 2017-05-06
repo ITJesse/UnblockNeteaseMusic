@@ -2,7 +2,7 @@
   "name": "unblock-netease-music",
   "version": "2.3.1",
   "scripts": {
-    "start": "babel-node -- src/bin/unblockneteasemusic -p 8123 -k -q -r",
+    "start": "babel-node -- src/bin/unblockneteasemusic -p 8123 -r -v",
     "build": "rm -rf dist && babel src --out-dir dist"
   },
   "bin": {
@@ -15,7 +15,7 @@
     "commander": "^2.9.0",
     "koa": "^2.0.0-alpha.7",
     "koa-logger": "^2.0.0",
-    "koa-route": "next",
+    "koa-route": "^3.2.0",
     "md5": "^2.1.0",
     "pkginfo": "^0.4.0",
     "raw-body": "^2.1.6",

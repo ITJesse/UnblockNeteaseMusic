@@ -40,7 +40,7 @@ export default class Utils {
           }
         }
         console.log(`No resource found from ${plugin.name}`.yellow);
-        callback(null);
+        return callback(null);
       }, (err, result) => {
         if (err) return reject(err);
         return resolve(result);

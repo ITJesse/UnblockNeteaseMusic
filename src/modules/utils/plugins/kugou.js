@@ -41,11 +41,11 @@ class Kugou {
         //   type = 'flac';
         // } else if (Object.prototype.hasOwnProperty.call(e, '320hash')) {
 
-        if (Object.prototype.hasOwnProperty.call(e, '320hash')) {
+        if (Object.prototype.hasOwnProperty.call(e, '320hash') && e['320hash'].lenght > 0) {
           bitrate = '320000';
           filesize = e['320filesize'];
           hash = e['320hash'];
-        } else if (Object.prototype.hasOwnProperty.call(e, 'hash')) {
+        } else if (Object.prototype.hasOwnProperty.call(e, 'hash') && e.hash.lenght > 0) {
           bitrate = '128000';
           filesize = e.filesize;
           hash = e.hash;

@@ -19,7 +19,8 @@ export const player = async (ctx, next) => {
   try {
     urlInfo = await utils.getUrlInfo(songId);
   } catch (err) {
-    return console.log(err);
+    console.log(err);
+    throw new Error(err);
   }
   if (urlInfo) {
     data.data[0] = Netease.modifyPlayerApiCustom(urlInfo, data.data[0]);
@@ -41,7 +42,8 @@ export const download = async (ctx, next) => {
   try {
     urlInfo = await utils.getUrlInfo(songId);
   } catch (err) {
-    return console.log(err);
+    console.log(err);
+    throw new Error(err);
   }
   if (urlInfo) {
     ctx.body = Netease.modifyDownloadApiCustom(urlInfo, data);
@@ -63,6 +65,7 @@ export const forward = async (ctx, next) => {
     url = json.url;
   } catch (err) {
     console.log('Parse body failed.');
+    throw new Error(err);
   }
   console.log('API:'.green, url);
   if (url !== 'http://music.163.com/api/song/enhance/player/url') {
