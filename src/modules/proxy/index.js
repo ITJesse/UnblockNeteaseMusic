@@ -15,17 +15,20 @@ const middleware = async function (ctx, next) {
   } else if (req.method === 'POST') {
     const ip = config.forceIp ? config.forceIp : '223.252.199.7';
     const url = `http://${ip}${req.url}`;
-    req.headers.host = 'music.163.com';
+
+    const newHeader = {
+      ...req.headers,
+      host: 'music.163.com',
+    };
 
     const rawBody = await getRawBody(ctx.req, {
       length: ctx.length,
       encoding: ctx.charset,
     });
 
-    delete req.headers['x-real-ip'];
     const options = {
       url,
-      headers: req.headers,
+      headers: newHeader,
       method: 'post',
       encoding: null,
       gzip: true,
@@ -42,7 +45,6 @@ const middleware = async function (ctx, next) {
 
     const headers = result.headers;
     const body = result.body;
-    delete headers['content-encoding'];
     // console.log(body);
     ctx.set(headers);
     ctx.body = body;
