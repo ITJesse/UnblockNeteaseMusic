@@ -1,3 +1,4 @@
+proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=STATIC:10m inactive=24h  max_size=1g;
 server {
     listen 80;
     server_name music.163.com;
@@ -17,7 +18,7 @@ server {
         proxy_send_timeout       6s;
         proxy_read_timeout       6s;
         proxy_set_header Host $host;
-        proxy_set_header X-Real-IP "";
+        proxy_set_header X-Real-IP 118.88.88.88;
         proxy_set_header Accept-Encoding "";
         subs_filter_types *;
         subs_filter '"st":-.+?,' '"st":0,' ir;
@@ -30,16 +31,25 @@ server {
         subs_filter '"fee":.+?,' '"fee":0,' ir;
         subs_filter '"abroad":1,' '';
         subs_filter '"updateFiles":\[.*\]' '"updateFiles":[]' ir;
+        proxy_cache            STATIC;
+        proxy_cache_valid      200  1d;
+        proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;
     }
 
     location /eapi/song/enhance/player/url {
         proxy_set_header X-Real-IP "";
         proxy_pass http://localhost:8123;
+        proxy_cache            STATIC;
+        proxy_cache_valid      200  1d;
+        proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;
     }
 
     location /eapi/song/enhance/download/url {
         proxy_set_header X-Real-IP "";
         proxy_pass http://localhost:8123;
+        proxy_cache            STATIC;
+        proxy_cache_valid      200  1d;
+        proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;
     }
 
     # For linux
@@ -57,6 +67,9 @@ server {
         subs_filter '"fee":.+?,' '"fee":0,' ir;
         subs_filter '"abroad":1,' '';
         subs_filter '"updateFiles":\[.*\]' '"updateFiles":[]' ir;
+        proxy_cache            STATIC;
+        proxy_cache_valid      200  1d;
+        proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;
     }
 
     location /kugou {
@@ -64,6 +77,9 @@ server {
         proxy_set_header X-Real-IP "";
         proxy_pass http://fs.web.kugou.com;
         proxy_set_header Host fs.web.kugou.com;
+        proxy_cache            STATIC;
+        proxy_cache_valid      200  1d;
+        proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;
     }
 
     location /qqmusic {
@@ -72,5 +88,8 @@ server {
         proxy_pass http://dl.stream.qqmusic.qq.com;
         proxy_set_header "User-Agent" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
         proxy_set_header Host dl.stream.qqmusic.qq.com;
+        proxy_cache            STATIC;
+        proxy_cache_valid      200  1d;
+        proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;
     }
 }
