@@ -59,15 +59,25 @@ unblockneteasemusic -h
     -r, --rewrite-url    Rewrite music download url, let client download file through proxy.
 ```
 
-## OSX 与 Windows 与 Linux 用户
+## 支持客户端
 
 向 hosts 文件中添加一行：`<Server IP> music.163.com`
 
-> OSX 用户请务必不要更新客户端到 1.4.3 以上的版本。 [下载链接](http://s1.music.126.net/download/osx/NeteaseMusic_1.4.3_452_web.dmg)
-> 
-> Windows 用户请务必不要更新客户端到 2.0.2 以上的版本。 [下载链接](http://s1.music.126.net/download/pc/cloudmusicsetup_2_0_2[128316].exe)
+### OSX 用户
 
-## 其他用户
+#### 旧版本客户端 1.4.3
+直接使用。 [下载链接](http://s1.music.126.net/download/osx/NeteaseMusic_1.4.3_452_web.dmg)
+
+#### 最新客户端
+配合插件使用，详见 [NeteaseMusicPlugin](https://github.com/ITJesse/NeteaseMusicPlugin)
+
+### Windows 用户
+请务必不要更新客户端到 2.0.2 以上的版本。 [下载链接](http://s1.music.126.net/download/pc/cloudmusicsetup_2_0_2[128316].exe)
+
+### Linux 用户
+直接使用。
+
+### 其他用户
 
 新版客户端现在可以使用该代理解决海外限制，但是无法替换版权歌曲的播放地址。
 
