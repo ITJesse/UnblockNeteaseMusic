@@ -18,7 +18,7 @@ server {
         proxy_send_timeout       6s;
         proxy_read_timeout       6s;
         proxy_set_header Host $host;
-        proxy_set_header X-Real-IP 118.88.88.88;
+        proxy_set_header X-Real-IP "";
         proxy_set_header Accept-Encoding "";
         subs_filter_types *;
         subs_filter '"st":-.+?,' '"st":0,' ir;
