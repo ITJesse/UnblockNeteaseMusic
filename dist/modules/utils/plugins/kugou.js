@@ -111,7 +111,7 @@ var Kugou = function () {
                 //   type = 'flac';
                 // } else if (Object.prototype.hasOwnProperty.call(e, '320hash')) {
 
-                if (!Object.prototype.hasOwnProperty.call(e, '320hash')) {
+                if (!(Object.prototype.hasOwnProperty.call(e, '320hash') && e['320hash'].lenght > 0)) {
                   _context.next = 31;
                   break;
                 }
@@ -123,7 +123,7 @@ var Kugou = function () {
                 break;
 
               case 31:
-                if (!Object.prototype.hasOwnProperty.call(e, 'hash')) {
+                if (!(Object.prototype.hasOwnProperty.call(e, 'hash') && e.hash.lenght > 0)) {
                   _context.next = 37;
                   break;
                 }

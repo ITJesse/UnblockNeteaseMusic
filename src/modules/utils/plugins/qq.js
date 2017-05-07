@@ -62,7 +62,6 @@ class QQ {
     try {
       const result = await common.sendRequest(options);
       data = JSON.parse(result.body);
-      console.log(options);
     } catch (err) {
       throw new Error(err);
     }

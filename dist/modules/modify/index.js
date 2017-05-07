@@ -58,15 +58,17 @@ var player = exports.player = function () {
 
           case 10:
             urlInfo = _context.sent;
-            _context.next = 16;
+            _context.next = 17;
             break;
 
           case 13:
             _context.prev = 13;
             _context.t0 = _context['catch'](7);
-            return _context.abrupt('return', console.log(_context.t0));
 
-          case 16:
+            console.log(_context.t0);
+            throw new Error(_context.t0);
+
+          case 17:
             if (urlInfo) {
               data.data[0] = _netease2.default.modifyPlayerApiCustom(urlInfo, data.data[0]);
             } else {
@@ -75,7 +77,7 @@ var player = exports.player = function () {
             ctx.body = (0, _stringify2.default)(data);
             return _context.abrupt('return', next());
 
-          case 19:
+          case 20:
           case 'end':
             return _context.stop();
         }
@@ -113,15 +115,17 @@ var download = exports.download = function () {
 
           case 8:
             urlInfo = _context2.sent;
-            _context2.next = 14;
+            _context2.next = 15;
             break;
 
           case 11:
             _context2.prev = 11;
             _context2.t0 = _context2['catch'](5);
-            return _context2.abrupt('return', console.log(_context2.t0));
 
-          case 14:
+            console.log(_context2.t0);
+            throw new Error(_context2.t0);
+
+          case 15:
             if (urlInfo) {
               ctx.body = _netease2.default.modifyDownloadApiCustom(urlInfo, data);
             } else {
@@ -129,7 +133,7 @@ var download = exports.download = function () {
             }
             return _context2.abrupt('return', next);
 
-          case 16:
+          case 17:
           case 'end':
             return _context2.stop();
         }
@@ -160,33 +164,40 @@ var forward = exports.forward = function () {
 
           case 3:
             url = void 0;
+            _context3.prev = 4;
+            body = _netease2.default.decryptLinuxForwardApi(req.body.split('=')[1]);
+            json = JSON.parse(body);
 
-            try {
-              body = _netease2.default.decryptLinuxForwardApi(req.body.split('=')[1]);
-              json = JSON.parse(body);
+            url = json.url;
+            _context3.next = 14;
+            break;
 
-              url = json.url;
-            } catch (err) {
-              console.log('Parse body failed.');
-            }
+          case 10:
+            _context3.prev = 10;
+            _context3.t0 = _context3['catch'](4);
+
+            console.log('Parse body failed.');
+            throw new Error(_context3.t0);
+
+          case 14:
             console.log('API:'.green, url);
 
             if (!(url !== 'http://music.163.com/api/song/enhance/player/url')) {
-              _context3.next = 8;
+              _context3.next = 17;
               break;
             }
 
             return _context3.abrupt('return', next());
 
-          case 8:
+          case 17:
             return _context3.abrupt('return', player(ctx, next));
 
-          case 9:
+          case 18:
           case 'end':
             return _context3.stop();
         }
       }
-    }, _callee3, undefined);
+    }, _callee3, undefined, [[4, 10]]);
   }));
 
   return function forward(_x5, _x6) {

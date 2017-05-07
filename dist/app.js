@@ -26,6 +26,10 @@ var _koaRoute = require('koa-route');
 
 var _koaRoute2 = _interopRequireDefault(_koaRoute);
 
+var _config = require('./modules/config');
+
+var _config2 = _interopRequireDefault(_config);
+
 var _proxy = require('./modules/proxy');
 
 var _proxy2 = _interopRequireDefault(_proxy);
@@ -64,7 +68,9 @@ app.use(function () {
             _context.prev = 7;
             _context.t0 = _context['catch'](1);
 
-            console.log(_context.t0);
+            if (_config2.default.verbose) {
+              console.log(_context.t0);
+            }
             ctx.body = data;
             console.log('Modify failed.'.red);
 
@@ -83,5 +89,6 @@ app.use(function () {
 app.use(_koaRoute2.default.post('/eapi/song/enhance/player/url', modify.player));
 app.use(_koaRoute2.default.post('/eapi/song/enhance/download/url', modify.download));
 app.use(_koaRoute2.default.post('/api/linux/forward', modify.forward));
+app.use(_koaRoute2.default.post('/api/plugin', modify.player));
 
 exports.default = app;

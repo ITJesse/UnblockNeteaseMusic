@@ -113,7 +113,7 @@ var Utils = function () {
 
                   case 9:
                     console.log(('No resource found from ' + plugin.name).yellow);
-                    callback(null);
+                    return _context.abrupt('return', callback(null));
 
                   case 11:
                   case 'end':

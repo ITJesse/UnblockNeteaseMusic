@@ -12,9 +12,9 @@ var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
-var _rawBody = require('raw-body');
+var _rawBody2 = require('raw-body');
 
-var _rawBody2 = _interopRequireDefault(_rawBody);
+var _rawBody3 = _interopRequireDefault(_rawBody2);
 
 var _config = require('../config');
 
@@ -30,15 +30,39 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var middleware = function () {
   var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(ctx, next) {
-    var req, ip, url, rawBody, options, result, headers, body;
+    var req, rawBody, ip, url, _rawBody, options, result, headers, body;
+
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             req = ctx.request;
 
+            if (!(req.url === '/api/plugin')) {
+              _context.next = 10;
+              break;
+            }
+
+            _context.next = 4;
+            return (0, _rawBody3.default)(ctx.req, {
+              length: ctx.length,
+              encoding: ctx.charset
+            });
+
+          case 4:
+            rawBody = _context.sent;
+
+            ctx.body = rawBody;
+            _context.next = 8;
+            return next();
+
+          case 8:
+            _context.next = 30;
+            break;
+
+          case 10:
             if (!(req.method === 'POST')) {
-              _context.next = 21;
+              _context.next = 30;
               break;
             }
 
@@ -47,14 +71,14 @@ var middleware = function () {
 
             req.headers.host = 'music.163.com';
 
-            _context.next = 7;
-            return (0, _rawBody2.default)(ctx.req, {
+            _context.next = 16;
+            return (0, _rawBody3.default)(ctx.req, {
               length: ctx.length,
               encoding: ctx.charset
             });
 
-          case 7:
-            rawBody = _context.sent;
+          case 16:
+            _rawBody = _context.sent;
 
 
             delete req.headers['x-real-ip'];
@@ -66,18 +90,18 @@ var middleware = function () {
               gzip: true
             };
 
-            if (rawBody) {
-              options.body = rawBody;
+            if (_rawBody) {
+              options.body = _rawBody;
               try {
-                req.body = rawBody.toString();
+                req.body = _rawBody.toString();
               } catch (err) {
                 console.log('Body is not string.');
               }
             }
-            _context.next = 13;
+            _context.next = 22;
             return common.sendRequest(options);
 
-          case 13:
+          case 22:
             result = _context.sent;
             headers = result.headers;
             body = result.body;
@@ -86,10 +110,10 @@ var middleware = function () {
             // console.log(body);
             ctx.set(headers);
             ctx.body = body;
-            _context.next = 21;
+            _context.next = 30;
             return next();
 
-          case 21:
+          case 30:
           case 'end':
             return _context.stop();
         }
