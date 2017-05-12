@@ -1,7 +1,6 @@
 import 'colors';
 import requestPromise from 'request-promise';
 import request from 'request';
-import remoteFilesize from 'remote-file-size';
 import crypto from 'crypto';
 
 export default class Netease {

@@ -42,10 +42,6 @@ var _request = require('request');
 
 var _request2 = _interopRequireDefault(_request);
 
-var _remoteFileSize = require('remote-file-size');
-
-var _remoteFileSize2 = _interopRequireDefault(_remoteFileSize);
-
 var _crypto = require('crypto');
 
 var _crypto2 = _interopRequireDefault(_crypto);
