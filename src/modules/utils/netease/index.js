@@ -1,7 +1,8 @@
 import 'colors';
-import request from 'request-promise';
-import crypto from 'crypto';
+import requestPromise from 'request-promise';
+import request from 'request';
 import remoteFilesize from 'remote-file-size';
+import crypto from 'crypto';
 
 export default class Netease {
   constructor(ip) {
@@ -35,14 +36,29 @@ export default class Netease {
     return body.data.id;
   }
 
-  static getFilesize(url) {
-    console.log('Getting filesize.'.yellow);
+  static getFileInfo(url) {
+    console.log('Getting file info.'.yellow);
     return new Promise((resolve, reject) => {
-      remoteFilesize(url, (err, size) => {
-        if (err) return reject(err);
-        console.log('Filesize:'.green, size);
-        return resolve(size);
-      });
+      const hash = crypto.createHash('md5');
+      hash.setEncoding('hex');
+      let filesize = 0;
+      let md5 = '';
+      request.get(url)
+        .on('error', err => reject(err))
+        .on('response', (res) => {
+          filesize = parseInt(res.headers['content-length'], 10);
+          console.log('Filesize:'.green, filesize);
+        })
+        .pipe(hash)
+        .on('finish', () => {
+          hash.end();
+          md5 = hash.read();
+          console.log('MD5:'.green, md5);
+          return resolve({
+            filesize,
+            md5,
+          });
+        });
     });
   }
 
@@ -52,16 +68,18 @@ export default class Netease {
     body.url = urlInfo.url;
     body.br = urlInfo.bitrate;
     body.code = 200;
-    body.md5 = urlInfo.hash;
     body.type = urlInfo.type;
-    if (!urlInfo.filesize) {
+    if (!urlInfo.filesize || !urlInfo.md5) {
       try {
-        body.filesize = await Netease.getFilesize(urlInfo.origUrl || urlInfo.url);
+        const { filesize, md5 } = await Netease.getFileInfo(urlInfo.origUrl || urlInfo.url);
+        body.filesize = filesize;
+        body.md5 = md5;
       } catch (error) {
         throw new Error(error);
       }
     } else {
       body.filesize = urlInfo.filesize;
+      body.md5 = urlInfo.hash;
     }
     return body;
   }
@@ -72,16 +90,18 @@ export default class Netease {
     body.data.url = urlInfo.url;
     body.data.br = urlInfo.bitrate;
     body.data.code = 200;
-    body.data.md5 = urlInfo.hash;
     body.data.type = 'mp3';
-    if (!urlInfo.filesize) {
+    if (!urlInfo.filesize || !urlInfo.md5) {
       try {
-        body.filesize = await Netease.getFilesize(urlInfo.origUrl || urlInfo.url);
+        const { filesize, md5 } = await Netease.getFileInfo(urlInfo.origUrl || urlInfo.url);
+        body.filesize = filesize;
+        body.md5 = md5;
       } catch (error) {
         throw new Error(error);
       }
     } else {
       body.filesize = urlInfo.filesize;
+      body.md5 = urlInfo.hash;
     }
     return JSON.stringify(body);
   }
@@ -100,7 +120,7 @@ export default class Netease {
     };
     let result;
     try {
-      result = await request(options);
+      result = await requestPromise(options);
     } catch (err) {
       throw new Error(err);
     }
