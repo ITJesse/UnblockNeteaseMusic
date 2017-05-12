@@ -12,6 +12,10 @@ var _stringify = require('babel-runtime/core-js/json/stringify');
 
 var _stringify2 = _interopRequireDefault(_stringify);
 
+var _promise = require('babel-runtime/core-js/promise');
+
+var _promise2 = _interopRequireDefault(_promise);
+
 var _regenerator = require('babel-runtime/regenerator');
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
@@ -38,16 +42,20 @@ var _crypto = require('crypto');
 
 var _crypto2 = _interopRequireDefault(_crypto);
 
+var _remoteFileSize = require('remote-file-size');
+
+var _remoteFileSize2 = _interopRequireDefault(_remoteFileSize);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var netease = function () {
-  function netease(ip) {
-    (0, _classCallCheck3.default)(this, netease);
+var Netease = function () {
+  function Netease(ip) {
+    (0, _classCallCheck3.default)(this, Netease);
 
     this.baseUrl = 'http://' + ip;
   }
 
-  (0, _createClass3.default)(netease, [{
+  (0, _createClass3.default)(Netease, [{
     key: 'getSongDetail',
     value: function () {
       var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(songId) {
@@ -121,38 +129,146 @@ var netease = function () {
       return body.songs[0].artists[0].name;
     }
   }, {
+    key: 'getAlbumName',
+    value: function getAlbumName(body) {
+      body = JSON.parse(body);
+      return body.songs[0].album.name;
+    }
+  }, {
     key: 'getDownloadSongId',
     value: function getDownloadSongId(body) {
       return body.data.id;
     }
   }, {
-    key: 'modifyPlayerApiCustom',
-    value: function modifyPlayerApiCustom(urlInfo, body) {
-      console.log('Player API Injected'.green);
-      console.log('New URL is '.green + urlInfo.url);
-      body.url = urlInfo.url;
-      body.br = urlInfo.bitrate;
-      body.code = '200';
-      body.size = urlInfo.filesize;
-      body.md5 = urlInfo.hash;
-      body.type = urlInfo.type;
-
-      return body;
+    key: 'getFilesize',
+    value: function getFilesize(url) {
+      console.log('Getting filesize.'.yellow);
+      return new _promise2.default(function (resolve, reject) {
+        (0, _remoteFileSize2.default)(url, function (err, size) {
+          if (err) return reject(err);
+          console.log('Filesize:'.green, size);
+          return resolve(size);
+        });
+      });
     }
   }, {
-    key: 'modifyDownloadApiCustom',
-    value: function modifyDownloadApiCustom(urlInfo, body) {
-      console.log('Download API Injected'.green);
-      console.log('New URL is '.green + urlInfo.url);
-      body.data.url = urlInfo.url;
-      body.data.br = urlInfo.bitrate;
-      body.data.code = '200';
-      body.data.size = urlInfo.filesize;
-      body.data.md5 = urlInfo.hash;
-      body.data.type = 'mp3';
+    key: 'modifyPlayerApiCustom',
+    value: function () {
+      var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2(urlInfo, body) {
+        return _regenerator2.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                console.log('Player API Injected'.green);
+                console.log('New URL is '.green + urlInfo.url);
+                body.url = urlInfo.url;
+                body.br = urlInfo.bitrate;
+                body.code = 200;
+                body.md5 = urlInfo.hash;
+                body.type = urlInfo.type;
 
-      return (0, _stringify2.default)(body);
-    }
+                if (urlInfo.filesize) {
+                  _context2.next = 19;
+                  break;
+                }
+
+                _context2.prev = 8;
+                _context2.next = 11;
+                return Netease.getFilesize(urlInfo.origUrl || urlInfo.url);
+
+              case 11:
+                body.filesize = _context2.sent;
+                _context2.next = 17;
+                break;
+
+              case 14:
+                _context2.prev = 14;
+                _context2.t0 = _context2['catch'](8);
+                throw new Error(_context2.t0);
+
+              case 17:
+                _context2.next = 20;
+                break;
+
+              case 19:
+                body.filesize = urlInfo.filesize;
+
+              case 20:
+                return _context2.abrupt('return', body);
+
+              case 21:
+              case 'end':
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this, [[8, 14]]);
+      }));
+
+      function modifyPlayerApiCustom(_x2, _x3) {
+        return _ref2.apply(this, arguments);
+      }
+
+      return modifyPlayerApiCustom;
+    }()
+  }, {
+    key: 'modifyDownloadApiCustom',
+    value: function () {
+      var _ref3 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3(urlInfo, body) {
+        return _regenerator2.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                console.log('Download API Injected'.green);
+                console.log('New URL is '.green + urlInfo.url);
+                body.data.url = urlInfo.url;
+                body.data.br = urlInfo.bitrate;
+                body.data.code = 200;
+                body.data.md5 = urlInfo.hash;
+                body.data.type = 'mp3';
+
+                if (urlInfo.filesize) {
+                  _context3.next = 19;
+                  break;
+                }
+
+                _context3.prev = 8;
+                _context3.next = 11;
+                return Netease.getFilesize(urlInfo.origUrl || urlInfo.url);
+
+              case 11:
+                body.filesize = _context3.sent;
+                _context3.next = 17;
+                break;
+
+              case 14:
+                _context3.prev = 14;
+                _context3.t0 = _context3['catch'](8);
+                throw new Error(_context3.t0);
+
+              case 17:
+                _context3.next = 20;
+                break;
+
+              case 19:
+                body.filesize = urlInfo.filesize;
+
+              case 20:
+                return _context3.abrupt('return', (0, _stringify2.default)(body));
+
+              case 21:
+              case 'end':
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this, [[8, 14]]);
+      }));
+
+      function modifyDownloadApiCustom(_x4, _x5) {
+        return _ref3.apply(this, arguments);
+      }
+
+      return modifyDownloadApiCustom;
+    }()
   }, {
     key: 'decryptLinuxForwardApi',
     value: function decryptLinuxForwardApi(eparams) {
@@ -192,7 +308,7 @@ var netease = function () {
       return Buffer.concat(cipherChunks, totalLength);
     }
   }]);
-  return netease;
+  return Netease;
 }();
 
-exports.default = netease;
+exports.default = Netease;

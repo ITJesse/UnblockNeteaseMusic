@@ -52,51 +52,50 @@ var Kugou = function () {
   }, {
     key: 'search',
     value: function () {
-      var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(name, artist) {
-        var songName, options, data, _result, result, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, e, filesize, hash, bitrate;
+      var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(keyword) {
+        var options, data, _result, result, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, e, filesize, hash, bitrate;
 
         return _regenerator2.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                songName = encodeURIComponent(artist + ' ' + name);
                 options = {
-                  url: 'http://mobilecdn.kugou.com/api/v3/search/song?format=json&keyword=' + songName + '&page=1&pagesize=1&showtype=1'
+                  url: 'http://mobilecdn.kugou.com/api/v3/search/song?format=json&keyword=' + encodeURIComponent(keyword) + '&page=1&pagesize=1&showtype=1'
                 };
                 data = void 0;
-                _context.prev = 3;
-                _context.next = 6;
+                _context.prev = 2;
+                _context.next = 5;
                 return common.sendRequest(options);
 
-              case 6:
+              case 5:
                 _result = _context.sent;
 
                 data = JSON.parse(_result.body);
-                _context.next = 13;
+                _context.next = 12;
                 break;
 
-              case 10:
-                _context.prev = 10;
-                _context.t0 = _context['catch'](3);
+              case 9:
+                _context.prev = 9;
+                _context.t0 = _context['catch'](2);
                 throw new Error(_context.t0);
 
-              case 13:
+              case 12:
                 result = [];
 
                 if (!(data.status === 1 && data.data.info.length > 0)) {
-                  _context.next = 56;
+                  _context.next = 55;
                   break;
                 }
 
                 _iteratorNormalCompletion = true;
                 _didIteratorError = false;
                 _iteratorError = undefined;
-                _context.prev = 18;
+                _context.prev = 17;
                 _iterator = (0, _getIterator3.default)(data.data.info);
 
-              case 20:
+              case 19:
                 if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
-                  _context.next = 42;
+                  _context.next = 41;
                   break;
                 }
 
@@ -112,32 +111,32 @@ var Kugou = function () {
                 // } else if (Object.prototype.hasOwnProperty.call(e, '320hash')) {
 
                 if (!(Object.prototype.hasOwnProperty.call(e, '320hash') && e['320hash'].lenght > 0)) {
-                  _context.next = 31;
+                  _context.next = 30;
                   break;
                 }
 
                 bitrate = '320000';
                 filesize = e['320filesize'];
                 hash = e['320hash'];
-                _context.next = 38;
+                _context.next = 37;
                 break;
 
-              case 31:
+              case 30:
                 if (!(Object.prototype.hasOwnProperty.call(e, 'hash') && e.hash.lenght > 0)) {
-                  _context.next = 37;
+                  _context.next = 36;
                   break;
                 }
 
                 bitrate = '128000';
                 filesize = e.filesize;
                 hash = e.hash;
-                _context.next = 38;
+                _context.next = 37;
                 break;
 
-              case 37:
-                return _context.abrupt('continue', 39);
+              case 36:
+                return _context.abrupt('continue', 38);
 
-              case 38:
+              case 37:
                 result.push({
                   name: e.filename,
                   artist: e.singername,
@@ -147,57 +146,57 @@ var Kugou = function () {
                   hash: hash
                 });
 
-              case 39:
+              case 38:
                 _iteratorNormalCompletion = true;
-                _context.next = 20;
+                _context.next = 19;
                 break;
 
-              case 42:
-                _context.next = 48;
+              case 41:
+                _context.next = 47;
                 break;
 
-              case 44:
-                _context.prev = 44;
-                _context.t1 = _context['catch'](18);
+              case 43:
+                _context.prev = 43;
+                _context.t1 = _context['catch'](17);
                 _didIteratorError = true;
                 _iteratorError = _context.t1;
 
-              case 48:
+              case 47:
+                _context.prev = 47;
                 _context.prev = 48;
-                _context.prev = 49;
 
                 if (!_iteratorNormalCompletion && _iterator.return) {
                   _iterator.return();
                 }
 
-              case 51:
-                _context.prev = 51;
+              case 50:
+                _context.prev = 50;
 
                 if (!_didIteratorError) {
-                  _context.next = 54;
+                  _context.next = 53;
                   break;
                 }
 
                 throw _iteratorError;
 
+              case 53:
+                return _context.finish(50);
+
               case 54:
-                return _context.finish(51);
+                return _context.finish(47);
 
               case 55:
-                return _context.finish(48);
-
-              case 56:
                 return _context.abrupt('return', result);
 
-              case 57:
+              case 56:
               case 'end':
                 return _context.stop();
             }
           }
-        }, _callee, this, [[3, 10], [18, 44, 48, 56], [49,, 51, 55]]);
+        }, _callee, this, [[2, 9], [17, 43, 47, 55], [48,, 50, 54]]);
       }));
 
-      function search(_x, _x2) {
+      function search(_x) {
         return _ref.apply(this, arguments);
       }
 
@@ -252,7 +251,7 @@ var Kugou = function () {
         }, _callee2, this, [[4, 11]]);
       }));
 
-      function getUrl(_x3) {
+      function getUrl(_x2) {
         return _ref2.apply(this, arguments);
       }
 

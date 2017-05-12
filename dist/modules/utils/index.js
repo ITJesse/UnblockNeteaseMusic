@@ -74,26 +74,27 @@ var Utils = function () {
     }
   }, {
     key: 'batchSeachMusic',
-    value: function batchSeachMusic(songName, artist) {
+    value: function batchSeachMusic(songName, artist, album) {
       var _this2 = this;
 
       return new _promise2.default(function (resolve, reject) {
         _async2.default.map(_this2.plugins, function () {
           var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(plugin, callback) {
-            var searchResult, searchName, trueName;
+            var keyword, searchResult, searchName, trueName;
             return _regenerator2.default.wrap(function _callee$(_context) {
               while (1) {
                 switch (_context.prev = _context.next) {
                   case 0:
                     console.log(('Search from ' + plugin.name).green);
-                    _context.next = 3;
-                    return plugin.search(songName, artist);
+                    keyword = artist + ' ' + songName + ' ' + album;
+                    _context.next = 4;
+                    return plugin.search(keyword);
 
-                  case 3:
+                  case 4:
                     searchResult = _context.sent;
 
                     if (!(searchResult.length > 0)) {
-                      _context.next = 9;
+                      _context.next = 10;
                       break;
                     }
 
@@ -102,7 +103,7 @@ var Utils = function () {
                     trueName = songName.replace(/ /g, '').toLowerCase();
 
                     if (!(searchName.indexOf(trueName) !== -1)) {
-                      _context.next = 9;
+                      _context.next = 10;
                       break;
                     }
 
@@ -111,11 +112,11 @@ var Utils = function () {
                       searchResult: searchResult[0]
                     }));
 
-                  case 9:
+                  case 10:
                     console.log(('No resource found from ' + plugin.name).yellow);
                     return _context.abrupt('return', callback(null));
 
-                  case 11:
+                  case 12:
                   case 'end':
                     return _context.stop();
                 }
@@ -141,7 +142,7 @@ var Utils = function () {
     key: 'getUrlInfo',
     value: function () {
       var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2(songId) {
-        var detail, songName, artist, result, plugin, data, songInfo, url;
+        var detail, songName, artist, album, result, plugin, data, songInfo, url;
         return _regenerator2.default.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -164,25 +165,27 @@ var Utils = function () {
               case 10:
                 songName = _netease2.default.getSongName(detail);
                 artist = _netease2.default.getArtistName(detail);
+                album = _netease2.default.getAlbumName(detail);
 
                 console.log('Song name: '.green + songName);
                 console.log('Artist: '.green + artist);
+                console.log('Album: '.green + album);
                 result = void 0;
-                _context2.prev = 15;
-                _context2.next = 18;
-                return this.batchSeachMusic(songName, artist);
+                _context2.prev = 17;
+                _context2.next = 20;
+                return this.batchSeachMusic(songName, artist, album);
 
-              case 18:
+              case 20:
                 result = _context2.sent;
-                _context2.next = 24;
+                _context2.next = 26;
                 break;
 
-              case 21:
-                _context2.prev = 21;
-                _context2.t1 = _context2['catch'](15);
+              case 23:
+                _context2.prev = 23;
+                _context2.t1 = _context2['catch'](17);
                 throw new Error(_context2.t1);
 
-              case 24:
+              case 26:
                 result = result.sort(function (a, b) {
                   if (!a) {
                     return 1;
@@ -203,7 +206,7 @@ var Utils = function () {
                 });
 
                 if (!result[0]) {
-                  _context2.next = 42;
+                  _context2.next = 45;
                   break;
                 }
 
@@ -216,37 +219,39 @@ var Utils = function () {
                   type: data.type
                 };
                 url = void 0;
-                _context2.prev = 30;
-                _context2.next = 33;
+                _context2.prev = 32;
+                _context2.next = 35;
                 return plugin.getUrl(data);
 
-              case 33:
+              case 35:
                 url = _context2.sent;
-                _context2.next = 39;
+                _context2.next = 41;
                 break;
 
-              case 36:
-                _context2.prev = 36;
-                _context2.t2 = _context2['catch'](30);
+              case 38:
+                _context2.prev = 38;
+                _context2.t2 = _context2['catch'](32);
                 throw new Error(_context2.t2);
 
-              case 39:
+              case 41:
+                songInfo.origUrl = null;
                 // 魔改 URL 应对某司防火墙
                 if (_config2.default.rewriteUrl) {
-                  url = url.replace(plugin.baseUrl, 'music.163.com/' + plugin.name.replace(/ /g, '').toLowerCase());
+                  songInfo.origUrl = url;
+                  url = url.replace(plugin.baseUrl, 'm8.music.126.net/' + plugin.name.replace(/ /g, '').toLowerCase());
                 }
                 songInfo.url = url;
                 return _context2.abrupt('return', songInfo);
 
-              case 42:
+              case 45:
                 return _context2.abrupt('return', null);
 
-              case 43:
+              case 46:
               case 'end':
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[1, 7], [15, 21], [30, 36]]);
+        }, _callee2, this, [[1, 7], [17, 23], [32, 38]]);
       }));
 
       function getUrlInfo(_x3) {

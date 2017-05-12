@@ -69,15 +69,27 @@ var player = exports.player = function () {
             throw new Error(_context.t0);
 
           case 17:
-            if (urlInfo) {
-              data.data[0] = _netease2.default.modifyPlayerApiCustom(urlInfo, data.data[0]);
-            } else {
-              console.log('No resource.'.red);
+            if (!urlInfo) {
+              _context.next = 23;
+              break;
             }
+
+            _context.next = 20;
+            return _netease2.default.modifyPlayerApiCustom(urlInfo, data.data[0]);
+
+          case 20:
+            data.data[0] = _context.sent;
+            _context.next = 24;
+            break;
+
+          case 23:
+            console.log('No resource.'.red);
+
+          case 24:
             ctx.body = (0, _stringify2.default)(data);
             return _context.abrupt('return', next());
 
-          case 20:
+          case 26:
           case 'end':
             return _context.stop();
         }
@@ -126,14 +138,26 @@ var download = exports.download = function () {
             throw new Error(_context2.t0);
 
           case 15:
-            if (urlInfo) {
-              ctx.body = _netease2.default.modifyDownloadApiCustom(urlInfo, data);
-            } else {
-              console.log('No resource.'.red);
+            if (!urlInfo) {
+              _context2.next = 21;
+              break;
             }
+
+            _context2.next = 18;
+            return _netease2.default.modifyDownloadApiCustom(urlInfo, data);
+
+          case 18:
+            ctx.body = _context2.sent;
+            _context2.next = 22;
+            break;
+
+          case 21:
+            console.log('No resource.'.red);
+
+          case 22:
             return _context2.abrupt('return', next);
 
-          case 17:
+          case 23:
           case 'end':
             return _context2.stop();
         }

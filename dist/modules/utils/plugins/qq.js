@@ -133,8 +133,8 @@ var QQ = function () {
   }, {
     key: 'search',
     value: function () {
-      var _ref3 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3(name, artist) {
-        var songName, options, data, _result, result, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, e, list, bitrate, prefix, type;
+      var _ref3 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3(keyword) {
+        var options, data, _result, result, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, e, list, bitrate, prefix, type;
 
         return _regenerator2.default.wrap(function _callee3$(_context3) {
           while (1) {
@@ -162,63 +162,62 @@ var QQ = function () {
                 return _context3.abrupt('return', console.log('QQ Music module is not ready.'.red));
 
               case 10:
-                songName = encodeURIComponent(artist + ' ' + name);
                 options = {
-                  url: 'http://s.music.qq.com/fcgi-bin/music_search_new_platform?n=1&cr=1&loginUin=0&format=json&inCharset=utf-8&outCharset=utf-8&p=1&catZhida=0&w=' + songName
+                  url: 'http://s.music.qq.com/fcgi-bin/music_search_new_platform?n=1&cr=1&loginUin=0&format=json&inCharset=utf-8&outCharset=utf-8&p=1&catZhida=0&w=' + encodeURIComponent(keyword)
                 };
                 data = void 0;
-                _context3.prev = 13;
-                _context3.next = 16;
+                _context3.prev = 12;
+                _context3.next = 15;
                 return common.sendRequest(options);
 
-              case 16:
+              case 15:
                 _result = _context3.sent;
 
                 data = JSON.parse(_result.body);
-                _context3.next = 23;
+                _context3.next = 22;
                 break;
 
-              case 20:
-                _context3.prev = 20;
-                _context3.t1 = _context3['catch'](13);
+              case 19:
+                _context3.prev = 19;
+                _context3.t1 = _context3['catch'](12);
                 throw new Error(_context3.t1);
 
-              case 23:
+              case 22:
                 result = [];
 
                 if (!(data.code === 0 && data.data.song.list.length > 0)) {
-                  _context3.next = 44;
+                  _context3.next = 43;
                   break;
                 }
 
                 _iteratorNormalCompletion = true;
                 _didIteratorError = false;
                 _iteratorError = undefined;
-                _context3.prev = 28;
+                _context3.prev = 27;
 
                 for (_iterator = (0, _getIterator3.default)(data.data.song.list); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                   e = _step.value;
                   list = data.data.song.list[0].f.split('|');
-                  // const bitrate = parseInt(list[13], 10);
+                  bitrate = parseInt(list[13], 10) || 320000;
+                  // let bitrate = 320000;
 
-                  bitrate = 320000;
                   prefix = 'M800';
                   type = 'mp3';
-                  // if (bitrate >= 320000) {
-                  //   prefix = 'M800';
-                  //   type = 'mp3';
-                  // } else if (bitrate >= 128000) {
-                  //   prefix = 'M500';
-                  //   type = 'mp3';
-                  // } else {
-                  //   prefix = 'C200';
-                  //   type = 'm4a';
-                  // }
 
+                  if (bitrate >= 320000) {
+                    prefix = 'M800';
+                    type = 'mp3';
+                  } else if (bitrate >= 128000) {
+                    prefix = 'M500';
+                    type = 'mp3';
+                  } else {
+                    prefix = 'C200';
+                    type = 'm4a';
+                  }
                   result.push({
                     name: e.fsong,
                     artist: e.fsinger,
-                    filesize: list[11],
+                    filesize: parseInt(list[11], 10),
                     hash: '',
                     mid: list[20],
                     bitrate: String(bitrate),
@@ -226,51 +225,51 @@ var QQ = function () {
                     type: type
                   });
                 }
-                _context3.next = 36;
+                _context3.next = 35;
                 break;
 
-              case 32:
-                _context3.prev = 32;
-                _context3.t2 = _context3['catch'](28);
+              case 31:
+                _context3.prev = 31;
+                _context3.t2 = _context3['catch'](27);
                 _didIteratorError = true;
                 _iteratorError = _context3.t2;
 
-              case 36:
+              case 35:
+                _context3.prev = 35;
                 _context3.prev = 36;
-                _context3.prev = 37;
 
                 if (!_iteratorNormalCompletion && _iterator.return) {
                   _iterator.return();
                 }
 
-              case 39:
-                _context3.prev = 39;
+              case 38:
+                _context3.prev = 38;
 
                 if (!_didIteratorError) {
-                  _context3.next = 42;
+                  _context3.next = 41;
                   break;
                 }
 
                 throw _iteratorError;
 
+              case 41:
+                return _context3.finish(38);
+
               case 42:
-                return _context3.finish(39);
+                return _context3.finish(35);
 
               case 43:
-                return _context3.finish(36);
-
-              case 44:
                 return _context3.abrupt('return', result);
 
-              case 45:
+              case 44:
               case 'end':
                 return _context3.stop();
             }
           }
-        }, _callee3, this, [[0, 5], [13, 20], [28, 32, 36, 44], [37,, 39, 43]]);
+        }, _callee3, this, [[0, 5], [12, 19], [27, 31, 35, 43], [36,, 38, 42]]);
       }));
 
-      function search(_x, _x2) {
+      function search(_x) {
         return _ref3.apply(this, arguments);
       }
 
@@ -296,7 +295,7 @@ var QQ = function () {
         }, _callee4, this);
       }));
 
-      function getUrl(_x3) {
+      function getUrl(_x2) {
         return _ref4.apply(this, arguments);
       }
 

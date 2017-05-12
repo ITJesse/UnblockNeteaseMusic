@@ -8,6 +8,10 @@ var _regenerator = require('babel-runtime/regenerator');
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
 var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
@@ -30,7 +34,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var middleware = function () {
   var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(ctx, next) {
-    var req, rawBody, ip, url, _rawBody, options, result, headers, body;
+    var req, rawBody, ip, url, newHeader, _rawBody, options, result, headers, body;
 
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
@@ -57,20 +61,20 @@ var middleware = function () {
             return next();
 
           case 8:
-            _context.next = 30;
+            _context.next = 28;
             break;
 
           case 10:
             if (!(req.method === 'POST')) {
-              _context.next = 30;
+              _context.next = 28;
               break;
             }
 
             ip = _config2.default.forceIp ? _config2.default.forceIp : '223.252.199.7';
             url = 'http://' + ip + req.url;
-
-            req.headers.host = 'music.163.com';
-
+            newHeader = (0, _extends3.default)({}, req.headers, {
+              host: 'music.163.com'
+            });
             _context.next = 16;
             return (0, _rawBody3.default)(ctx.req, {
               length: ctx.length,
@@ -79,12 +83,9 @@ var middleware = function () {
 
           case 16:
             _rawBody = _context.sent;
-
-
-            delete req.headers['x-real-ip'];
             options = {
               url: url,
-              headers: req.headers,
+              headers: newHeader,
               method: 'post',
               encoding: null,
               gzip: true
@@ -98,22 +99,21 @@ var middleware = function () {
                 console.log('Body is not string.');
               }
             }
-            _context.next = 22;
+            _context.next = 21;
             return common.sendRequest(options);
 
-          case 22:
+          case 21:
             result = _context.sent;
             headers = result.headers;
             body = result.body;
-
-            delete headers['content-encoding'];
             // console.log(body);
+
             ctx.set(headers);
             ctx.body = body;
-            _context.next = 30;
+            _context.next = 28;
             return next();
 
-          case 30:
+          case 28:
           case 'end':
             return _context.stop();
         }
