@@ -44,7 +44,7 @@ class QQ {
     }
   }
 
-  async search(name, artist) {
+  async search(keyword) {
     try {
       await this.getVKey();
     } catch (err) {
@@ -54,9 +54,8 @@ class QQ {
     if (!this.vkey || this.vkey.length !== 112) {
       return console.log('QQ Music module is not ready.'.red);
     }
-    const songName = encodeURIComponent(`${artist} ${name}`);
     const options = {
-      url: `http://s.music.qq.com/fcgi-bin/music_search_new_platform?n=1&cr=1&loginUin=0&format=json&inCharset=utf-8&outCharset=utf-8&p=1&catZhida=0&w=${songName}`,
+      url: `http://s.music.qq.com/fcgi-bin/music_search_new_platform?n=1&cr=1&loginUin=0&format=json&inCharset=utf-8&outCharset=utf-8&p=1&catZhida=0&w=${encodeURIComponent(keyword)}`,
     };
     let data;
     try {
@@ -69,24 +68,24 @@ class QQ {
     if (data.code === 0 && data.data.song.list.length > 0) {
       for (const e of data.data.song.list) {
         const list = data.data.song.list[0].f.split('|');
-        // const bitrate = parseInt(list[13], 10);
-        const bitrate = 320000;
-        const prefix = 'M800';
-        const type = 'mp3';
-        // if (bitrate >= 320000) {
-        //   prefix = 'M800';
-        //   type = 'mp3';
-        // } else if (bitrate >= 128000) {
-        //   prefix = 'M500';
-        //   type = 'mp3';
-        // } else {
-        //   prefix = 'C200';
-        //   type = 'm4a';
-        // }
+        const bitrate = parseInt(list[13], 10) || 320000;
+        // let bitrate = 320000;
+        let prefix = 'M800';
+        let type = 'mp3';
+        if (bitrate >= 320000) {
+          prefix = 'M800';
+          type = 'mp3';
+        } else if (bitrate >= 128000) {
+          prefix = 'M500';
+          type = 'mp3';
+        } else {
+          prefix = 'C200';
+          type = 'm4a';
+        }
         result.push({
           name: e.fsong,
           artist: e.fsinger,
-          filesize: list[11],
+          filesize: parseInt(list[11], 10),
           hash: '',
           mid: list[20],
           bitrate: String(bitrate),

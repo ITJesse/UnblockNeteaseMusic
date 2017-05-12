@@ -1,8 +1,9 @@
 import 'colors';
 import request from 'request-promise';
 import crypto from 'crypto';
+import remoteFilesize from 'remote-file-size';
 
-export default class netease {
+export default class Netease {
   constructor(ip) {
     this.baseUrl = `http://${ip}`;
   }
@@ -25,33 +26,63 @@ export default class netease {
     return body.songs[0].artists[0].name;
   }
 
+  static getAlbumName(body) {
+    body = JSON.parse(body);
+    return body.songs[0].album.name;
+  }
+
   static getDownloadSongId(body) {
     return body.data.id;
   }
 
-  static modifyPlayerApiCustom(urlInfo, body) {
+  static getFilesize(url) {
+    console.log('Getting filesize.'.yellow);
+    return new Promise((resolve, reject) => {
+      remoteFilesize(url, (err, size) => {
+        if (err) return reject(err);
+        console.log('Filesize:'.green, size);
+        return resolve(size);
+      });
+    });
+  }
+
+  static async modifyPlayerApiCustom(urlInfo, body) {
     console.log('Player API Injected'.green);
     console.log('New URL is '.green + urlInfo.url);
     body.url = urlInfo.url;
     body.br = urlInfo.bitrate;
-    body.code = '200';
-    body.size = urlInfo.filesize;
+    body.code = 200;
     body.md5 = urlInfo.hash;
     body.type = urlInfo.type;
-
+    if (!urlInfo.filesize) {
+      try {
+        body.filesize = await Netease.getFilesize(urlInfo.origUrl || urlInfo.url);
+      } catch (error) {
+        throw new Error(error);
+      }
+    } else {
+      body.filesize = urlInfo.filesize;
+    }
     return body;
   }
 
-  static modifyDownloadApiCustom(urlInfo, body) {
+  static async modifyDownloadApiCustom(urlInfo, body) {
     console.log('Download API Injected'.green);
     console.log('New URL is '.green + urlInfo.url);
     body.data.url = urlInfo.url;
     body.data.br = urlInfo.bitrate;
-    body.data.code = '200';
-    body.data.size = urlInfo.filesize;
+    body.data.code = 200;
     body.data.md5 = urlInfo.hash;
     body.data.type = 'mp3';
-
+    if (!urlInfo.filesize) {
+      try {
+        body.filesize = await Netease.getFilesize(urlInfo.origUrl || urlInfo.url);
+      } catch (error) {
+        throw new Error(error);
+      }
+    } else {
+      body.filesize = urlInfo.filesize;
+    }
     return JSON.stringify(body);
   }
 

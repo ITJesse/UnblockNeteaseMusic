@@ -16,10 +16,9 @@ class Kugou {
     };
   }
 
-  async search(name, artist) {
-    const songName = encodeURIComponent(`${artist} ${name}`);
+  async search(keyword) {
     const options = {
-      url: `http://mobilecdn.kugou.com/api/v3/search/song?format=json&keyword=${songName}&page=1&pagesize=1&showtype=1`,
+      url: `http://mobilecdn.kugou.com/api/v3/search/song?format=json&keyword=${encodeURIComponent(keyword)}&page=1&pagesize=1&showtype=1`,
     };
     let data;
     try {

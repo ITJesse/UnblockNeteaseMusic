@@ -23,7 +23,7 @@ export const player = async (ctx, next) => {
     throw new Error(err);
   }
   if (urlInfo) {
-    data.data[0] = Netease.modifyPlayerApiCustom(urlInfo, data.data[0]);
+    data.data[0] = await Netease.modifyPlayerApiCustom(urlInfo, data.data[0]);
   } else {
     console.log('No resource.'.red);
   }
@@ -46,7 +46,7 @@ export const download = async (ctx, next) => {
     throw new Error(err);
   }
   if (urlInfo) {
-    ctx.body = Netease.modifyDownloadApiCustom(urlInfo, data);
+    ctx.body = await Netease.modifyDownloadApiCustom(urlInfo, data);
   } else {
     console.log('No resource.'.red);
   }

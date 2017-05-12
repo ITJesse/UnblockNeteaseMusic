@@ -23,11 +23,12 @@ export default class Utils {
     // console.log(this.plugins);
   }
 
-  batchSeachMusic(songName, artist) {
+  batchSeachMusic(songName, artist, album) {
     return new Promise((resolve, reject) => {
       async.map(this.plugins, async (plugin, callback) => {
         console.log(`Search from ${plugin.name}`.green);
-        const searchResult = await plugin.search(songName, artist);
+        const keyword = `${artist} ${songName} ${album}`;
+        const searchResult = await plugin.search(keyword);
         if (searchResult.length > 0) {
           // console.log(searchResult);
           const searchName = searchResult[0].name.replace(/ /g, '').toLowerCase();
@@ -60,11 +61,13 @@ export default class Utils {
     }
     const songName = Netease.getSongName(detail);
     const artist = Netease.getArtistName(detail);
+    const album = Netease.getAlbumName(detail);
     console.log('Song name: '.green + songName);
     console.log('Artist: '.green + artist);
+    console.log('Album: '.green + album);
     let result;
     try {
-      result = await this.batchSeachMusic(songName, artist);
+      result = await this.batchSeachMusic(songName, artist, album);
     } catch (err) {
       throw new Error(err);
     }
@@ -101,9 +104,11 @@ export default class Utils {
       } catch (err) {
         throw new Error(err);
       }
+      songInfo.origUrl = null;
       // 魔改 URL 应对某司防火墙
       if (config.rewriteUrl) {
-        url = url.replace(plugin.baseUrl, `music.163.com/${plugin.name.replace(/ /g, '').toLowerCase()}`);
+        songInfo.origUrl = url;
+        url = url.replace(plugin.baseUrl, `m8.music.126.net/${plugin.name.replace(/ /g, '').toLowerCase()}`);
       }
       songInfo.url = url;
       return songInfo;
