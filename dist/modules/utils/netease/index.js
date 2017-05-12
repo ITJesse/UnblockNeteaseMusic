@@ -195,27 +195,27 @@ var Netease = function () {
                 body.br = urlInfo.bitrate;
                 body.code = 200;
                 body.type = urlInfo.type;
+                body.md5 = urlInfo.hash;
 
-                if (!(!urlInfo.filesize || !urlInfo.md5)) {
+                if (urlInfo.filesize) {
                   _context2.next = 20;
                   break;
                 }
 
-                _context2.prev = 7;
-                _context2.next = 10;
+                _context2.prev = 8;
+                _context2.next = 11;
                 return Netease.getFilesize(urlInfo.origUrl || urlInfo.url);
 
-              case 10:
+              case 11:
                 filesize = _context2.sent;
 
                 body.filesize = filesize;
-                body.md5 = urlInfo.hash;
                 _context2.next = 18;
                 break;
 
               case 15:
                 _context2.prev = 15;
-                _context2.t0 = _context2['catch'](7);
+                _context2.t0 = _context2['catch'](8);
                 throw new Error(_context2.t0);
 
               case 18:
@@ -234,7 +234,7 @@ var Netease = function () {
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[7, 15]]);
+        }, _callee2, this, [[8, 15]]);
       }));
 
       function modifyPlayerApiCustom(_x2, _x3) {
@@ -257,47 +257,46 @@ var Netease = function () {
                 body.data.url = urlInfo.url;
                 body.data.br = urlInfo.bitrate;
                 body.data.code = 200;
-                body.data.type = 'mp3';
+                body.data.type = urlInfo.type;
+                body.md5 = urlInfo.hash;
 
-                if (!(!urlInfo.filesize || !urlInfo.md5)) {
+                if (urlInfo.filesize) {
                   _context3.next = 20;
                   break;
                 }
 
-                _context3.prev = 7;
-                _context3.next = 10;
+                _context3.prev = 8;
+                _context3.next = 11;
                 return Netease.getFilesize(urlInfo.origUrl || urlInfo.url);
 
-              case 10:
+              case 11:
                 filesize = _context3.sent;
 
                 body.filesize = filesize;
-                body.md5 = urlInfo.hash;
                 _context3.next = 18;
                 break;
 
               case 15:
                 _context3.prev = 15;
-                _context3.t0 = _context3['catch'](7);
+                _context3.t0 = _context3['catch'](8);
                 throw new Error(_context3.t0);
 
               case 18:
-                _context3.next = 22;
+                _context3.next = 21;
                 break;
 
               case 20:
                 body.filesize = urlInfo.filesize;
-                body.md5 = urlInfo.hash;
 
-              case 22:
+              case 21:
                 return _context3.abrupt('return', (0, _stringify2.default)(body));
 
-              case 23:
+              case 22:
               case 'end':
                 return _context3.stop();
             }
           }
-        }, _callee3, this, [[7, 15]]);
+        }, _callee3, this, [[8, 15]]);
       }));
 
       function modifyDownloadApiCustom(_x4, _x5) {

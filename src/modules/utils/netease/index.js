@@ -80,14 +80,14 @@ export default class Netease {
     body.br = urlInfo.bitrate;
     body.code = 200;
     body.type = urlInfo.type;
-    if (!urlInfo.filesize || !urlInfo.md5) {
+    body.md5 = urlInfo.hash;
+    if (!urlInfo.filesize) {
       try {
         // const { filesize, md5 } = await Netease.getFileInfo(urlInfo.origUrl || urlInfo.url);
         // body.filesize = filesize;
         // body.md5 = md5;
         const filesize = await Netease.getFilesize(urlInfo.origUrl || urlInfo.url);
         body.filesize = filesize;
-        body.md5 = urlInfo.hash;
       } catch (error) {
         throw new Error(error);
       }
@@ -104,21 +104,20 @@ export default class Netease {
     body.data.url = urlInfo.url;
     body.data.br = urlInfo.bitrate;
     body.data.code = 200;
-    body.data.type = 'mp3';
-    if (!urlInfo.filesize || !urlInfo.md5) {
+    body.data.type = urlInfo.type;
+    body.md5 = urlInfo.hash;
+    if (!urlInfo.filesize) {
       try {
         // const { filesize, md5 } = await Netease.getFileInfo(urlInfo.origUrl || urlInfo.url);
         // body.filesize = filesize;
         // body.md5 = md5;
         const filesize = await Netease.getFilesize(urlInfo.origUrl || urlInfo.url);
         body.filesize = filesize;
-        body.md5 = urlInfo.hash;
       } catch (error) {
         throw new Error(error);
       }
     } else {
       body.filesize = urlInfo.filesize;
-      body.md5 = urlInfo.hash;
     }
     return JSON.stringify(body);
   }
