@@ -2,6 +2,7 @@ import 'colors';
 import requestPromise from 'request-promise';
 import request from 'request';
 import crypto from 'crypto';
+import remoteFilesize from 'remote-file-size';
 
 export default class Netease {
   constructor(ip) {
@@ -33,6 +34,17 @@ export default class Netease {
 
   static getDownloadSongId(body) {
     return body.data.id;
+  }
+
+  static getFilesize(url) {
+    console.log('Getting filesize.'.yellow);
+    return new Promise((resolve, reject) => {
+      remoteFilesize(url, (err, size) => {
+        if (err) return reject(err);
+        console.log('Filesize:'.green, size);
+        return resolve(size);
+      });
+    });
   }
 
   static getFileInfo(url) {
@@ -70,9 +82,12 @@ export default class Netease {
     body.type = urlInfo.type;
     if (!urlInfo.filesize || !urlInfo.md5) {
       try {
-        const { filesize, md5 } = await Netease.getFileInfo(urlInfo.origUrl || urlInfo.url);
+        // const { filesize, md5 } = await Netease.getFileInfo(urlInfo.origUrl || urlInfo.url);
+        // body.filesize = filesize;
+        // body.md5 = md5;
+        const filesize = await Netease.getFilesize(urlInfo.origUrl || urlInfo.url);
         body.filesize = filesize;
-        body.md5 = md5;
+        body.md5 = urlInfo.hash;
       } catch (error) {
         throw new Error(error);
       }
@@ -92,9 +107,12 @@ export default class Netease {
     body.data.type = 'mp3';
     if (!urlInfo.filesize || !urlInfo.md5) {
       try {
-        const { filesize, md5 } = await Netease.getFileInfo(urlInfo.origUrl || urlInfo.url);
+        // const { filesize, md5 } = await Netease.getFileInfo(urlInfo.origUrl || urlInfo.url);
+        // body.filesize = filesize;
+        // body.md5 = md5;
+        const filesize = await Netease.getFilesize(urlInfo.origUrl || urlInfo.url);
         body.filesize = filesize;
-        body.md5 = md5;
+        body.md5 = urlInfo.hash;
       } catch (error) {
         throw new Error(error);
       }
