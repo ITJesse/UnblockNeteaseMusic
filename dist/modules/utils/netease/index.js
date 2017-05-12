@@ -38,13 +38,17 @@ var _requestPromise = require('request-promise');
 
 var _requestPromise2 = _interopRequireDefault(_requestPromise);
 
-var _crypto = require('crypto');
+var _request = require('request');
 
-var _crypto2 = _interopRequireDefault(_crypto);
+var _request2 = _interopRequireDefault(_request);
 
 var _remoteFileSize = require('remote-file-size');
 
 var _remoteFileSize2 = _interopRequireDefault(_remoteFileSize);
+
+var _crypto = require('crypto');
+
+var _crypto2 = _interopRequireDefault(_crypto);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -140,14 +144,27 @@ var Netease = function () {
       return body.data.id;
     }
   }, {
-    key: 'getFilesize',
-    value: function getFilesize(url) {
-      console.log('Getting filesize.'.yellow);
+    key: 'getFileInfo',
+    value: function getFileInfo(url) {
+      console.log('Getting file info.'.yellow);
       return new _promise2.default(function (resolve, reject) {
-        (0, _remoteFileSize2.default)(url, function (err, size) {
-          if (err) return reject(err);
-          console.log('Filesize:'.green, size);
-          return resolve(size);
+        var hash = _crypto2.default.createHash('md5');
+        hash.setEncoding('hex');
+        var filesize = 0;
+        var md5 = '';
+        _request2.default.get(url).on('error', function (err) {
+          return reject(err);
+        }).on('response', function (res) {
+          filesize = parseInt(res.headers['content-length'], 10);
+          console.log('Filesize:'.green, filesize);
+        }).pipe(hash).on('finish', function () {
+          hash.end();
+          md5 = hash.read();
+          console.log('MD5:'.green, md5);
+          return resolve({
+            filesize: filesize,
+            md5: md5
+          });
         });
       });
     }
@@ -155,6 +172,8 @@ var Netease = function () {
     key: 'modifyPlayerApiCustom',
     value: function () {
       var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2(urlInfo, body) {
+        var _ref3, filesize, md5;
+
         return _regenerator2.default.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -164,44 +183,49 @@ var Netease = function () {
                 body.url = urlInfo.url;
                 body.br = urlInfo.bitrate;
                 body.code = 200;
-                body.md5 = urlInfo.hash;
                 body.type = urlInfo.type;
 
-                if (urlInfo.filesize) {
-                  _context2.next = 19;
+                if (!(!urlInfo.filesize || !urlInfo.md5)) {
+                  _context2.next = 22;
                   break;
                 }
 
-                _context2.prev = 8;
-                _context2.next = 11;
-                return Netease.getFilesize(urlInfo.origUrl || urlInfo.url);
+                _context2.prev = 7;
+                _context2.next = 10;
+                return Netease.getFileInfo(urlInfo.origUrl || urlInfo.url);
 
-              case 11:
-                body.filesize = _context2.sent;
-                _context2.next = 17;
-                break;
+              case 10:
+                _ref3 = _context2.sent;
+                filesize = _ref3.filesize;
+                md5 = _ref3.md5;
 
-              case 14:
-                _context2.prev = 14;
-                _context2.t0 = _context2['catch'](8);
-                throw new Error(_context2.t0);
-
-              case 17:
+                body.filesize = filesize;
+                body.md5 = md5;
                 _context2.next = 20;
                 break;
 
-              case 19:
-                body.filesize = urlInfo.filesize;
+              case 17:
+                _context2.prev = 17;
+                _context2.t0 = _context2['catch'](7);
+                throw new Error(_context2.t0);
 
               case 20:
+                _context2.next = 24;
+                break;
+
+              case 22:
+                body.filesize = urlInfo.filesize;
+                body.md5 = urlInfo.hash;
+
+              case 24:
                 return _context2.abrupt('return', body);
 
-              case 21:
+              case 25:
               case 'end':
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[8, 14]]);
+        }, _callee2, this, [[7, 17]]);
       }));
 
       function modifyPlayerApiCustom(_x2, _x3) {
@@ -213,7 +237,9 @@ var Netease = function () {
   }, {
     key: 'modifyDownloadApiCustom',
     value: function () {
-      var _ref3 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3(urlInfo, body) {
+      var _ref4 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3(urlInfo, body) {
+        var _ref5, filesize, md5;
+
         return _regenerator2.default.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
@@ -223,48 +249,53 @@ var Netease = function () {
                 body.data.url = urlInfo.url;
                 body.data.br = urlInfo.bitrate;
                 body.data.code = 200;
-                body.data.md5 = urlInfo.hash;
                 body.data.type = 'mp3';
 
-                if (urlInfo.filesize) {
-                  _context3.next = 19;
+                if (!(!urlInfo.filesize || !urlInfo.md5)) {
+                  _context3.next = 22;
                   break;
                 }
 
-                _context3.prev = 8;
-                _context3.next = 11;
-                return Netease.getFilesize(urlInfo.origUrl || urlInfo.url);
+                _context3.prev = 7;
+                _context3.next = 10;
+                return Netease.getFileInfo(urlInfo.origUrl || urlInfo.url);
 
-              case 11:
-                body.filesize = _context3.sent;
-                _context3.next = 17;
-                break;
+              case 10:
+                _ref5 = _context3.sent;
+                filesize = _ref5.filesize;
+                md5 = _ref5.md5;
 
-              case 14:
-                _context3.prev = 14;
-                _context3.t0 = _context3['catch'](8);
-                throw new Error(_context3.t0);
-
-              case 17:
+                body.filesize = filesize;
+                body.md5 = md5;
                 _context3.next = 20;
                 break;
 
-              case 19:
-                body.filesize = urlInfo.filesize;
+              case 17:
+                _context3.prev = 17;
+                _context3.t0 = _context3['catch'](7);
+                throw new Error(_context3.t0);
 
               case 20:
+                _context3.next = 24;
+                break;
+
+              case 22:
+                body.filesize = urlInfo.filesize;
+                body.md5 = urlInfo.hash;
+
+              case 24:
                 return _context3.abrupt('return', (0, _stringify2.default)(body));
 
-              case 21:
+              case 25:
               case 'end':
                 return _context3.stop();
             }
           }
-        }, _callee3, this, [[8, 14]]);
+        }, _callee3, this, [[7, 17]]);
       }));
 
       function modifyDownloadApiCustom(_x4, _x5) {
-        return _ref3.apply(this, arguments);
+        return _ref4.apply(this, arguments);
       }
 
       return modifyDownloadApiCustom;
