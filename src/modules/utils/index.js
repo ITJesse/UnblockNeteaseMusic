@@ -33,6 +33,7 @@ export default class Utils {
           searchResult = await plugin.search(keyword);
         } catch (error) {
           console.log(`Cannot search from ${plugin.name}`.red);
+          console.log(error);
           return callback(null);
         }
         if (searchResult.length > 0) {

@@ -56,7 +56,7 @@ class QQ {
       return console.log('QQ Music module is not ready.'.red);
     }
     const options = {
-      url: `http://s.music.qq.com/fcgi-bin/music_search_new_platform?n=1&cr=1&loginUin=0&format=json&inCharset=utf-8&outCharset=utf-8&p=1&catZhida=0&w=${encodeURIComponent(keyword)}`,
+      url: `https://c.y.qq.com/soso/fcgi-bin/client_search_cp?ct=24&qqmusic_ver=1298&new_json=1&remoteplace=txt.yqq.song&t=0&aggr=1&cr=1&catZhida=1&lossless=1&flag_qc=0&p=1&n=1&w=${encodeURIComponent(keyword)}&g_tk=5381&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0`,
     };
     let data;
     try {
@@ -68,27 +68,35 @@ class QQ {
     const result = [];
     if (data.code === 0 && data.data.song.list.length > 0) {
       for (const e of data.data.song.list) {
-        const list = data.data.song.list[0].f.split('|');
-        const bitrate = parseInt(list[13], 10) || 320000;
-        // let bitrate = 320000;
-        let prefix = 'M800';
-        let type = 'mp3';
-        if (bitrate >= 320000) {
-          prefix = 'M800';
-          type = 'mp3';
-        } else if (bitrate >= 128000) {
+        const list = e.file;
+        let prefix;
+        let bitrate;
+        let filesize;
+        let type;
+        if (list.size_128 && list.size_128 > 0) {
           prefix = 'M500';
           type = 'mp3';
-        } else {
-          prefix = 'C200';
-          type = 'm4a';
+          bitrate = 128000;
+          filesize = list.size_128;
+        }
+        if (list.size_320 && list.size_320 > 0) {
+          prefix = 'M800';
+          type = 'mp3';
+          bitrate = 320000;
+          filesize = list.size_320;
+        }
+        if (list.size_flac && list.size_flac > 0) {
+          prefix = 'F000';
+          type = 'flac';
+          bitrate = 999000;
+          filesize = list.size_flac;
         }
         result.push({
-          name: e.fsong,
-          artist: e.fsinger,
-          filesize: parseInt(list[11], 10),
+          name: e.name || 'V.A.',
+          artist: e.singer.name || 'V.A.',
+          filesize,
           hash: '',
-          mid: list[20],
+          mid: list.media_mid,
           bitrate: String(bitrate),
           prefix,
           type,

@@ -94,7 +94,7 @@ var Utils = function () {
 
                   case 6:
                     searchResult = _context.sent;
-                    _context.next = 13;
+                    _context.next = 14;
                     break;
 
                   case 9:
@@ -102,11 +102,12 @@ var Utils = function () {
                     _context.t0 = _context['catch'](3);
 
                     console.log(('Cannot search from ' + plugin.name).red);
+                    console.log(_context.t0);
                     return _context.abrupt('return', callback(null));
 
-                  case 13:
+                  case 14:
                     if (!(searchResult.length > 0)) {
-                      _context.next = 18;
+                      _context.next = 19;
                       break;
                     }
 
@@ -115,7 +116,7 @@ var Utils = function () {
                     trueName = songName.replace(/ /g, '').toLowerCase();
 
                     if (!(searchName.indexOf(trueName) !== -1)) {
-                      _context.next = 18;
+                      _context.next = 19;
                       break;
                     }
 
@@ -124,11 +125,11 @@ var Utils = function () {
                       searchResult: searchResult[0]
                     }));
 
-                  case 18:
+                  case 19:
                     console.log(('No resource found from ' + plugin.name).yellow);
                     return _context.abrupt('return', callback(null));
 
-                  case 20:
+                  case 21:
                   case 'end':
                     return _context.stop();
                 }

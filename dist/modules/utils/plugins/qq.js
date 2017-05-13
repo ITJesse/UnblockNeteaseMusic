@@ -135,7 +135,7 @@ var QQ = function () {
     key: 'search',
     value: function () {
       var _ref3 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3(keyword) {
-        var options, data, _result, result, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, e, list, bitrate, prefix, type;
+        var options, data, _result, result, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, e, list, prefix, bitrate, filesize, type;
 
         return _regenerator2.default.wrap(function _callee3$(_context3) {
           while (1) {
@@ -164,7 +164,7 @@ var QQ = function () {
 
               case 10:
                 options = {
-                  url: 'http://s.music.qq.com/fcgi-bin/music_search_new_platform?n=1&cr=1&loginUin=0&format=json&inCharset=utf-8&outCharset=utf-8&p=1&catZhida=0&w=' + encodeURIComponent(keyword)
+                  url: 'https://c.y.qq.com/soso/fcgi-bin/client_search_cp?ct=24&qqmusic_ver=1298&new_json=1&remoteplace=txt.yqq.song&t=0&aggr=1&cr=1&catZhida=1&lossless=1&flag_qc=0&p=1&n=1&w=' + encodeURIComponent(keyword) + '&g_tk=5381&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0'
                 };
                 data = void 0;
                 _context3.prev = 12;
@@ -198,29 +198,36 @@ var QQ = function () {
 
                 for (_iterator = (0, _getIterator3.default)(data.data.song.list); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                   e = _step.value;
-                  list = data.data.song.list[0].f.split('|');
-                  bitrate = parseInt(list[13], 10) || 320000;
-                  // let bitrate = 320000;
+                  list = e.file;
+                  prefix = void 0;
+                  bitrate = void 0;
+                  filesize = void 0;
+                  type = void 0;
 
-                  prefix = 'M800';
-                  type = 'mp3';
-
-                  if (bitrate >= 320000) {
-                    prefix = 'M800';
-                    type = 'mp3';
-                  } else if (bitrate >= 128000) {
+                  if (list.size_128 && list.size_128 > 0) {
                     prefix = 'M500';
                     type = 'mp3';
-                  } else {
-                    prefix = 'C200';
-                    type = 'm4a';
+                    bitrate = 128000;
+                    filesize = list.size_128;
+                  }
+                  if (list.size_320 && list.size_320 > 0) {
+                    prefix = 'M800';
+                    type = 'mp3';
+                    bitrate = 320000;
+                    filesize = list.size_320;
+                  }
+                  if (list.size_flac && list.size_flac > 0) {
+                    prefix = 'F000';
+                    type = 'flac';
+                    bitrate = 999000;
+                    filesize = list.size_flac;
                   }
                   result.push({
-                    name: e.fsong,
-                    artist: e.fsinger,
-                    filesize: parseInt(list[11], 10),
+                    name: e.name || 'V.A.',
+                    artist: e.singer.name || 'V.A.',
+                    filesize: filesize,
                     hash: '',
-                    mid: list[20],
+                    mid: list.media_mid,
                     bitrate: String(bitrate),
                     prefix: prefix,
                     type: type
