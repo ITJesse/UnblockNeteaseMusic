@@ -9,9 +9,9 @@ var _regenerator = require('babel-runtime/regenerator');
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
-var _extends2 = require('babel-runtime/helpers/extends');
+var _assign = require('babel-runtime/core-js/object/assign');
 
-var _extends3 = _interopRequireDefault(_extends2);
+var _assign2 = _interopRequireDefault(_assign);
 
 var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
@@ -33,11 +33,11 @@ var sendRequest = exports.sendRequest = function () {
             defaults = {
               method: 'get',
               followRedirect: true,
-              timeout: 5000,
+              timeout: 10000,
               resolveWithFullResponse: true
             };
 
-            options = (0, _extends3.default)({}, defaults, options);
+            options = (0, _assign2.default)({}, defaults, options);
             result = void 0;
             _context.prev = 3;
             _context.next = 6;

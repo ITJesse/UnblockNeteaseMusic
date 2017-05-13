@@ -87,14 +87,26 @@ var Utils = function () {
                   case 0:
                     console.log(('Search from ' + plugin.name).green);
                     keyword = artist + ' ' + songName + ' ' + album;
-                    _context.next = 4;
+                    searchResult = void 0;
+                    _context.prev = 3;
+                    _context.next = 6;
                     return plugin.search(keyword);
 
-                  case 4:
+                  case 6:
                     searchResult = _context.sent;
+                    _context.next = 13;
+                    break;
 
+                  case 9:
+                    _context.prev = 9;
+                    _context.t0 = _context['catch'](3);
+
+                    console.log(('Cannot search from ' + plugin.name).red);
+                    return _context.abrupt('return', callback(null));
+
+                  case 13:
                     if (!(searchResult.length > 0)) {
-                      _context.next = 10;
+                      _context.next = 18;
                       break;
                     }
 
@@ -103,7 +115,7 @@ var Utils = function () {
                     trueName = songName.replace(/ /g, '').toLowerCase();
 
                     if (!(searchName.indexOf(trueName) !== -1)) {
-                      _context.next = 10;
+                      _context.next = 18;
                       break;
                     }
 
@@ -112,16 +124,16 @@ var Utils = function () {
                       searchResult: searchResult[0]
                     }));
 
-                  case 10:
+                  case 18:
                     console.log(('No resource found from ' + plugin.name).yellow);
                     return _context.abrupt('return', callback(null));
 
-                  case 12:
+                  case 20:
                   case 'end':
                     return _context.stop();
                 }
               }
-            }, _callee, _this2);
+            }, _callee, _this2, [[3, 9]]);
           }));
 
           return function (_x, _x2) {
@@ -154,15 +166,17 @@ var Utils = function () {
 
               case 4:
                 detail = _context2.sent;
-                _context2.next = 10;
+                _context2.next = 11;
                 break;
 
               case 7:
                 _context2.prev = 7;
                 _context2.t0 = _context2['catch'](1);
+
+                console.log('Cannot get song info from netease.'.red);
                 throw new Error(_context2.t0);
 
-              case 10:
+              case 11:
                 songName = _netease2.default.getSongName(detail);
                 artist = _netease2.default.getArtistName(detail);
                 album = _netease2.default.getAlbumName(detail);
@@ -171,21 +185,23 @@ var Utils = function () {
                 console.log('Artist: '.green + artist);
                 console.log('Album: '.green + album);
                 result = void 0;
-                _context2.prev = 17;
-                _context2.next = 20;
+                _context2.prev = 18;
+                _context2.next = 21;
                 return this.batchSeachMusic(songName, artist, album);
 
-              case 20:
+              case 21:
                 result = _context2.sent;
-                _context2.next = 26;
+                _context2.next = 28;
                 break;
 
-              case 23:
-                _context2.prev = 23;
-                _context2.t1 = _context2['catch'](17);
+              case 24:
+                _context2.prev = 24;
+                _context2.t1 = _context2['catch'](18);
+
+                console.log('Batch search failed.'.red);
                 throw new Error(_context2.t1);
 
-              case 26:
+              case 28:
                 result = result.sort(function (a, b) {
                   if (!a) {
                     return 1;
@@ -206,7 +222,7 @@ var Utils = function () {
                 });
 
                 if (!result[0]) {
-                  _context2.next = 45;
+                  _context2.next = 48;
                   break;
                 }
 
@@ -219,21 +235,23 @@ var Utils = function () {
                   type: data.type
                 };
                 url = void 0;
-                _context2.prev = 32;
-                _context2.next = 35;
+                _context2.prev = 34;
+                _context2.next = 37;
                 return plugin.getUrl(data);
 
-              case 35:
+              case 37:
                 url = _context2.sent;
-                _context2.next = 41;
+                _context2.next = 44;
                 break;
 
-              case 38:
-                _context2.prev = 38;
-                _context2.t2 = _context2['catch'](32);
+              case 40:
+                _context2.prev = 40;
+                _context2.t2 = _context2['catch'](34);
+
+                console.log('Cannot get song url'.red);
                 throw new Error(_context2.t2);
 
-              case 41:
+              case 44:
                 songInfo.origUrl = null;
                 // 魔改 URL 应对某司防火墙
                 if (_config2.default.rewriteUrl) {
@@ -243,15 +261,15 @@ var Utils = function () {
                 songInfo.url = url;
                 return _context2.abrupt('return', songInfo);
 
-              case 45:
+              case 48:
                 return _context2.abrupt('return', null);
 
-              case 46:
+              case 49:
               case 'end':
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[1, 7], [17, 23], [32, 38]]);
+        }, _callee2, this, [[1, 7], [18, 24], [34, 40]]);
       }));
 
       function getUrlInfo(_x3) {

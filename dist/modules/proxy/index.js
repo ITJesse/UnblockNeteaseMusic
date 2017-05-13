@@ -8,9 +8,9 @@ var _regenerator = require('babel-runtime/regenerator');
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
-var _extends2 = require('babel-runtime/helpers/extends');
+var _assign = require('babel-runtime/core-js/object/assign');
 
-var _extends3 = _interopRequireDefault(_extends2);
+var _assign2 = _interopRequireDefault(_assign);
 
 var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
@@ -43,45 +43,57 @@ var middleware = function () {
             req = ctx.request;
 
             if (!(req.url === '/api/plugin')) {
-              _context.next = 10;
+              _context.next = 18;
               break;
             }
 
-            _context.next = 4;
+            rawBody = void 0;
+            _context.prev = 3;
+            _context.next = 6;
             return (0, _rawBody3.default)(ctx.req, {
               length: ctx.length,
               encoding: ctx.charset
             });
 
-          case 4:
+          case 6:
             rawBody = _context.sent;
-
-            ctx.body = rawBody;
-            _context.next = 8;
-            return next();
-
-          case 8:
-            _context.next = 28;
+            _context.next = 13;
             break;
 
-          case 10:
+          case 9:
+            _context.prev = 9;
+            _context.t0 = _context['catch'](3);
+
+            console.log('Cannot get post body.'.red);
+            throw new Error(_context.t0);
+
+          case 13:
+            ctx.body = rawBody;
+            _context.next = 16;
+            return next();
+
+          case 16:
+            _context.next = 44;
+            break;
+
+          case 18:
             if (!(req.method === 'POST')) {
-              _context.next = 28;
+              _context.next = 44;
               break;
             }
 
             ip = _config2.default.forceIp ? _config2.default.forceIp : '223.252.199.7';
             url = 'http://' + ip + req.url;
-            newHeader = (0, _extends3.default)({}, req.headers, {
+            newHeader = (0, _assign2.default)({}, req.headers, {
               host: 'music.163.com'
             });
-            _context.next = 16;
+            _context.next = 24;
             return (0, _rawBody3.default)(ctx.req, {
               length: ctx.length,
               encoding: ctx.charset
             });
 
-          case 16:
+          case 24:
             _rawBody = _context.sent;
             options = {
               url: url,
@@ -99,26 +111,39 @@ var middleware = function () {
                 console.log('Body is not string.');
               }
             }
-            _context.next = 21;
+            result = void 0;
+            _context.prev = 28;
+            _context.next = 31;
             return common.sendRequest(options);
 
-          case 21:
+          case 31:
             result = _context.sent;
+            _context.next = 38;
+            break;
+
+          case 34:
+            _context.prev = 34;
+            _context.t1 = _context['catch'](28);
+
+            console.log('Cannot get orignal response.'.red);
+            throw new Error(_context.t1);
+
+          case 38:
             headers = result.headers;
             body = result.body;
             // console.log(body);
 
             ctx.set(headers);
             ctx.body = body;
-            _context.next = 28;
+            _context.next = 44;
             return next();
 
-          case 28:
+          case 44:
           case 'end':
             return _context.stop();
         }
       }
-    }, _callee, this);
+    }, _callee, this, [[3, 9], [28, 34]]);
   }));
 
   return function middleware(_x, _x2) {

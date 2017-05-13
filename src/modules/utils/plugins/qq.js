@@ -18,6 +18,7 @@ class QQ {
         this.vkey = await this.updateVKey();
         this.updateTime = (new Date()).valueOf();
       } catch (err) {
+        console.log('Cannot update vkey.'.red);
         console.log(err);
       }
     }

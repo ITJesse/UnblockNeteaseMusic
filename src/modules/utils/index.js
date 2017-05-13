@@ -28,7 +28,13 @@ export default class Utils {
       async.map(this.plugins, async (plugin, callback) => {
         console.log(`Search from ${plugin.name}`.green);
         const keyword = `${artist} ${songName} ${album}`;
-        const searchResult = await plugin.search(keyword);
+        let searchResult;
+        try {
+          searchResult = await plugin.search(keyword);
+        } catch (error) {
+          console.log(`Cannot search from ${plugin.name}`.red);
+          return callback(null);
+        }
         if (searchResult.length > 0) {
           // console.log(searchResult);
           const searchName = searchResult[0].name.replace(/ /g, '').toLowerCase();
@@ -57,6 +63,7 @@ export default class Utils {
     try {
       detail = await this.netease.getSongDetail(songId);
     } catch (err) {
+      console.log('Cannot get song info from netease.'.red);
       throw new Error(err);
     }
     const songName = Netease.getSongName(detail);
@@ -69,6 +76,7 @@ export default class Utils {
     try {
       result = await this.batchSeachMusic(songName, artist, album);
     } catch (err) {
+      console.log('Batch search failed.'.red);
       throw new Error(err);
     }
     result = result.sort((a, b) => {
@@ -102,6 +110,7 @@ export default class Utils {
       try {
         url = await plugin.getUrl(data);
       } catch (err) {
+        console.log('Cannot get song url'.red);
         throw new Error(err);
       }
       songInfo.origUrl = null;

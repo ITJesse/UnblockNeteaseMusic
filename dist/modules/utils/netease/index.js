@@ -198,7 +198,7 @@ var Netease = function () {
                 body.md5 = urlInfo.hash;
 
                 if (urlInfo.filesize) {
-                  _context2.next = 20;
+                  _context2.next = 21;
                   break;
                 }
 
@@ -210,26 +210,28 @@ var Netease = function () {
                 filesize = _context2.sent;
 
                 body.filesize = filesize;
-                _context2.next = 18;
+                _context2.next = 19;
                 break;
 
               case 15:
                 _context2.prev = 15;
                 _context2.t0 = _context2['catch'](8);
+
+                console.log('Cannot get file size.'.red);
                 throw new Error(_context2.t0);
 
-              case 18:
-                _context2.next = 22;
+              case 19:
+                _context2.next = 23;
                 break;
 
-              case 20:
+              case 21:
                 body.filesize = urlInfo.filesize;
                 body.md5 = urlInfo.hash;
 
-              case 22:
+              case 23:
                 return _context2.abrupt('return', body);
 
-              case 23:
+              case 24:
               case 'end':
                 return _context2.stop();
             }

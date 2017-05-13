@@ -51,7 +51,7 @@ var QQ = function () {
             switch (_context.prev = _context.next) {
               case 0:
                 if (!(!this.updateTime || this.updateTime + 3600 * 1000 < new Date().valueOf())) {
-                  _context.next = 11;
+                  _context.next = 12;
                   break;
                 }
 
@@ -63,19 +63,20 @@ var QQ = function () {
                 this.vkey = _context.sent;
 
                 this.updateTime = new Date().valueOf();
-                _context.next = 11;
+                _context.next = 12;
                 break;
 
               case 8:
                 _context.prev = 8;
                 _context.t0 = _context['catch'](1);
 
+                console.log('Cannot update vkey.'.red);
                 console.log(_context.t0);
 
-              case 11:
+              case 12:
                 return _context.abrupt('return', this.vkey);
 
-              case 12:
+              case 13:
               case 'end':
                 return _context.stop();
             }

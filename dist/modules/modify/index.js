@@ -70,31 +70,43 @@ var player = exports.player = function () {
 
           case 17:
             if (!urlInfo) {
-              _context.next = 23;
+              _context.next = 30;
               break;
             }
 
-            _context.next = 20;
+            _context.prev = 18;
+            _context.next = 21;
             return _netease2.default.modifyPlayerApiCustom(urlInfo, data.data[0]);
 
-          case 20:
+          case 21:
             data.data[0] = _context.sent;
-            _context.next = 24;
+            _context.next = 28;
             break;
 
-          case 23:
+          case 24:
+            _context.prev = 24;
+            _context.t1 = _context['catch'](18);
+
+            console.log('No resource.'.red);
+            throw new Error(_context.t1);
+
+          case 28:
+            _context.next = 31;
+            break;
+
+          case 30:
             console.log('No resource.'.red);
 
-          case 24:
+          case 31:
             ctx.body = (0, _stringify2.default)(data);
             return _context.abrupt('return', next());
 
-          case 26:
+          case 33:
           case 'end':
             return _context.stop();
         }
       }
-    }, _callee, undefined, [[7, 13]]);
+    }, _callee, undefined, [[7, 13], [18, 24]]);
   }));
 
   return function player(_x, _x2) {
@@ -139,30 +151,42 @@ var download = exports.download = function () {
 
           case 15:
             if (!urlInfo) {
-              _context2.next = 21;
+              _context2.next = 28;
               break;
             }
 
-            _context2.next = 18;
-            return _netease2.default.modifyDownloadApiCustom(urlInfo, data);
+            _context2.prev = 16;
+            _context2.next = 19;
+            return _netease2.default.modifyPlayerApiCustom(urlInfo, data.data[0]);
 
-          case 18:
-            ctx.body = _context2.sent;
-            _context2.next = 22;
+          case 19:
+            data.data[0] = _context2.sent;
+            _context2.next = 26;
             break;
 
-          case 21:
+          case 22:
+            _context2.prev = 22;
+            _context2.t1 = _context2['catch'](16);
+
+            console.log('No resource.'.red);
+            throw new Error(_context2.t1);
+
+          case 26:
+            _context2.next = 29;
+            break;
+
+          case 28:
             console.log('No resource.'.red);
 
-          case 22:
+          case 29:
             return _context2.abrupt('return', next);
 
-          case 23:
+          case 30:
           case 'end':
             return _context2.stop();
         }
       }
-    }, _callee2, undefined, [[5, 11]]);
+    }, _callee2, undefined, [[5, 11], [16, 22]]);
   }));
 
   return function download(_x3, _x4) {

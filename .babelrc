@@ -1,9 +1,9 @@
 {
   "presets": [
-    "es2015",
-    "stage-0"
+    "env"
   ],
   "plugins": [
-    "transform-runtime"
+    "transform-runtime",
+    ["transform-object-rest-spread", { "useBuiltIns": true }]
   ]
 }

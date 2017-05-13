@@ -4,7 +4,7 @@ export const sendRequest = async (options) => {
   const defaults = {
     method: 'get',
     followRedirect: true,
-    timeout: 5000,
+    timeout: 10000,
     resolveWithFullResponse: true,
   };
   options = {

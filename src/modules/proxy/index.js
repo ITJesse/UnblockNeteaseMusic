@@ -6,10 +6,16 @@ const middleware = async function (ctx, next) {
   const req = ctx.request;
 
   if (req.url === '/api/plugin') {
-    const rawBody = await getRawBody(ctx.req, {
-      length: ctx.length,
-      encoding: ctx.charset,
-    });
+    let rawBody;
+    try {
+      rawBody = await getRawBody(ctx.req, {
+        length: ctx.length,
+        encoding: ctx.charset,
+      });
+    } catch (error) {
+      console.log('Cannot get post body.'.red);
+      throw new Error(error);
+    }
     ctx.body = rawBody;
     await next();
   } else if (req.method === 'POST') {
@@ -41,7 +47,13 @@ const middleware = async function (ctx, next) {
         console.log('Body is not string.');
       }
     }
-    const result = await common.sendRequest(options);
+    let result;
+    try {
+      result = await common.sendRequest(options);
+    } catch (err) {
+      console.log('Cannot get orignal response.'.red);
+      throw new Error(err);
+    }
 
     const headers = result.headers;
     const body = result.body;

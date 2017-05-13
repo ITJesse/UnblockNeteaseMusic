@@ -89,6 +89,7 @@ export default class Netease {
         const filesize = await Netease.getFilesize(urlInfo.origUrl || urlInfo.url);
         body.filesize = filesize;
       } catch (error) {
+        console.log('Cannot get file size.'.red);
         throw new Error(error);
       }
     } else {
