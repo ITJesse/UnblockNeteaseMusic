@@ -216,12 +216,12 @@ var QQ = function () {
                     bitrate = 320000;
                     filesize = list.size_320;
                   }
-                  if (list.size_flac && list.size_flac > 0) {
-                    prefix = 'F000';
-                    type = 'flac';
-                    bitrate = 999000;
-                    filesize = list.size_flac;
-                  }
+                  // if (list.size_flac && list.size_flac > 0) {
+                  //   prefix = 'F000';
+                  //   type = 'flac';
+                  //   bitrate = 999000;
+                  //   filesize = list.size_flac;
+                  // }
                   result.push({
                     name: e.name || 'V.A.',
                     artist: e.singer.name || 'V.A.',
