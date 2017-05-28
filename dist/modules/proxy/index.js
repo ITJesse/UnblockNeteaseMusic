@@ -42,7 +42,7 @@ var middleware = function () {
           case 0:
             req = ctx.request;
 
-            if (!(req.url === '/api/plugin')) {
+            if (!(req.url.indexOf('/api/plugin') !== -1)) {
               _context.next = 18;
               break;
             }

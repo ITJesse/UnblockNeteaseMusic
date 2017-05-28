@@ -157,10 +157,10 @@ var download = exports.download = function () {
 
             _context2.prev = 16;
             _context2.next = 19;
-            return _netease2.default.modifyPlayerApiCustom(urlInfo, data.data[0]);
+            return _netease2.default.modifyDownloadApiCustom(urlInfo, data.data);
 
           case 19:
-            data.data[0] = _context2.sent;
+            data.data = _context2.sent;
             _context2.next = 26;
             break;
 

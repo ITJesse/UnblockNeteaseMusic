@@ -5,7 +5,7 @@ import * as common from '../utils/common';
 const middleware = async function (ctx, next) {
   const req = ctx.request;
 
-  if (req.url === '/api/plugin') {
+  if (req.url.indexOf('/api/plugin') !== -1) {
     let rawBody;
     try {
       rawBody = await getRawBody(ctx.req, {

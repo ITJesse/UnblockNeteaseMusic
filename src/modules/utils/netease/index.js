@@ -83,18 +83,14 @@ export default class Netease {
     body.md5 = urlInfo.hash;
     if (!urlInfo.filesize) {
       try {
-        // const { filesize, md5 } = await Netease.getFileInfo(urlInfo.origUrl || urlInfo.url);
-        // body.filesize = filesize;
-        // body.md5 = md5;
         const filesize = await Netease.getFilesize(urlInfo.origUrl || urlInfo.url);
-        body.filesize = filesize;
+        body.size = filesize;
       } catch (error) {
         console.log('Cannot get file size.'.red);
         throw new Error(error);
       }
     } else {
-      body.filesize = urlInfo.filesize;
-      body.md5 = urlInfo.hash;
+      body.size = urlInfo.filesize;
     }
     return body;
   }
@@ -102,25 +98,28 @@ export default class Netease {
   static async modifyDownloadApiCustom(urlInfo, body) {
     console.log('Download API Injected'.green);
     console.log('New URL is '.green + urlInfo.url);
-    body.data.url = urlInfo.url;
-    body.data.br = urlInfo.bitrate;
-    body.data.code = 200;
-    body.data.type = urlInfo.type;
+    body.url = urlInfo.url;
+    body.br = urlInfo.bitrate;
+    body.code = 200;
+    body.type = urlInfo.type;
     body.md5 = urlInfo.hash;
-    if (!urlInfo.filesize) {
+    body.expi = 1200;
+    if (!urlInfo.filesize || !urlInfo.md5) {
       try {
-        // const { filesize, md5 } = await Netease.getFileInfo(urlInfo.origUrl || urlInfo.url);
-        // body.filesize = filesize;
-        // body.md5 = md5;
-        const filesize = await Netease.getFilesize(urlInfo.origUrl || urlInfo.url);
-        body.filesize = filesize;
+        const {
+          filesize,
+          md5,
+        } = await Netease.getFileInfo(urlInfo.origUrl || urlInfo.url);
+        body.size = filesize;
+        body.md5 = md5;
       } catch (error) {
         throw new Error(error);
       }
     } else {
-      body.filesize = urlInfo.filesize;
+      body.size = urlInfo.filesize;
+      body.md5 = urlInfo.md5;
     }
-    return JSON.stringify(body);
+    return body;
   }
 
   async getSongDetail(songId) {

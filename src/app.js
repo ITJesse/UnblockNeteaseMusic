@@ -28,5 +28,7 @@ app.use(route.post('/eapi/song/enhance/player/url', modify.player));
 app.use(route.post('/eapi/song/enhance/download/url', modify.download));
 app.use(route.post('/api/linux/forward', modify.forward));
 app.use(route.post('/api/plugin', modify.player));
+app.use(route.post('/api/plugin/player', modify.player));
+app.use(route.post('/api/plugin/download', modify.download));
 
 export default app;

@@ -90,5 +90,7 @@ app.use(_koaRoute2.default.post('/eapi/song/enhance/player/url', modify.player))
 app.use(_koaRoute2.default.post('/eapi/song/enhance/download/url', modify.download));
 app.use(_koaRoute2.default.post('/api/linux/forward', modify.forward));
 app.use(_koaRoute2.default.post('/api/plugin', modify.player));
+app.use(_koaRoute2.default.post('/api/plugin/player', modify.player));
+app.use(_koaRoute2.default.post('/api/plugin/download', modify.download));
 
 exports.default = app;

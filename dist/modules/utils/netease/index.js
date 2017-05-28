@@ -8,10 +8,6 @@ var _getIterator2 = require('babel-runtime/core-js/get-iterator');
 
 var _getIterator3 = _interopRequireDefault(_getIterator2);
 
-var _stringify = require('babel-runtime/core-js/json/stringify');
-
-var _stringify2 = _interopRequireDefault(_stringify);
-
 var _promise = require('babel-runtime/core-js/promise');
 
 var _promise2 = _interopRequireDefault(_promise);
@@ -209,7 +205,7 @@ var Netease = function () {
               case 11:
                 filesize = _context2.sent;
 
-                body.filesize = filesize;
+                body.size = filesize;
                 _context2.next = 19;
                 break;
 
@@ -221,17 +217,16 @@ var Netease = function () {
                 throw new Error(_context2.t0);
 
               case 19:
-                _context2.next = 23;
+                _context2.next = 22;
                 break;
 
               case 21:
-                body.filesize = urlInfo.filesize;
-                body.md5 = urlInfo.hash;
+                body.size = urlInfo.filesize;
 
-              case 23:
+              case 22:
                 return _context2.abrupt('return', body);
 
-              case 24:
+              case 23:
               case 'end':
                 return _context2.stop();
             }
@@ -249,56 +244,62 @@ var Netease = function () {
     key: 'modifyDownloadApiCustom',
     value: function () {
       var _ref3 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3(urlInfo, body) {
-        var filesize;
+        var _ref4, filesize, md5;
+
         return _regenerator2.default.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
                 console.log('Download API Injected'.green);
                 console.log('New URL is '.green + urlInfo.url);
-                body.data.url = urlInfo.url;
-                body.data.br = urlInfo.bitrate;
-                body.data.code = 200;
-                body.data.type = urlInfo.type;
+                body.url = urlInfo.url;
+                body.br = urlInfo.bitrate;
+                body.code = 200;
+                body.type = urlInfo.type;
                 body.md5 = urlInfo.hash;
+                body.expi = 1200;
 
-                if (urlInfo.filesize) {
-                  _context3.next = 20;
+                if (!(!urlInfo.filesize || !urlInfo.md5)) {
+                  _context3.next = 24;
                   break;
                 }
 
-                _context3.prev = 8;
-                _context3.next = 11;
-                return Netease.getFilesize(urlInfo.origUrl || urlInfo.url);
+                _context3.prev = 9;
+                _context3.next = 12;
+                return Netease.getFileInfo(urlInfo.origUrl || urlInfo.url);
 
-              case 11:
-                filesize = _context3.sent;
+              case 12:
+                _ref4 = _context3.sent;
+                filesize = _ref4.filesize;
+                md5 = _ref4.md5;
 
-                body.filesize = filesize;
-                _context3.next = 18;
+                body.size = filesize;
+                body.md5 = md5;
+                _context3.next = 22;
                 break;
 
-              case 15:
-                _context3.prev = 15;
-                _context3.t0 = _context3['catch'](8);
+              case 19:
+                _context3.prev = 19;
+                _context3.t0 = _context3['catch'](9);
                 throw new Error(_context3.t0);
 
-              case 18:
-                _context3.next = 21;
+              case 22:
+                _context3.next = 26;
                 break;
 
-              case 20:
-                body.filesize = urlInfo.filesize;
+              case 24:
+                body.size = urlInfo.filesize;
+                body.md5 = urlInfo.md5;
 
-              case 21:
-                return _context3.abrupt('return', (0, _stringify2.default)(body));
+              case 26:
+                return _context3.abrupt('return', body);
 
-              case 22:
+              case 27:
               case 'end':
                 return _context3.stop();
             }
           }
-        }, _callee3, this, [[8, 15]]);
+        }, _callee3, this, [[9, 19]]);
       }));
 
       function modifyDownloadApiCustom(_x4, _x5) {

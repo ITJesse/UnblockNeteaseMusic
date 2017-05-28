@@ -52,7 +52,7 @@ export const download = async (ctx, next) => {
   }
   if (urlInfo) {
     try {
-      data.data[0] = await Netease.modifyPlayerApiCustom(urlInfo, data.data[0]);
+      data.data = await Netease.modifyDownloadApiCustom(urlInfo, data.data);
     } catch (error) {
       console.log('No resource.'.red);
       throw new Error(error);
