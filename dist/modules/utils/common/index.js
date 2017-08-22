@@ -24,7 +24,7 @@ var _requestPromise2 = _interopRequireDefault(_requestPromise);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var sendRequest = exports.sendRequest = function () {
-  var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(options) {
+  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(options) {
     var defaults, result;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {

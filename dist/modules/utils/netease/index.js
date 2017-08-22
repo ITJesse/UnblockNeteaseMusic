@@ -58,7 +58,7 @@ var Netease = function () {
   (0, _createClass3.default)(Netease, [{
     key: 'getSongDetail',
     value: function () {
-      var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(songId) {
+      var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(songId) {
         var header, options, result;
         return _regenerator2.default.wrap(function _callee$(_context) {
           while (1) {
@@ -179,7 +179,7 @@ var Netease = function () {
   }, {
     key: 'modifyPlayerApiCustom',
     value: function () {
-      var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2(urlInfo, body) {
+      var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(urlInfo, body) {
         var filesize;
         return _regenerator2.default.wrap(function _callee2$(_context2) {
           while (1) {
@@ -243,7 +243,7 @@ var Netease = function () {
   }, {
     key: 'modifyDownloadApiCustom',
     value: function () {
-      var _ref3 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3(urlInfo, body) {
+      var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(urlInfo, body) {
         var _ref4, filesize, md5;
 
         return _regenerator2.default.wrap(function _callee3$(_context3) {

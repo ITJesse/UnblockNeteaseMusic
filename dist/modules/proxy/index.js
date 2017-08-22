@@ -33,7 +33,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var middleware = function () {
-  var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(ctx, next) {
+  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(ctx, next) {
     var req, rawBody, ip, url, newHeader, _rawBody, options, result, headers, body;
 
     return _regenerator2.default.wrap(function _callee$(_context) {
@@ -73,12 +73,12 @@ var middleware = function () {
             return next();
 
           case 16:
-            _context.next = 44;
+            _context.next = 45;
             break;
 
           case 18:
             if (!(req.method === 'POST')) {
-              _context.next = 44;
+              _context.next = 45;
               break;
             }
 
@@ -131,14 +131,14 @@ var middleware = function () {
           case 38:
             headers = result.headers;
             body = result.body;
-            // console.log(body);
 
+            delete headers['content-encoding'];
             ctx.set(headers);
-            ctx.body = body;
-            _context.next = 44;
+            ctx.body = body.toString();
+            _context.next = 45;
             return next();
 
-          case 44:
+          case 45:
           case 'end':
             return _context.stop();
         }

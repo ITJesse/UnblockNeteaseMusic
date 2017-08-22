@@ -60,7 +60,7 @@ export const download = async (ctx, next) => {
   } else {
     console.log('No resource.'.red);
   }
-  return next;
+  return next();
 };
 
 export const forward = async (ctx, next) => {

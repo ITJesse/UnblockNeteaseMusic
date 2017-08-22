@@ -52,7 +52,7 @@ var Kugou = function () {
   }, {
     key: 'search',
     value: function () {
-      var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(keyword) {
+      var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(keyword) {
         var options, data, _result, result, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, e, filesize, hash, bitrate;
 
         return _regenerator2.default.wrap(function _callee$(_context) {
@@ -205,7 +205,7 @@ var Kugou = function () {
   }, {
     key: 'getUrl',
     value: function () {
-      var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2(searchResult) {
+      var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(searchResult) {
         var hash, key, options, data, result, url;
         return _regenerator2.default.wrap(function _callee2$(_context2) {
           while (1) {

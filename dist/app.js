@@ -47,7 +47,7 @@ var app = new _koa2.default();
 app.use((0, _koaLogger2.default)());
 app.use(_proxy2.default);
 app.use(function () {
-  var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(ctx, next) {
+  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(ctx, next) {
     var data;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
