@@ -13,14 +13,22 @@ app.use(logger());
 app.use(proxy);
 app.use(async (ctx, next) => {
   const data = ctx.body;
+  let json = '';
   try {
-    ctx.body = JSON.parse(ctx.body.toString());
+    json = JSON.parse(ctx.body.toString());
+  } catch (error) {
+    console.log('Pares failed. Maybe encrypted.');
+    ctx.body = data;
+    return;
+  }
+  try {
+    ctx.body = json;
     await next();
   } catch (err) {
     if (config.verbose) {
       console.log(err);
     }
-    ctx.body = data;
+    ctx.body = json;
     console.log('Modify failed.'.red);
   }
 });
