@@ -6,6 +6,7 @@ import route from 'koa-route';
 import config from './modules/config';
 import proxy from './modules/proxy';
 import * as modify from './modules/modify';
+import Netease from './modules/utils/netease';
 
 const app = new Koa();
 
@@ -20,6 +21,11 @@ app.use(async (ctx, next) => {
     console.log('Pares failed. Maybe encrypted.');
     ctx.body = data;
     return;
+  }
+  if (Array.isArray(json.data)) {
+    json.data = json.data.map(e => Netease.fixJsonData(e));
+  } else {
+    json.data = Netease.fixJsonData(json.data);
   }
   try {
     ctx.body = json;
