@@ -38,6 +38,10 @@ var _modify = require('./modules/modify');
 
 var modify = _interopRequireWildcard(_modify);
 
+var _netease = require('./modules/utils/netease');
+
+var _netease2 = _interopRequireDefault(_netease);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -70,19 +74,26 @@ app.use(function () {
             return _context.abrupt('return');
 
           case 11:
-            _context.prev = 11;
+            if (Array.isArray(json.data)) {
+              json.data = json.data.map(function (e) {
+                return _netease2.default.fixJsonData(e);
+              });
+            } else {
+              json.data = _netease2.default.fixJsonData(json.data);
+            }
+            _context.prev = 12;
 
             ctx.body = json;
-            _context.next = 15;
+            _context.next = 16;
             return next();
 
-          case 15:
-            _context.next = 22;
+          case 16:
+            _context.next = 23;
             break;
 
-          case 17:
-            _context.prev = 17;
-            _context.t1 = _context['catch'](11);
+          case 18:
+            _context.prev = 18;
+            _context.t1 = _context['catch'](12);
 
             if (_config2.default.verbose) {
               console.log(_context.t1);
@@ -90,12 +101,12 @@ app.use(function () {
             ctx.body = json;
             console.log('Modify failed.'.red);
 
-          case 22:
+          case 23:
           case 'end':
             return _context.stop();
         }
       }
-    }, _callee, undefined, [[2, 6], [11, 17]]);
+    }, _callee, undefined, [[2, 6], [12, 18]]);
   }));
 
   return function (_x, _x2) {

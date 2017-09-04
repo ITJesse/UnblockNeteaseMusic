@@ -8,6 +8,10 @@ var _getIterator2 = require('babel-runtime/core-js/get-iterator');
 
 var _getIterator3 = _interopRequireDefault(_getIterator2);
 
+var _assign = require('babel-runtime/core-js/object/assign');
+
+var _assign2 = _interopRequireDefault(_assign);
+
 var _promise = require('babel-runtime/core-js/promise');
 
 var _promise2 = _interopRequireDefault(_promise);
@@ -174,6 +178,16 @@ var Netease = function () {
             md5: md5
           });
         });
+      });
+    }
+  }, {
+    key: 'fixJsonData',
+    value: function fixJsonData(body) {
+      return (0, _assign2.default)({}, body, {
+        url: null,
+        type: null,
+        md5: null,
+        uf: null
       });
     }
   }, {
