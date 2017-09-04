@@ -3,7 +3,7 @@ FROM node:8.4.0-alpine
 ENV NODE_ENV production
 ENV VERSION dev
 
-RUN npm install unblock-netease-music@${VERSION} -g && npm cache clean
+RUN npm install unblock-netease-music@${VERSION} -g && npm cache clean --force
 
 EXPOSE 8123
 
