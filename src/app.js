@@ -1,17 +1,14 @@
 import 'colors';
 import Koa from 'koa';
 import logger from 'koa-logger';
-import route from 'koa-route';
+import Router from 'koa-router';
 
 import config from './modules/config';
 import proxy from './modules/proxy';
 import * as modify from './modules/modify';
+// import * as pair from './modules/pair';
 
-const app = new Koa();
-
-app.use(logger());
-app.use(proxy);
-app.use(async (ctx, next) => {
+const errorHandler = async (ctx, next) => {
   const data = ctx.body;
   try {
     ctx.body = JSON.parse(ctx.body.toString());
@@ -23,12 +20,55 @@ app.use(async (ctx, next) => {
     ctx.body = data;
     console.log('Modify failed.'.red);
   }
-});
-app.use(route.post('/eapi/song/enhance/player/url', modify.player));
-app.use(route.post('/eapi/song/enhance/download/url', modify.download));
-app.use(route.post('/api/linux/forward', modify.forward));
-app.use(route.post('/api/plugin', modify.player));
-app.use(route.post('/api/plugin/player', modify.player));
-app.use(route.post('/api/plugin/download', modify.download));
+};
+
+const app = new Koa();
+app.use(logger());
+
+const router = Router();
+
+// Route for native netease client
+router.post(
+  '/eapi/song/enhance/player/url',
+  proxy,
+  errorHandler,
+  modify.player,
+);
+router.post(
+  '/api/plugin/player',
+  proxy,
+  errorHandler,
+  modify.player,
+);
+router.post(
+  '/eapi/song/enhance/download/url',
+  proxy,
+  errorHandler,
+  modify.download,
+);
+router.post(
+  '/api/plugin/download',
+  proxy,
+  errorHandler,
+  modify.download,
+);
+router.post(
+  '/api/linux/forward',
+  proxy,
+  errorHandler,
+  modify.forward,
+);
+
+// Route for Unblock Netease Music Server itself
+// router
+//   .use('/api/pair/*', pair.permission)
+//   .get('/api/pair/recent', pair.recent)
+//   .get('/api/pair', pair.list)
+//   .put('/api/pair', pair.save)
+//   .post('/api/pair/:songId', pair.update);
+
+app
+  .use(router.routes())
+  .use(router.allowedMethods());
 
 export default app;

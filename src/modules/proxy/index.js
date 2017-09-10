@@ -25,6 +25,7 @@ const middleware = async function (ctx, next) {
     const newHeader = {
       ...req.headers,
       host: 'music.163.com',
+      'x-real-ip': `202.114.79.${Math.floor(Math.random() * 255) + 1}`,
     };
 
     const rawBody = await getRawBody(ctx.req, {
@@ -58,6 +59,8 @@ const middleware = async function (ctx, next) {
     const headers = result.headers;
     const body = result.body;
     // console.log(body);
+    // console.log(headers);
+    delete headers['content-encoding'];
     ctx.set(headers);
     ctx.body = body;
     await next();
