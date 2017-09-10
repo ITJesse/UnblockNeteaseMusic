@@ -73,6 +73,16 @@ export default class Netease {
     });
   }
 
+  static fixJsonData(body) {
+    return {
+      ...body,
+      url: null,
+      type: null,
+      md5: null,
+      uf: null,
+    };
+  }
+
   static async modifyPlayerApiCustom(urlInfo, body) {
     console.log('Player API Injected'.green);
     console.log('New URL is '.green + urlInfo.url);

@@ -45,7 +45,7 @@ var QQ = function () {
   (0, _createClass3.default)(QQ, [{
     key: 'getVKey',
     value: function () {
-      var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee() {
+      var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
         return _regenerator2.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -93,7 +93,7 @@ var QQ = function () {
   }, {
     key: 'updateVKey',
     value: function () {
-      var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2() {
+      var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
         var options, result, data;
         return _regenerator2.default.wrap(function _callee2$(_context2) {
           while (1) {
@@ -134,7 +134,7 @@ var QQ = function () {
   }, {
     key: 'search',
     value: function () {
-      var _ref3 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3(keyword) {
+      var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(keyword) {
         var options, data, _result, result, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, e, list, prefix, bitrate, filesize, type;
 
         return _regenerator2.default.wrap(function _callee3$(_context3) {
@@ -286,7 +286,7 @@ var QQ = function () {
   }, {
     key: 'getUrl',
     value: function () {
-      var _ref4 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee4(data) {
+      var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(data) {
         var url;
         return _regenerator2.default.wrap(function _callee4$(_context4) {
           while (1) {

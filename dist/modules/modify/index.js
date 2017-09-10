@@ -32,7 +32,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var utils = new _utils2.default();
 
 var player = exports.player = function () {
-  var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(ctx, next) {
+  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(ctx, next) {
     var data, playbackReturnCode, songId, urlInfo;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
@@ -115,7 +115,7 @@ var player = exports.player = function () {
 }();
 
 var download = exports.download = function () {
-  var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2(ctx, next) {
+  var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(ctx, next) {
     var data, songId, urlInfo;
     return _regenerator2.default.wrap(function _callee2$(_context2) {
       while (1) {
@@ -179,7 +179,7 @@ var download = exports.download = function () {
             console.log('No resource.'.red);
 
           case 29:
-            return _context2.abrupt('return', next);
+            return _context2.abrupt('return', next());
 
           case 30:
           case 'end':
@@ -195,7 +195,7 @@ var download = exports.download = function () {
 }();
 
 var forward = exports.forward = function () {
-  var _ref3 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3(ctx, next) {
+  var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(ctx, next) {
     var req, url, body, json;
     return _regenerator2.default.wrap(function _callee3$(_context3) {
       while (1) {

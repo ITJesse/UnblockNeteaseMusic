@@ -79,7 +79,7 @@ var Utils = function () {
 
       return new _promise2.default(function (resolve, reject) {
         _async2.default.map(_this2.plugins, function () {
-          var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(plugin, callback) {
+          var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(plugin, callback) {
             var keyword, searchResult, searchName, trueName;
             return _regenerator2.default.wrap(function _callee$(_context) {
               while (1) {
@@ -154,7 +154,7 @@ var Utils = function () {
   }, {
     key: 'getUrlInfo',
     value: function () {
-      var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2(songId) {
+      var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(songId) {
         var detail, songName, artist, album, result, plugin, data, songInfo, url;
         return _regenerator2.default.wrap(function _callee2$(_context2) {
           while (1) {

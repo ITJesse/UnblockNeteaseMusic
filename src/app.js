@@ -5,19 +5,33 @@ import Router from 'koa-router';
 
 import config from './modules/config';
 import proxy from './modules/proxy';
+import Netease from './modules/utils/netease';
 import * as modify from './modules/modify';
 // import * as pair from './modules/pair';
 
 const errorHandler = async (ctx, next) => {
   const data = ctx.body;
+  let json = '';
   try {
-    ctx.body = JSON.parse(ctx.body.toString());
+    json = JSON.parse(ctx.body.toString());
+  } catch (error) {
+    console.log('Pares failed. Maybe encrypted.');
+    ctx.body = data;
+    return;
+  }
+  if (Array.isArray(json.data)) {
+    json.data = json.data.map(e => Netease.fixJsonData(e));
+  } else {
+    json.data = Netease.fixJsonData(json.data);
+  }
+  try {
+    ctx.body = json;
     await next();
   } catch (err) {
     if (config.verbose) {
       console.log(err);
     }
-    ctx.body = data;
+    ctx.body = json;
     console.log('Modify failed.'.red);
   }
 };

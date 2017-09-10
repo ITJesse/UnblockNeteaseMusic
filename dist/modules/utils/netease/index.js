@@ -8,6 +8,10 @@ var _getIterator2 = require('babel-runtime/core-js/get-iterator');
 
 var _getIterator3 = _interopRequireDefault(_getIterator2);
 
+var _assign = require('babel-runtime/core-js/object/assign');
+
+var _assign2 = _interopRequireDefault(_assign);
+
 var _promise = require('babel-runtime/core-js/promise');
 
 var _promise2 = _interopRequireDefault(_promise);
@@ -58,7 +62,7 @@ var Netease = function () {
   (0, _createClass3.default)(Netease, [{
     key: 'getSongDetail',
     value: function () {
-      var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(songId) {
+      var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(songId) {
         var header, options, result;
         return _regenerator2.default.wrap(function _callee$(_context) {
           while (1) {
@@ -177,9 +181,19 @@ var Netease = function () {
       });
     }
   }, {
+    key: 'fixJsonData',
+    value: function fixJsonData(body) {
+      return (0, _assign2.default)({}, body, {
+        url: null,
+        type: null,
+        md5: null,
+        uf: null
+      });
+    }
+  }, {
     key: 'modifyPlayerApiCustom',
     value: function () {
-      var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2(urlInfo, body) {
+      var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(urlInfo, body) {
         var filesize;
         return _regenerator2.default.wrap(function _callee2$(_context2) {
           while (1) {
@@ -243,7 +257,7 @@ var Netease = function () {
   }, {
     key: 'modifyDownloadApiCustom',
     value: function () {
-      var _ref3 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3(urlInfo, body) {
+      var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(urlInfo, body) {
         var _ref4, filesize, md5;
 
         return _regenerator2.default.wrap(function _callee3$(_context3) {

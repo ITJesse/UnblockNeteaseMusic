@@ -58,11 +58,9 @@ const middleware = async function (ctx, next) {
 
     const headers = result.headers;
     const body = result.body;
-    // console.log(body);
-    // console.log(headers);
     delete headers['content-encoding'];
     ctx.set(headers);
-    ctx.body = body;
+    ctx.body = body.toString();
     await next();
     // console.log(ctx.body);
   }

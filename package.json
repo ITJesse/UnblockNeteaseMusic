@@ -1,6 +1,6 @@
 {
   "name": "unblock-netease-music",
-  "version": "2.5.2",
+  "version": "2.5.5",
   "scripts": {
     "start": "babel-node -- src/bin/unblockneteasemusic -p 8123 -v",
     "build": "rm -rf dist && babel src --out-dir dist"
@@ -9,19 +9,19 @@
     "unblockneteasemusic": "dist/bin/unblockneteasemusic.js"
   },
   "dependencies": {
-    "async": "^2.1.5",
+    "async": "^2.5.0",
     "babel-runtime": "^6.11.6",
     "colors": "^1.1.2",
     "commander": "^2.9.0",
-    "koa": "^2.0.0-alpha.7",
-    "koa-logger": "^2.0.0",
+    "koa": "^2.3.0",
+    "koa-logger": "^3.0.1",
     "koa-router": "^7.2.1",
     "md5": "^2.1.0",
-    "pkginfo": "^0.4.0",
-    "raw-body": "^2.1.6",
+    "pkginfo": "^0.4.1",
+    "raw-body": "^2.3.2",
     "remote-file-size": "^3.0.3",
-    "request": "^2.69.0",
-    "request-promise": "^4.1.1"
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1"
   },
   "keywords": [
     "netease",

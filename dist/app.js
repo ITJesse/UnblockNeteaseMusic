@@ -38,6 +38,10 @@ var _modify = require('./modules/modify');
 
 var modify = _interopRequireWildcard(_modify);
 
+var _netease = require('./modules/utils/netease');
+
+var _netease2 = _interopRequireDefault(_netease);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -47,39 +51,62 @@ var app = new _koa2.default();
 app.use((0, _koaLogger2.default)());
 app.use(_proxy2.default);
 app.use(function () {
-  var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(ctx, next) {
-    var data;
+  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(ctx, next) {
+    var data, json;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             data = ctx.body;
-            _context.prev = 1;
+            json = '';
+            _context.prev = 2;
 
-            ctx.body = JSON.parse(ctx.body.toString());
-            _context.next = 5;
-            return next();
-
-          case 5:
-            _context.next = 12;
+            json = JSON.parse(ctx.body.toString());
+            _context.next = 11;
             break;
 
-          case 7:
-            _context.prev = 7;
-            _context.t0 = _context['catch'](1);
+          case 6:
+            _context.prev = 6;
+            _context.t0 = _context['catch'](2);
+
+            console.log('Pares failed. Maybe encrypted.');
+            ctx.body = data;
+            return _context.abrupt('return');
+
+          case 11:
+            if (Array.isArray(json.data)) {
+              json.data = json.data.map(function (e) {
+                return _netease2.default.fixJsonData(e);
+              });
+            } else {
+              json.data = _netease2.default.fixJsonData(json.data);
+            }
+            _context.prev = 12;
+
+            ctx.body = json;
+            _context.next = 16;
+            return next();
+
+          case 16:
+            _context.next = 23;
+            break;
+
+          case 18:
+            _context.prev = 18;
+            _context.t1 = _context['catch'](12);
 
             if (_config2.default.verbose) {
-              console.log(_context.t0);
+              console.log(_context.t1);
             }
-            ctx.body = data;
+            ctx.body = json;
             console.log('Modify failed.'.red);
 
-          case 12:
+          case 23:
           case 'end':
             return _context.stop();
         }
       }
-    }, _callee, undefined, [[1, 7]]);
+    }, _callee, undefined, [[2, 6], [12, 18]]);
   }));
 
   return function (_x, _x2) {
