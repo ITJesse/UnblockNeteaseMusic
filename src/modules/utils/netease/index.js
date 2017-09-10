@@ -74,6 +74,9 @@ export default class Netease {
   }
 
   static fixJsonData(body) {
+    if (body.code === 200) {
+      return body;
+    }
     return {
       ...body,
       url: null,

@@ -4,21 +4,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _regenerator = require('babel-runtime/regenerator');
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _regenerator2 = _interopRequireDefault(_regenerator);
+var _rawBody = require('raw-body');
 
-var _assign = require('babel-runtime/core-js/object/assign');
-
-var _assign2 = _interopRequireDefault(_assign);
-
-var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
-
-var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
-
-var _rawBody2 = require('raw-body');
-
-var _rawBody3 = _interopRequireDefault(_rawBody2);
+var _rawBody2 = _interopRequireDefault(_rawBody);
 
 var _config = require('../config');
 
@@ -32,123 +22,67 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var middleware = function () {
-  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(ctx, next) {
-    var req, rawBody, ip, url, newHeader, _rawBody, options, result, headers, body;
+const middleware = async function (ctx, next) {
+  const req = ctx.request;
 
-    return _regenerator2.default.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            req = ctx.request;
+  if (req.url.indexOf('/api/plugin') !== -1) {
+    let rawBody;
+    try {
+      rawBody = await (0, _rawBody2.default)(ctx.req, {
+        length: ctx.length,
+        encoding: ctx.charset
+      });
+    } catch (error) {
+      console.log('Cannot get post body.'.red);
+      throw new Error(error);
+    }
+    ctx.body = rawBody;
+    await next();
+  } else if (req.method === 'POST') {
+    const ip = _config2.default.forceIp ? _config2.default.forceIp : '223.252.199.7';
+    const url = `http://${ip}${req.url}`;
 
-            if (!(req.url.indexOf('/api/plugin') !== -1)) {
-              _context.next = 18;
-              break;
-            }
+    const newHeader = _extends({}, req.headers, {
+      host: 'music.163.com',
+      'x-real-ip': `202.114.79.${Math.floor(Math.random() * 255) + 1}`
+    });
 
-            rawBody = void 0;
-            _context.prev = 3;
-            _context.next = 6;
-            return (0, _rawBody3.default)(ctx.req, {
-              length: ctx.length,
-              encoding: ctx.charset
-            });
+    const rawBody = await (0, _rawBody2.default)(ctx.req, {
+      length: ctx.length,
+      encoding: ctx.charset
+    });
 
-          case 6:
-            rawBody = _context.sent;
-            _context.next = 13;
-            break;
-
-          case 9:
-            _context.prev = 9;
-            _context.t0 = _context['catch'](3);
-
-            console.log('Cannot get post body.'.red);
-            throw new Error(_context.t0);
-
-          case 13:
-            ctx.body = rawBody;
-            _context.next = 16;
-            return next();
-
-          case 16:
-            _context.next = 45;
-            break;
-
-          case 18:
-            if (!(req.method === 'POST')) {
-              _context.next = 45;
-              break;
-            }
-
-            ip = _config2.default.forceIp ? _config2.default.forceIp : '223.252.199.7';
-            url = 'http://' + ip + req.url;
-            newHeader = (0, _assign2.default)({}, req.headers, {
-              host: 'music.163.com'
-            });
-            _context.next = 24;
-            return (0, _rawBody3.default)(ctx.req, {
-              length: ctx.length,
-              encoding: ctx.charset
-            });
-
-          case 24:
-            _rawBody = _context.sent;
-            options = {
-              url: url,
-              headers: newHeader,
-              method: 'post',
-              encoding: null,
-              gzip: true
-            };
-
-            if (_rawBody) {
-              options.body = _rawBody;
-              try {
-                req.body = _rawBody.toString();
-              } catch (err) {
-                console.log('Body is not string.');
-              }
-            }
-            result = void 0;
-            _context.prev = 28;
-            _context.next = 31;
-            return common.sendRequest(options);
-
-          case 31:
-            result = _context.sent;
-            _context.next = 38;
-            break;
-
-          case 34:
-            _context.prev = 34;
-            _context.t1 = _context['catch'](28);
-
-            console.log('Cannot get orignal response.'.red);
-            throw new Error(_context.t1);
-
-          case 38:
-            headers = result.headers;
-            body = result.body;
-
-            delete headers['content-encoding'];
-            ctx.set(headers);
-            ctx.body = body.toString();
-            _context.next = 45;
-            return next();
-
-          case 45:
-          case 'end':
-            return _context.stop();
-        }
+    const options = {
+      url,
+      headers: newHeader,
+      method: 'post',
+      encoding: null,
+      gzip: true
+    };
+    if (rawBody) {
+      options.body = rawBody;
+      try {
+        req.body = rawBody.toString();
+      } catch (err) {
+        console.log('Body is not string.');
       }
-    }, _callee, this, [[3, 9], [28, 34]]);
-  }));
+    }
+    let result;
+    try {
+      result = await common.sendRequest(options);
+    } catch (err) {
+      console.log('Cannot get orignal response.'.red);
+      throw new Error(err);
+    }
 
-  return function middleware(_x, _x2) {
-    return _ref.apply(this, arguments);
-  };
-}();
+    const headers = result.headers;
+    const body = result.body;
+    delete headers['content-encoding'];
+    ctx.set(headers);
+    ctx.body = body.toString();
+    await next();
+    // console.log(ctx.body);
+  }
+};
 
 exports.default = middleware;

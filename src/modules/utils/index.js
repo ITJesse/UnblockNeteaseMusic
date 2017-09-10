@@ -23,37 +23,36 @@ export default class Utils {
     // console.log(this.plugins);
   }
 
-  batchSeachMusic(songName, artist, album) {
-    return new Promise((resolve, reject) => {
-      async.map(this.plugins, async (plugin, callback) => {
-        console.log(`Search from ${plugin.name}`.green);
-        const keyword = `${artist} ${songName} ${album}`;
-        let searchResult;
-        try {
-          searchResult = await plugin.search(keyword);
-        } catch (error) {
-          console.log(`Cannot search from ${plugin.name}`.red);
-          console.log(error);
-          return callback(null);
+  async batchSeachMusic(songName, artist, album) {
+    const result = [];
+    for (const plugin of this.plugins) {
+      console.log(`Search from ${plugin.name}`.green);
+      const keyword = `${artist} ${songName} ${album}`;
+      let searchResult;
+      try {
+        searchResult = await plugin.search(keyword);
+      } catch (error) {
+        console.log(`Cannot search from ${plugin.name}`.red);
+        console.log(error);
+        continue;
+      }
+      if (searchResult.length > 0) {
+        // console.log(searchResult);
+        const searchName = searchResult[0].name.replace(/ /g, '').toLowerCase();
+        const trueName = songName.replace(/ /g, '').toLowerCase();
+        if (searchName.indexOf(trueName) !== -1) {
+          result.push({
+            plugin,
+            searchResult: searchResult[0],
+          });
+        } else {
+          console.log(`No resource found from ${plugin.name}`.yellow);
         }
-        if (searchResult.length > 0) {
-          // console.log(searchResult);
-          const searchName = searchResult[0].name.replace(/ /g, '').toLowerCase();
-          const trueName = songName.replace(/ /g, '').toLowerCase();
-          if (searchName.indexOf(trueName) !== -1) {
-            return callback(null, {
-              plugin,
-              searchResult: searchResult[0],
-            });
-          }
-        }
+      } else {
         console.log(`No resource found from ${plugin.name}`.yellow);
-        return callback(null);
-      }, (err, result) => {
-        if (err) return reject(err);
-        return resolve(result);
-      });
-    });
+      }
+    }
+    return result;
   }
 
   /*
