@@ -9,7 +9,7 @@
 
 # 依赖
 
-1. Node.js 7.x+
+1. Node.js 8.x+
 2. Nginx with subs-filter module configured.
 
 # 注意
