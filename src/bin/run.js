@@ -6,7 +6,7 @@ import http from 'http';
 import 'colors';
 
 import app from '../app';
-import config from '../modules/config';
+import config from '../config';
 
 /**
  * Get port from environment and store in Express.

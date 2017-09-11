@@ -3,11 +3,10 @@ import Koa from 'koa';
 import logger from 'koa-logger';
 import Router from 'koa-router';
 
-import config from './modules/config';
-import proxy from './modules/proxy';
-import Netease from './modules/utils/netease';
-import * as modify from './modules/modify';
-// import * as pair from './modules/pair';
+import config from './config';
+import { proxy } from './middleware';
+import { modify } from './controllers';
+import { Netease } from './utils';
 
 const errorHandler = async (ctx, next) => {
   const data = ctx.body;

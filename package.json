@@ -9,7 +9,6 @@
     "unblockneteasemusic": "dist/bin/unblockneteasemusic.js"
   },
   "dependencies": {
-    "async": "^2.5.0",
     "babel-runtime": "^6.11.6",
     "colors": "^1.1.2",
     "commander": "^2.9.0",
