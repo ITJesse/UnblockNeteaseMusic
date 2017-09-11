@@ -2,10 +2,11 @@ import 'colors';
 import Koa from 'koa';
 import logger from 'koa-logger';
 import Router from 'koa-router';
+import auth from 'koa-basic-auth';
 
 import config from './config';
 import { proxy } from './middleware';
-import { modify } from './controllers';
+import { modify, pair } from './controllers';
 import { Netease } from './utils';
 
 const errorHandler = async (ctx, next) => {
@@ -73,12 +74,17 @@ router.post(
 );
 
 // Route for Unblock Netease Music Server itself
-// router
-//   .use('/api/pair/*', pair.permission)
-//   .get('/api/pair/recent', pair.recent)
-//   .get('/api/pair', pair.list)
-//   .put('/api/pair', pair.save)
-//   .post('/api/pair/:songId', pair.update);
+if (config.webApi) {
+  router.use('/api/pair/*', auth({
+    name: config.username,
+    pass: config.password,
+  }));
+
+  router.get('/api/pair/recent', pair.recent);
+  // .get('/api/pair', pair.list)
+  // .put('/api/pair', pair.save)
+  // .post('/api/pair/:songId', pair.update);
+}
 
 app
   .use(router.routes())

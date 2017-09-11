@@ -8,9 +8,9 @@ program
   .version(module.exports.version)
   .option('-p, --port <port>', 'Specific server port.')
   .option('-f, --force-ip <ip>', 'Force the netease server ip.')
-  .option('-k, --kugou', 'No longer support.')
-  .option('-q, --qq', 'No longer support.')
   .option('-r, --rewrite-url', 'Rewrite music download url, let client download file through proxy.')
+  .option('--username <username>', 'The username of Web API.')
+  .option('--password <password>', 'The password of Web API.')
   .option('-v, --verbose', 'Display errors.')
   .parse(process.argv);
 
@@ -30,6 +30,15 @@ if (program.forceIp && !/\d+\.\d+\.\d+\.\d+/.test(program.forceIp)) {
 
 if (program.rewriteUrl) {
   console.log('Rewrite music download url.'.green);
+}
+
+if (!program.username || !program.password) {
+  console.log('Please set the username and password to enable the Web API.'.yellow);
+  program.webApi = false;
+}
+if (program.username && program.password) {
+  console.log('Web API enabled.'.green);
+  program.webApi = true;
 }
 
 export default program;
