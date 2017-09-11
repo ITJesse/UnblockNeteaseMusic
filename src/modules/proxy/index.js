@@ -1,4 +1,6 @@
 import getRawBody from 'raw-body';
+import zlib from 'zlib';
+
 import config from '../config';
 import * as common from '../utils/common';
 
@@ -58,10 +60,23 @@ const middleware = async function (ctx, next) {
 
     const headers = result.headers;
     const body = result.body;
-    delete headers['content-encoding'];
-    ctx.set(headers);
     ctx.body = body.toString();
     await next();
+
+    if (typeof ctx.body === 'object') {
+      ctx.body = JSON.stringify(ctx.body);
+    }
+    if (typeof ctx.body === 'string') {
+      ctx.compress = true;
+      const stream = zlib.createGzip();
+      stream.end(ctx.body);
+      ctx.body = stream;
+      headers['content-encoding'] = 'gzip';
+    } else {
+      delete headers['content-encoding'];
+    }
+    // console.log(headers);
+    ctx.set(headers);
     // console.log(ctx.body);
   }
 };
