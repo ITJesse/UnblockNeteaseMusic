@@ -11,6 +11,7 @@ program
   .option('-r, --rewrite-url', 'Rewrite music download url, let client download file through proxy.')
   .option('--username <username>', 'The username of Web API.')
   .option('--password <password>', 'The password of Web API.')
+  .option('--database-path', 'Specific the path to store database file.')
   .option('-v, --verbose', 'Display errors.')
   .parse(process.argv);
 

@@ -11,7 +11,10 @@ export const recent = async (ctx) => {
     ],
     limit: 50,
   });
-  ctx.body = recents.map(e => e.dataValues);
+  ctx.body = {
+    error: 0,
+    result: recents.map(e => e.dataValues),
+  };
 };
 
 export default recent;

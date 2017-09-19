@@ -5,10 +5,17 @@ export default (sequelize, DataTypes) => {
       primaryKey: true,
     },
     plugin: DataTypes.STRING,
-    songHash: DataTypes.STRING,
+    hash: DataTypes.STRING,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
   });
+
+  Pair.associate = (Song) => {
+    Pair.hasOne(Song, {
+      foreignKey: 'songId',
+      as: 'song',
+    });
+  };
 
   return Pair;
 };

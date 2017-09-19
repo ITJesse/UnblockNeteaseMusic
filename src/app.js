@@ -84,9 +84,9 @@ if (config.webApi) {
 
   router
     .get('/api/pair/recent', pair.recent)
-    .get('/api/pair', pair.list);
-  // .put('/api/pair', pair.save)
-  // .post('/api/pair/:songId', pair.update);
+    .get('/api/pair', pair.list)
+    .put('/api/pair', pair.save)
+    .get('/api/pair/:songId', pair.get);
 }
 
 app

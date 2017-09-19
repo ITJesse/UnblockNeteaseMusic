@@ -1,5 +1,6 @@
 import 'colors';
 import { Utils, Netease } from '../../utils';
+import { Recent, Song } from '../../models';
 
 const utils = new Utils();
 
@@ -37,6 +38,19 @@ export const player = async (ctx, next) => {
     }
   } else {
     console.log('No resource.'.red);
+    const { songName, artist, album } = songInfo;
+    Song.findOrCreate({
+      where: { songId },
+      defaults: {
+        songId,
+        artist,
+        album,
+        name: songName,
+      },
+    }).then().catch(err => console.log(err));
+    Recent.upsert({
+      songId,
+    }).then().catch(err => console.log(err));
   }
   ctx.body = JSON.stringify(data);
   return next();
