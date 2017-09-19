@@ -3,6 +3,25 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.sendRequest = exports.Netease = exports.Utils = undefined;
+
+var _netease = require('./netease');
+
+Object.defineProperty(exports, 'Netease', {
+  enumerable: true,
+  get: function () {
+    return _netease.Netease;
+  }
+});
+
+var _common = require('./common');
+
+Object.defineProperty(exports, 'sendRequest', {
+  enumerable: true,
+  get: function () {
+    return _common.sendRequest;
+  }
+});
 
 require('colors');
 
@@ -14,14 +33,6 @@ var _path = require('path');
 
 var _path2 = _interopRequireDefault(_path);
 
-var _async = require('async');
-
-var _async2 = _interopRequireDefault(_async);
-
-var _netease = require('./netease');
-
-var _netease2 = _interopRequireDefault(_netease);
-
 var _config = require('../config');
 
 var _config2 = _interopRequireDefault(_config);
@@ -31,7 +42,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 class Utils {
   constructor() {
     const ip = _config2.default.forceIp ? _config2.default.forceIp : '223.252.199.7';
-    this.netease = new _netease2.default(ip);
+    this.netease = new _netease.Netease(ip);
     this.plugins = [];
     this.initPlugins();
   }
@@ -77,10 +88,7 @@ class Utils {
     return result;
   }
 
-  /*
-    Get song url.
-  */
-  async getUrlInfo(songId) {
+  async getSongInfo(songId) {
     let detail;
     try {
       detail = await this.netease.getSongDetail(songId);
@@ -88,12 +96,22 @@ class Utils {
       console.log('Cannot get song info from netease.'.red);
       throw new Error(err);
     }
-    const songName = _netease2.default.getSongName(detail);
-    const artist = _netease2.default.getArtistName(detail);
-    const album = _netease2.default.getAlbumName(detail);
+    const songName = _netease.Netease.getSongName(detail);
+    const artist = _netease.Netease.getArtistName(detail);
+    const album = _netease.Netease.getAlbumName(detail);
     console.log('Song name: '.green + songName);
     console.log('Artist: '.green + artist);
     console.log('Album: '.green + album);
+    return {
+      songName, artist, album
+    };
+  }
+
+  /*
+    Get song url.
+  */
+  async getUrlInfo(songInfo) {
+    const { songName, artist, album } = songInfo;
     let result;
     try {
       result = await this.batchSeachMusic(songName, artist, album);
@@ -122,7 +140,7 @@ class Utils {
     if (result[0]) {
       const plugin = result[0].plugin;
       const data = result[0].searchResult;
-      const songInfo = {
+      songInfo = {
         bitrate: data.bitrate,
         filesize: data.filesize,
         hash: data.hash,
@@ -139,7 +157,7 @@ class Utils {
       // 魔改 URL 应对某司防火墙
       if (_config2.default.rewriteUrl) {
         songInfo.origUrl = url;
-        url = url.replace(plugin.baseUrl, `m8.music.126.net/${plugin.name.replace(/ /g, '').toLowerCase()}`);
+        url = url.replace(plugin.baseUrl, `music.163.com/${plugin.name.replace(/ /g, '').toLowerCase()}`);
       }
       songInfo.url = url;
       return songInfo;
@@ -147,4 +165,5 @@ class Utils {
     return null;
   }
 }
-exports.default = Utils;
+
+exports.Utils = Utils;

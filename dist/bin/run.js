@@ -10,7 +10,7 @@ var _app = require('../app');
 
 var _app2 = _interopRequireDefault(_app);
 
-var _config = require('../modules/config');
+var _config = require('../config');
 
 var _config2 = _interopRequireDefault(_config);
 
