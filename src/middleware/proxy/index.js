@@ -1,4 +1,3 @@
-import getRawBody from 'raw-body';
 import zlib from 'zlib';
 
 import config from '../../config';

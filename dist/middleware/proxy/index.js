@@ -7,10 +7,6 @@ exports.proxy = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _rawBody = require('raw-body');
-
-var _rawBody2 = _interopRequireDefault(_rawBody);
-
 var _zlib = require('zlib');
 
 var _zlib2 = _interopRequireDefault(_zlib);
