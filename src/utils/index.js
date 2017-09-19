@@ -54,10 +54,7 @@ export class Utils {
     return result;
   }
 
-  /*
-    Get song url.
-  */
-  async getUrlInfo(songId) {
+  async getSongInfo(songId) {
     let detail;
     try {
       detail = await this.netease.getSongDetail(songId);
@@ -71,6 +68,16 @@ export class Utils {
     console.log('Song name: '.green + songName);
     console.log('Artist: '.green + artist);
     console.log('Album: '.green + album);
+    return {
+      songName, artist, album,
+    };
+  }
+
+  /*
+    Get song url.
+  */
+  async getUrlInfo(songInfo) {
+    const { songName, artist, album } = songInfo;
     let result;
     try {
       result = await this.batchSeachMusic(songName, artist, album);
@@ -99,7 +106,7 @@ export class Utils {
     if (result[0]) {
       const plugin = result[0].plugin;
       const data = result[0].searchResult;
-      const songInfo = {
+      songInfo = {
         bitrate: data.bitrate,
         filesize: data.filesize,
         hash: data.hash,
@@ -116,7 +123,7 @@ export class Utils {
       // 魔改 URL 应对某司防火墙
       if (config.rewriteUrl) {
         songInfo.origUrl = url;
-        url = url.replace(plugin.baseUrl, `m8.music.126.net/${plugin.name.replace(/ /g, '').toLowerCase()}`);
+        url = url.replace(plugin.baseUrl, `music.163.com/${plugin.name.replace(/ /g, '').toLowerCase()}`);
       }
       songInfo.url = url;
       return songInfo;

@@ -1,5 +1,6 @@
 import 'colors';
 import { Utils, Netease } from '../../utils';
+import { Recent, Song } from '../../models';
 
 const utils = new Utils();
 
@@ -10,9 +11,16 @@ export const download = async (ctx, next) => {
     return console.log('The song URL is '.green + data.data.url);
   }
   const songId = Netease.getDownloadSongId(data);
+  let songInfo;
+  try {
+    songInfo = await utils.getSongInfo(songId);
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
   let urlInfo;
   try {
-    urlInfo = await utils.getUrlInfo(songId);
+    urlInfo = await utils.getUrlInfo(songInfo);
   } catch (err) {
     console.log(err);
     throw new Error(err);
@@ -26,6 +34,19 @@ export const download = async (ctx, next) => {
     }
   } else {
     console.log('No resource.'.red);
+    const { songName, artist, album } = songInfo;
+    Song.findOrCreate({
+      where: { songId },
+      defaults: {
+        songId,
+        artist,
+        album,
+        name: songName,
+      },
+    }).then().catch(err => console.log(err));
+    Recent.upsert({
+      songId,
+    }).then().catch(err => console.log(err));
   }
   return next();
 };

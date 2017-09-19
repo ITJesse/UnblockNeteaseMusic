@@ -14,9 +14,16 @@ export const player = async (ctx, next) => {
     return next();
   }
 
+  let songInfo;
+  try {
+    songInfo = await utils.getSongInfo(songId);
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
   let urlInfo;
   try {
-    urlInfo = await utils.getUrlInfo(songId);
+    urlInfo = await utils.getUrlInfo(songInfo);
   } catch (err) {
     console.log(err);
     throw new Error(err);

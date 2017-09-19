@@ -2,7 +2,7 @@
   "name": "unblock-netease-music",
   "version": "3.0.1",
   "scripts": {
-    "start": "babel-node -- src/bin/unblockneteasemusic -p 8123 -v",
+    "start": "babel-node -- src/bin/unblockneteasemusic -p 8123 --username unblock --password unblock -v",
     "build": "rm -rf dist && babel src --out-dir dist"
   },
   "bin": {
@@ -14,6 +14,7 @@
     "commander": "^2.9.0",
     "koa": "^2.3.0",
     "koa-basic-auth": "^2.0.0",
+    "koa-bodyparser": "^4.2.0",
     "koa-logger": "^3.0.1",
     "koa-router": "^7.2.1",
     "md5": "^2.1.0",
@@ -22,8 +23,9 @@
     "remote-file-size": "^3.0.3",
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
-    "sequelize": "^4.8.3",
-    "sqlite3": "^3.1.10"
+    "sequelize": "^4.8.4",
+    "sequelize-cli": "^3.0.0-3",
+    "sqlite3": "^3.1.11"
   },
   "keywords": [
     "netease",
@@ -40,7 +42,7 @@
     "babel-polyfill": "^6.13.0",
     "babel-preset-node8": "^1.2.0",
     "eslint": "^3.13.0",
-    "eslint-config-airbnb": "^14.0.0",
+    "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-es-beautifier": "^1.0.1",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^3.0.2",

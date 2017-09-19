@@ -8,17 +8,7 @@ export const proxy = async function (ctx, next) {
   const req = ctx.request;
 
   if (req.url.indexOf('/api/plugin') !== -1) {
-    let rawBody;
-    try {
-      rawBody = await getRawBody(ctx.req, {
-        length: ctx.length,
-        encoding: ctx.charset,
-      });
-    } catch (error) {
-      console.log('Cannot get post body.'.red);
-      throw new Error(error);
-    }
-    ctx.body = rawBody;
+    ctx.body = req.rawBody;
     await next();
   } else if (req.method === 'POST') {
     const ip = config.forceIp ? config.forceIp : '223.252.199.7';
@@ -30,11 +20,6 @@ export const proxy = async function (ctx, next) {
       'x-real-ip': `202.114.79.${Math.floor(Math.random() * 255) + 1}`,
     };
 
-    const rawBody = await getRawBody(ctx.req, {
-      length: ctx.length,
-      encoding: ctx.charset,
-    });
-
     const options = {
       url,
       headers: newHeader,
@@ -42,13 +27,8 @@ export const proxy = async function (ctx, next) {
       encoding: null,
       gzip: true,
     };
-    if (rawBody) {
-      options.body = rawBody;
-      try {
-        req.body = rawBody.toString();
-      } catch (err) {
-        console.log('Body is not string.');
-      }
+    if (req.rawBody) {
+      options.body = req.rawBody;
     }
     let result;
     try {
@@ -61,6 +41,7 @@ export const proxy = async function (ctx, next) {
     const headers = result.headers;
     const body = result.body;
     ctx.body = body.toString();
+    // console.log(ctx.body);
     await next();
 
     if (typeof ctx.body === 'object') {
