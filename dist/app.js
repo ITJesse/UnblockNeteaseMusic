@@ -26,6 +26,10 @@ var _koaBodyparser = require('koa-bodyparser');
 
 var _koaBodyparser2 = _interopRequireDefault(_koaBodyparser);
 
+var _kcors = require('kcors');
+
+var _kcors2 = _interopRequireDefault(_kcors);
+
 var _config = require('./config');
 
 var _config2 = _interopRequireDefault(_config);
@@ -67,6 +71,7 @@ const errorHandler = async (ctx, next) => {
 
 const app = new _koa2.default();
 app.use((0, _koaLogger2.default)());
+app.use((0, _kcors2.default)());
 app.use((0, _koaBodyparser2.default)());
 
 const router = (0, _koaRouter2.default)();
@@ -85,7 +90,7 @@ if (_config2.default.webApi) {
     pass: _config2.default.password
   }));
 
-  router.get('/api/pair/recent', _controllers.pair.recent).get('/api/pair', _controllers.pair.list).put('/api/pair', _controllers.pair.save).get('/api/pair/:songId', _controllers.pair.get);
+  router.get('/api/pair/check', _controllers.pair.check).get('/api/pair/recent', _controllers.pair.recent).get('/api/pair', _controllers.pair.list).put('/api/pair', _controllers.pair.save).delete('/api/pair/:songId', _controllers.pair.unpair).get('/api/pair/:songId', _controllers.pair.get);
 }
 
 app.use(router.routes()).use(router.allowedMethods());

@@ -1,6 +1,6 @@
 import 'colors';
 import { Utils, Netease } from '../../utils';
-import { Recent, Song } from '../../models';
+import { handleDeadMusic } from './dead';
 
 const utils = new Utils();
 
@@ -34,19 +34,7 @@ export const download = async (ctx, next) => {
     }
   } else {
     console.log('No resource.'.red);
-    const { songName, artist, album } = songInfo;
-    Song.findOrCreate({
-      where: { songId },
-      defaults: {
-        songId,
-        artist,
-        album,
-        name: songName,
-      },
-    }).then().catch(err => console.log(err));
-    Recent.upsert({
-      songId,
-    }).then().catch(err => console.log(err));
+    handleDeadMusic(songId, songInfo);
   }
   return next();
 };

@@ -30,7 +30,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const sequelize = new _sequelize2.default('unblock', 'unblock', 'unblock', {
   dialect: 'sqlite',
   storage: _config2.default.databasePath ? _config2.default.databasePath : './unblock.sqlite',
-  debug: !!_config2.default.verbose
+  logging: _config2.default.verbose ? console.log : false
 });
 
 const Song = exports.Song = (0, _song2.default)(sequelize, _sequelize2.default);

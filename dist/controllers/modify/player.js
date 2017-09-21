@@ -9,7 +9,7 @@ require('colors');
 
 var _utils = require('../../utils');
 
-var _models = require('../../models');
+var _dead = require('./dead');
 
 const utils = new _utils.Utils();
 
@@ -47,19 +47,7 @@ const player = exports.player = async (ctx, next) => {
     }
   } else {
     console.log('No resource.'.red);
-    const { songName, artist, album } = songInfo;
-    _models.Song.findOrCreate({
-      where: { songId },
-      defaults: {
-        songId,
-        artist,
-        album,
-        name: songName
-      }
-    }).then().catch(err => console.log(err));
-    _models.Recent.upsert({
-      songId
-    }).then().catch(err => console.log(err));
+    (0, _dead.handleDeadMusic)(songId, songInfo);
   }
   ctx.body = JSON.stringify(data);
   return next();

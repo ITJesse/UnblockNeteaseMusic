@@ -39,3 +39,18 @@ Object.defineProperty(exports, 'get', {
     return _get.get;
   }
 });
+
+var _unpair = require('./unpair');
+
+Object.defineProperty(exports, 'unpair', {
+  enumerable: true,
+  get: function () {
+    return _unpair.unpair;
+  }
+});
+const check = exports.check = ctx => {
+  ctx.body = {
+    error: 0,
+    result: 'ok'
+  };
+};

@@ -99,11 +99,12 @@ class Utils {
     const songName = _netease.Netease.getSongName(detail);
     const artist = _netease.Netease.getArtistName(detail);
     const album = _netease.Netease.getAlbumName(detail);
+    const albumPic = _netease.Netease.getAlbumPic(detail);
     console.log('Song name: '.green + songName);
     console.log('Artist: '.green + artist);
     console.log('Album: '.green + album);
     return {
-      songName, artist, album
+      songName, artist, album, albumPic
     };
   }
 

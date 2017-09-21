@@ -32,6 +32,11 @@ export class Netease {
     return body.songs[0].album.name;
   }
 
+  static getAlbumPic(body) {
+    body = JSON.parse(body);
+    return body.songs[0].album.picUrl;
+  }
+
   static getDownloadSongId(body) {
     return body.data.id;
   }

@@ -8,7 +8,7 @@ import pair from './pair';
 const sequelize = new Sequelize('unblock', 'unblock', 'unblock', {
   dialect: 'sqlite',
   storage: config.databasePath ? config.databasePath : './unblock.sqlite',
-  logging: !!config.verbose,
+  logging: config.verbose ? console.log : false,
 });
 
 

@@ -10,7 +10,7 @@ var _models = require('../../models');
 const save = exports.save = async ctx => {
   const req = ctx.request;
   const result = {};
-  const { songId, plugin, hash } = req.body;
+  const { songId, plugin, hash, name, artist, album, albumPic } = req.body;
   if (!/^QQ Music|Kugou$/.test(plugin)) {
     result.error = -1;
     ctx.body = result;
@@ -22,7 +22,7 @@ const save = exports.save = async ctx => {
     ctx.body = result;
   } else {
     _models.Pair.upsert({
-      songId, plugin, hash
+      songId, plugin, hash, name, artist, album, albumPic
     }).then().catch(err => console.log(err));
     _models.Recent.destroy({
       where: { songId }

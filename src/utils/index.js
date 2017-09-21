@@ -65,11 +65,12 @@ export class Utils {
     const songName = Netease.getSongName(detail);
     const artist = Netease.getArtistName(detail);
     const album = Netease.getAlbumName(detail);
+    const albumPic = Netease.getAlbumPic(detail);
     console.log('Song name: '.green + songName);
     console.log('Artist: '.green + artist);
     console.log('Album: '.green + album);
     return {
-      songName, artist, album,
+      songName, artist, album, albumPic,
     };
   }
 

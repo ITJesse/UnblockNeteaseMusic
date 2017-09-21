@@ -3,7 +3,7 @@ import { Recent, Pair } from '../../models';
 export const save = async (ctx) => {
   const req = ctx.request;
   const result = {};
-  const { songId, plugin, hash } = req.body;
+  const { songId, plugin, hash, name, artist, album, albumPic } = req.body;
   if (!/^QQ Music|Kugou$/.test(plugin)) {
     result.error = -1;
     ctx.body = result;
@@ -15,7 +15,7 @@ export const save = async (ctx) => {
     ctx.body = result;
   } else {
     Pair.upsert({
-      songId, plugin, hash,
+      songId, plugin, hash, name, artist, album, albumPic,
     }).then().catch(err => console.log(err));
     Recent.destroy({
       where: { songId },

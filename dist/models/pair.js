@@ -11,6 +11,10 @@ exports.default = (sequelize, DataTypes) => {
       primaryKey: true
     },
     plugin: DataTypes.STRING,
+    name: DataTypes.STRING,
+    artist: DataTypes.STRING,
+    album: DataTypes.STRING,
+    albumPic: DataTypes.STRING,
     hash: DataTypes.STRING,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE

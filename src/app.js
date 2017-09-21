@@ -4,6 +4,7 @@ import logger from 'koa-logger';
 import Router from 'koa-router';
 import auth from 'koa-basic-auth';
 import bodyParser from 'koa-bodyparser';
+import cors from 'kcors';
 
 import config from './config';
 import { proxy } from './middleware';
@@ -39,6 +40,7 @@ const errorHandler = async (ctx, next) => {
 
 const app = new Koa();
 app.use(logger());
+app.use(cors());
 app.use(bodyParser());
 
 const router = Router();
@@ -83,9 +85,11 @@ if (config.webApi) {
   }));
 
   router
+    .get('/api/pair/check', pair.check)
     .get('/api/pair/recent', pair.recent)
     .get('/api/pair', pair.list)
     .put('/api/pair', pair.save)
+    .delete('/api/pair/:songId', pair.unpair)
     .get('/api/pair/:songId', pair.get);
 }
 

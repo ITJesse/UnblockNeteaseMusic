@@ -7,6 +7,7 @@ export default (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     artist: DataTypes.STRING,
     album: DataTypes.STRING,
+    albumPic: DataTypes.STRING,
   });
 
   return Song;
