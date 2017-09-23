@@ -7,6 +7,7 @@ class QQ {
     this.name = 'QQ Music';
     this.order = 1;
     this.baseUrl = 'dl.stream.qqmusic.qq.com';
+    this.baseApi = 'http://101.96.10.58/c.y.qq.com';
     this.guid = null;
     this.vkey = null;
     this.updateTime = null;
@@ -33,7 +34,7 @@ class QQ {
   async updateVKey() {
     this.guid = QQ.getGUid();
     const options = {
-      url: `https://c.y.qq.com/base/fcgi-bin/fcg_musicexpress.fcg?json=3&guid=${this.guid}&g_tk=5381&jsonpCallback=jsonCallback&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf8&notice=0&platform=yqq&needNewCode=0`,
+      url: `${this.baseApi}/base/fcgi-bin/fcg_musicexpress.fcg?json=3&guid=${this.guid}&g_tk=5381&jsonpCallback=jsonCallback&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf8&notice=0&platform=yqq&needNewCode=0`,
     };
 
     try {
@@ -56,7 +57,7 @@ class QQ {
       return console.log('QQ Music module is not ready.'.red);
     }
     const options = {
-      url: `https://c.y.qq.com/soso/fcgi-bin/client_search_cp?ct=24&qqmusic_ver=1298&new_json=1&remoteplace=txt.yqq.song&t=0&aggr=1&cr=1&catZhida=1&lossless=1&flag_qc=0&p=1&n=1&w=${encodeURIComponent(keyword)}&g_tk=5381&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0`,
+      url: `${this.baseApi}/soso/fcgi-bin/client_search_cp?ct=24&qqmusic_ver=1298&new_json=1&remoteplace=txt.yqq.song&t=0&aggr=1&cr=1&catZhida=1&lossless=1&flag_qc=0&p=1&n=1&w=${encodeURIComponent(keyword)}&g_tk=5381&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0`,
     };
     let data;
     try {
@@ -107,7 +108,7 @@ class QQ {
   }
 
   async getUrl(data) {
-    const url = `http://dl.stream.qqmusic.qq.com/${data.prefix}${data.mid}.${data.type}?vkey=${this.vkey}&guid=${this.guid}&uin=0&fromtag=30`;
+    const url = `http://${this.baseUrl}/${data.prefix}${data.mid}.${data.type}?vkey=${this.vkey}&guid=${this.guid}&uin=0&fromtag=30`;
     return url;
   }
 }
