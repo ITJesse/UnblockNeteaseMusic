@@ -31,14 +31,18 @@ unblockneteasemusic -h
 
   Usage: unblockneteasemusic [options]
 
+
   Options:
 
-    -h, --help           output usage information.
-    -p, --port <port>    Specific server port.
-    -f, --force-ip <ip>  Force the netease server ip.
-    -k, --kugou          No longer support.
-    -q, --qq             No longer support.
-    -r, --rewrite-url    Rewrite music download url, let client download file through proxy.
+    -V, --version          output the version number
+    -p, --port <port>      Specific server port.
+    -f, --force-ip <ip>    Force the netease server ip.
+    -r, --rewrite-url      Rewrite music download url, let client download file through proxy.
+    --username <username>  The username of Web API.
+    --password <password>  The password of Web API.
+    --database-path        Specific the path to store database file.
+    -v, --verbose          Display errors.
+    -h, --help             output usage information
 ```
 
 ## 支持客户端
