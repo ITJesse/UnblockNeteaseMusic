@@ -23,8 +23,10 @@ const errorHandler = async (ctx, next) => {
   }
   if (Array.isArray(json.data)) {
     json.data = json.data.map(e => Netease.fixJsonData(e));
-  } else {
+  } else if (json.data) {
     json.data = Netease.fixJsonData(json.data);
+  } else {
+    json = Netease.fixJsonData(json);
   }
   try {
     ctx.body = json;

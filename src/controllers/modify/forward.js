@@ -9,7 +9,7 @@ export const forward = async (ctx, next) => {
   }
   let url;
   try {
-    const body = Netease.decryptLinuxForwardApi(req.body.split('=')[1]);
+    const body = Netease.decryptLinuxForwardApi(req.body.eparams);
     const json = JSON.parse(body);
     url = json.url;
   } catch (err) {
