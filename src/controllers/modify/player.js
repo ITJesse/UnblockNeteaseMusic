@@ -24,7 +24,6 @@ export const player = async (ctx, next) => {
   }
   if (pair) {
     try {
-      console.log(pair);
       data.data[0] = await Netease.modifyPlayerApiCustom(pair, data.data[0]);
     } catch (error) {
       console.log('No resource.'.red);
