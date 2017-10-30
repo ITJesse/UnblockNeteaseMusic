@@ -24,6 +24,13 @@
 5. 后台运行 `nohup unblockneteasemusic &`
 6. 完成！
 
+## 手动匹配歌曲
+<a href="https://itunes.apple.com/us/app/music-pair/id1287732570?l=zh&ls=1&mt=8"><img alt='Get it on App Store' src='./screenshots/appstore.png' width="175" /></a>
+
+![Screen 1](./screenshots/screen1.jpg)
+![Screen 2](./screenshots/screen4.jpg)
+![Screen 3](./screenshots/screen3.jpg)
+
 ## 配置参数
 
 ```
@@ -69,7 +76,7 @@ unblockneteasemusic -h
 
 # 预览
 
-![](https://github.com/ITJesse/UnblockNeteaseMusic/raw/master/screenshot.png)
+![Screenshot](./screenshots/unblock.png)
 
 # 感谢
 
