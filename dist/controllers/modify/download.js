@@ -19,32 +19,51 @@ const download = exports.download = async (ctx, next) => {
   if (_utils.Netease.getDownloadReturnCode(data) === 200) {
     return console.log('The song URL is '.green + data.data.url);
   }
+
   const songId = _utils.Netease.getDownloadSongId(data);
-  let songInfo;
+  let pair;
   try {
-    songInfo = await utils.getSongInfo(songId);
+    pair = await (0, _dead.checkPairMusic)(songId);
   } catch (err) {
     console.log(err);
     throw new Error(err);
   }
-  let urlInfo;
-  try {
-    urlInfo = await utils.getUrlInfo(songInfo);
-  } catch (err) {
-    console.log(err);
-    throw new Error(err);
-  }
-  if (urlInfo) {
+  if (pair) {
     try {
-      data.data = await _utils.Netease.modifyDownloadApiCustom(urlInfo, data.data);
+      data.data = await _utils.Netease.modifyPlayerApiCustom(pair, data.data);
     } catch (error) {
       console.log('No resource.'.red);
       throw new Error(error);
     }
   } else {
-    console.log('No resource.'.red);
-    (0, _dead.handleDeadMusic)(songId, songInfo);
+    let songInfo;
+    try {
+      songInfo = await utils.getSongInfo(songId);
+    } catch (err) {
+      console.log(err);
+      throw new Error(err);
+    }
+    let urlInfo;
+    try {
+      urlInfo = await utils.getUrlInfo(songInfo);
+    } catch (err) {
+      console.log(err);
+      throw new Error(err);
+    }
+    if (urlInfo) {
+      try {
+        data.data = await _utils.Netease.modifyDownloadApiCustom(urlInfo, data.data);
+      } catch (error) {
+        console.log('No resource.'.red);
+        throw new Error(error);
+      }
+    } else {
+      console.log('No resource.'.red);
+      (0, _dead.handleDeadMusic)(songId, songInfo);
+    }
   }
+
+  ctx.body = JSON.stringify(data);
   return next();
 };
 

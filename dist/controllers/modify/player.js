@@ -33,7 +33,6 @@ const player = exports.player = async (ctx, next) => {
   }
   if (pair) {
     try {
-      console.log(pair);
       data.data[0] = await _utils.Netease.modifyPlayerApiCustom(pair, data.data[0]);
     } catch (error) {
       console.log('No resource.'.red);
