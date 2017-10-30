@@ -3,3 +3,4 @@ npm-debug.log
 test.js
 unblock.sqlite
 .DS_Store
+dist
