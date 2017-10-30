@@ -12,6 +12,7 @@ program
   .option('--username <username>', 'The username of Web API.')
   .option('--password <password>', 'The password of Web API.')
   .option('--database-path', 'Specific the path to store database file.')
+  .option('--proxy', 'Specific a proxy for plugins.')
   .option('-v, --verbose', 'Display errors.')
   .parse(process.argv);
 
@@ -40,6 +41,10 @@ if (!program.username || !program.password) {
 if (program.username && program.password) {
   console.log('Web API enabled.'.green);
   program.webApi = true;
+}
+
+if (program.proxy) {
+  console.log('Using proxy.'.green);
 }
 
 export default program;

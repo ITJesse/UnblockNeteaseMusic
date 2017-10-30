@@ -165,6 +165,33 @@ class Utils {
     }
     return null;
   }
+
+  async getUrlInfoForPair(pair) {
+    let plugin;
+    for (const p of this.plugins) {
+      if (p.name === pair.plugin) {
+        plugin = p;
+        break;
+      }
+    }
+    let url;
+    try {
+      await plugin.init();
+      url = plugin.getUrl({
+        prefix: 'M800',
+        type: 'mp3',
+        mid: pair.hash
+      });
+    } catch (err) {
+      throw new Error(err);
+    }
+    return {
+      hash: '',
+      bitrate: '320000',
+      type: 'mp3',
+      url
+    };
+  }
 }
 
 exports.Utils = Utils;

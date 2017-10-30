@@ -24,31 +24,49 @@ const player = exports.player = async (ctx, next) => {
     return next();
   }
 
-  let songInfo;
+  let pair;
   try {
-    songInfo = await utils.getSongInfo(songId);
+    pair = await (0, _dead.checkPairMusic)(songId);
   } catch (err) {
     console.log(err);
     throw new Error(err);
   }
-  let urlInfo;
-  try {
-    urlInfo = await utils.getUrlInfo(songInfo);
-  } catch (err) {
-    console.log(err);
-    throw new Error(err);
-  }
-  if (urlInfo) {
+  if (pair) {
     try {
-      data.data[0] = await _utils.Netease.modifyPlayerApiCustom(urlInfo, data.data[0]);
+      console.log(pair);
+      data.data[0] = await _utils.Netease.modifyPlayerApiCustom(pair, data.data[0]);
     } catch (error) {
       console.log('No resource.'.red);
       throw new Error(error);
     }
   } else {
-    console.log('No resource.'.red);
-    (0, _dead.handleDeadMusic)(songId, songInfo);
+    let songInfo;
+    try {
+      songInfo = await utils.getSongInfo(songId);
+    } catch (err) {
+      console.log(err);
+      throw new Error(err);
+    }
+    let urlInfo;
+    try {
+      urlInfo = await utils.getUrlInfo(songInfo);
+    } catch (err) {
+      console.log(err);
+      throw new Error(err);
+    }
+    if (urlInfo) {
+      try {
+        data.data[0] = await _utils.Netease.modifyPlayerApiCustom(urlInfo, data.data[0]);
+      } catch (error) {
+        console.log('No resource.'.red);
+        throw new Error(error);
+      }
+    } else {
+      console.log('No resource.'.red);
+      (0, _dead.handleDeadMusic)(songId, songInfo);
+    }
   }
+
   ctx.body = JSON.stringify(data);
   return next();
 };

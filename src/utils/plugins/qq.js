@@ -1,16 +1,30 @@
 import 'colors';
 
 import * as common from '../common';
+import config from '../../config';
 
 class QQ {
   constructor() {
     this.name = 'QQ Music';
     this.order = 1;
     this.baseUrl = 'dl.stream.qqmusic.qq.com';
-    this.baseApi = 'http://101.96.10.58/c.y.qq.com';
+    if (config.proxy && config.proxy.length > 0) {
+      this.baseApi = `http://${config.proxy}/c.y.qq.com`;
+    } else {
+      this.baseApi = 'https://c.y.qq.com';
+    }
     this.guid = null;
     this.vkey = null;
     this.updateTime = null;
+  }
+
+  async init() {
+    try {
+      await this.getVKey();
+    } catch (err) {
+      console.log('QQ Music module initial failed.'.red);
+      throw new Error(err);
+    }
   }
 
   async getVKey() {
@@ -107,7 +121,7 @@ class QQ {
     return result;
   }
 
-  async getUrl(data) {
+  getUrl(data) {
     const url = `http://${this.baseUrl}/${data.prefix}${data.mid}.${data.type}?vkey=${this.vkey}&guid=${this.guid}&uin=0&fromtag=30`;
     return url;
   }

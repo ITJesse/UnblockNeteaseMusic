@@ -6,6 +6,12 @@ var _common = require('../common');
 
 var common = _interopRequireWildcard(_common);
 
+var _config = require('../../config');
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 class QQ {
@@ -13,10 +19,23 @@ class QQ {
     this.name = 'QQ Music';
     this.order = 1;
     this.baseUrl = 'dl.stream.qqmusic.qq.com';
-    this.baseApi = 'http://101.96.10.58/c.y.qq.com';
+    if (_config2.default.proxy && _config2.default.proxy.length > 0) {
+      this.baseApi = `http://${_config2.default.proxy}/c.y.qq.com`;
+    } else {
+      this.baseApi = 'https://c.y.qq.com';
+    }
     this.guid = null;
     this.vkey = null;
     this.updateTime = null;
+  }
+
+  async init() {
+    try {
+      await this.getVKey();
+    } catch (err) {
+      console.log('QQ Music module initial failed.'.red);
+      throw new Error(err);
+    }
   }
 
   async getVKey() {
@@ -113,7 +132,7 @@ class QQ {
     return result;
   }
 
-  async getUrl(data) {
+  getUrl(data) {
     const url = `http://${this.baseUrl}/${data.prefix}${data.mid}.${data.type}?vkey=${this.vkey}&guid=${this.guid}&uin=0&fromtag=30`;
     return url;
   }
