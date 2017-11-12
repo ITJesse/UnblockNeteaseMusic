@@ -16,6 +16,13 @@
 
 从 2.0 版本开始，本代理仅支持与 nginx 一同部署。standalone 分支已停止更新，无法使用。
 
+## Ubuntu/Debian 用户请注意
+
+请使用 `npm config get prefix` 命令查看 npm 的默认目录，如果为 `/usr` 将导致无法正常安装。
+
+请按照以下官方教程修复。
+[Fixing npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions)
+
 # 使用方法
 1. 安装 Nginx 和 Node.js
 2. Nginx 配置参考 `/server_config/nginx.conf.sample`
