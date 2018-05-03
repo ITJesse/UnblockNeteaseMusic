@@ -66,7 +66,7 @@ unblockneteasemusic -h
 ### OSX 用户
 
 #### 旧版本客户端 1.4.3
-直接使用。 [下载链接](http://s1.music.126.net/download/osx/NeteaseMusic_1.4.3_452_web.dmg)
+~~直接使用。 [下载链接](http://s1.music.126.net/download/osx/NeteaseMusic_1.4.3_452_web.dmg)~~
 
 #### 最新客户端
 配合插件使用，详见 [NeteaseMusicPlugin](https://github.com/ITJesse/NeteaseMusicPlugin)
