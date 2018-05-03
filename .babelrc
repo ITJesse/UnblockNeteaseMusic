@@ -1,5 +1,11 @@
 {
+  "plugins": [
+    "transform-runtime",
+    [
+      "transform-object-rest-spread", { "useBuiltIns": true }
+    ]
+  ],
   "presets": [
-    "node8"
+    "env"
   ]
 }

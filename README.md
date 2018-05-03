@@ -72,7 +72,8 @@ unblockneteasemusic -h
 配合插件使用，详见 [NeteaseMusicPlugin](https://github.com/ITJesse/NeteaseMusicPlugin)
 
 ### Windows 用户
-请务必不要更新客户端到 2.0.2 以上的版本。 [下载链接](http://s1.music.126.net/download/pc/cloudmusicsetup_2_0_2[128316].exe)
+~~请务必不要更新客户端到 2.0.2 以上的版本。 [下载链接](http://s1.music.126.net/download/pc/cloudmusicsetup_2_0_2[128316].exe)~~
+已无法使用。
 
 ### Linux 用户
 直接使用。

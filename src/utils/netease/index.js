@@ -1,8 +1,8 @@
 import 'colors';
-import requestPromise from 'request-promise';
 import request from 'request';
 import crypto from 'crypto';
 import remoteFilesize from 'remote-file-size';
+import { createWebAPIRequest } from '../common';
 
 export class Netease {
   constructor(ip) {
@@ -24,17 +24,17 @@ export class Netease {
 
   static getArtistName(body) {
     body = JSON.parse(body);
-    return body.songs[0].artists[0].name;
+    return body.songs[0].ar[0].name;
   }
 
   static getAlbumName(body) {
     body = JSON.parse(body);
-    return body.songs[0].album.name;
+    return body.songs[0].al.name;
   }
 
   static getAlbumPic(body) {
     body = JSON.parse(body);
-    return body.songs[0].album.picUrl;
+    return body.songs[0].al.picUrl;
   }
 
   static getDownloadSongId(body) {
@@ -140,21 +140,19 @@ export class Netease {
     return body;
   }
 
-  async getSongDetail(songId) {
-    const header = {
-      host: 'music.163.com',
-      'content-type': 'application/x-www-form-urlencoded',
-    };
-
-    const options = {
-      url: `${this.baseUrl}/api/song/detail/?ids=[${songId}]&id=${songId}`,
-      headers: header,
-      method: 'get',
-      gzip: true,
+  static async getSongDetail(songId) {
+    const data = {
+      c: JSON.stringify([{ id: songId }]),
+      ids: `[${songId}]`,
+      csrf_token: '',
     };
     let result;
     try {
-      result = await requestPromise(options);
+      result = await createWebAPIRequest(
+        'http://music.163.com/weapi/v3/song/detail',
+        'POST',
+        data,
+      );
     } catch (err) {
       throw new Error(err);
     }
@@ -175,7 +173,6 @@ export class Netease {
     }
     return Buffer.concat(cipherChunks, totalLength);
   }
-
 }
 
 export default Netease;

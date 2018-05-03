@@ -16,6 +16,7 @@ class Kugou {
     };
   }
 
+  // eslint-disable-next-line
   async search(keyword) {
     const options = {
       url: `http://mobilecdn.kugou.com/api/v3/search/song?format=json&keyword=${encodeURIComponent(keyword)}&page=1&pagesize=1&showtype=1`,
@@ -64,6 +65,7 @@ class Kugou {
     return result;
   }
 
+  // eslint-disable-next-line
   async getUrl(searchResult) {
     const hash = searchResult.hash;
     const key = md5(`${hash}kgcloud`);

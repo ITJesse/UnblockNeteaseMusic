@@ -15,6 +15,7 @@ export class Utils {
 
   initPlugins() {
     fs.readdirSync(path.resolve(__dirname, 'plugins')).forEach((file) => {
+      // eslint-disable-next-line
       const Plugin = require(path.resolve(__dirname, 'plugins', file));
       this.plugins.push(new Plugin());
     });
@@ -54,10 +55,10 @@ export class Utils {
     return result;
   }
 
-  async getSongInfo(songId) {
+  static async getSongInfo(songId) {
     let detail;
     try {
-      detail = await this.netease.getSongDetail(songId);
+      detail = await Netease.getSongDetail(songId);
     } catch (err) {
       console.log('Cannot get song info from netease.'.red);
       throw new Error(err);

@@ -32,7 +32,7 @@ export const player = async (ctx, next) => {
   } else {
     let songInfo;
     try {
-      songInfo = await utils.getSongInfo(songId);
+      songInfo = await Utils.getSongInfo(songId);
     } catch (err) {
       console.log(err);
       throw new Error(err);
