@@ -24,12 +24,10 @@
 [Fixing npm permissions](https://docs.npmjs.com/getting-started/fixing-npm-permissions)
 
 # 使用方法
-1. 安装 Nginx 和 Node.js
-2. Nginx 配置参考 `/server_config/nginx.conf.sample`
-3. 安装 sniproxy，配置参考 `/server_config/sniproxy.conf.sample` （非必须）
-4. 安装本代理 `sudo npm install unblock-netease-music -g`
-5. 后台运行 `nohup unblockneteasemusic &`
-6. 完成！
+1. 安装 Node.js
+2. 安装本代理 `sudo npm install unblock-netease-music -g`
+3. 后台运行 `nohup unblockneteasemusic &`
+4. 完成！
 
 ## 手动匹配歌曲
 <a href="https://itunes.apple.com/us/app/music-pair/id1287732570?l=zh&ls=1&mt=8"><img alt='Get it on App Store' src='./screenshots/appstore.png' width="175" /></a>
@@ -61,7 +59,7 @@ unblockneteasemusic -h
 
 ## 支持客户端
 
-向 hosts 文件中添加一行：`<Server IP> music.163.com`
+~~向 hosts 文件中添加一行：`<Server IP> music.163.com`~~
 
 ### OSX 用户
 
