@@ -7,71 +7,29 @@ class QQ {
   constructor() {
     this.name = 'QQ Music';
     this.order = 1;
-    this.baseUrl = 'dl.stream.qqmusic.qq.com';
+    this.baseUrl = 'isure.stream.qqmusic.qq.com';
     if (config.proxy && config.proxy.length > 0) {
-      this.baseApi = `http://${config.proxy}/c.y.qq.com`;
+      this.baseSearchApi = `http://${config.proxy}/c.y.qq.com`;
+      this.baseVKeyApi = `http://${config.proxy}/u.y.qq.com`;
     } else {
-      this.baseApi = 'https://c.y.qq.com';
+      this.baseSearchApi = 'https://c.y.qq.com';
+      this.baseVKeyApi = 'https://u.y.qq.com';
     }
-    this.guid = null;
-    this.vkey = null;
-    this.updateTime = null;
-  }
-
-  async init() {
-    try {
-      await this.getVKey();
-    } catch (err) {
-      console.log('QQ Music module initial failed.'.red);
-      throw new Error(err);
-    }
-  }
-
-  async getVKey() {
-    if (!this.updateTime || this.updateTime + 3600 * 1000 < (new Date()).valueOf()) {
-      try {
-        this.vkey = await this.updateVKey();
-        this.updateTime = (new Date()).valueOf();
-      } catch (err) {
-        console.log('Cannot update vkey.'.red);
-        console.log(err);
-      }
-    }
-    return this.vkey;
+    console.log(this.baseVKeyApi)
   }
 
   static getGUid() {
-    const currentMs = (new Date()).getUTCMilliseconds();
-    return Math.round(2147483647 * Math.random()) * currentMs % 1e10;
-  }
-
-  async updateVKey() {
-    this.guid = QQ.getGUid();
-    const options = {
-      url: `${this.baseApi}/base/fcgi-bin/fcg_musicexpress.fcg?json=3&guid=${this.guid}&g_tk=5381&jsonpCallback=jsonCallback&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf8&notice=0&platform=yqq&needNewCode=0`,
-    };
-
-    try {
-      const result = await common.sendRequest(options);
-      const data = JSON.parse(result.body);
-      return data.key;
-    } catch (err) {
-      throw new Error(err);
-    }
+    const currentMs = new Date().getUTCMilliseconds();
+    return `${(Math.round(2147483647 * Math.random()) * currentMs) % 1e10}`
   }
 
   async search(keyword) {
-    try {
-      await this.getVKey();
-    } catch (err) {
-      return console.log('QQ Music module initial failed.'.red);
-    }
-
-    if (!this.vkey || this.vkey.length !== 112) {
-      return console.log('QQ Music module is not ready.'.red);
-    }
     const options = {
-      url: `${this.baseApi}/soso/fcgi-bin/client_search_cp?ct=24&qqmusic_ver=1298&new_json=1&remoteplace=txt.yqq.song&t=0&aggr=1&cr=1&catZhida=1&lossless=1&flag_qc=0&p=1&n=1&w=${encodeURIComponent(keyword)}&g_tk=5381&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0`,
+      url: `${
+        this.baseSearchApi
+      }/soso/fcgi-bin/client_search_cp?ct=24&qqmusic_ver=1298&new_json=1&remoteplace=txt.yqq.song&t=0&aggr=1&cr=1&catZhida=1&lossless=1&flag_qc=0&p=1&n=1&w=${encodeURIComponent(
+        keyword,
+      )}&g_tk=5381&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0`,
     };
     let data;
     try {
@@ -88,42 +46,69 @@ class QQ {
         let bitrate;
         let filesize;
         let type;
+        let fromtag;
         if (list.size_128 && list.size_128 > 0) {
           prefix = 'M500';
           type = 'mp3';
           bitrate = 128000;
           filesize = list.size_128;
+          fromtag = 30;
         }
         if (list.size_320 && list.size_320 > 0) {
           prefix = 'M800';
           type = 'mp3';
           bitrate = 320000;
           filesize = list.size_320;
+          fromtag = 30;
         }
-        // if (list.size_flac && list.size_flac > 0) {
-        //   prefix = 'F000';
-        //   type = 'flac';
-        //   bitrate = 999000;
-        //   filesize = list.size_flac;
-        // }
+        if (list.size_flac && list.size_flac > 0) {
+          prefix = 'F000';
+          type = 'flac';
+          bitrate = 999000;
+          filesize = list.size_flac;
+          fromtag = 53;
+        }
         result.push({
           name: e.name || 'V.A.',
           artist: e.singer.name || 'V.A.',
           filesize,
           hash: '',
+          songmid: e.mid,
           mid: list.media_mid,
           bitrate: String(bitrate),
           prefix,
           type,
+          fromtag,
         });
       }
     }
     return result;
   }
 
-  getUrl(data) {
-    const url = `http://${this.baseUrl}/${data.prefix}${data.mid}.${data.type}?vkey=${this.vkey}&guid=${this.guid}&uin=0&fromtag=30`;
-    return url;
+  async getUrl(data) {
+    const guid = QQ.getGUid();
+    const url = `${this.baseVKeyApi}/cgi-bin/musicu.fcg?loginUin=0&data=${encodeURIComponent(
+      JSON.stringify({
+        req: {
+          module: 'vkey.GetVkeyServer',
+          method: 'CgiGetVkey',
+          param: {
+            guid,
+            songmid: [data.songmid],
+            songtype: [0],
+            uin: '0',
+            loginflag: 1,
+            platform: '20',
+          },
+        },
+        comm: { uin: 0, format: 'json', ct: 20, cv: 0 },
+      }),
+    )}`;
+    const res = await common.sendRequest({ url });
+    const { vkey } = JSON.parse(res.body).req.data.midurlinfo[0];
+    return `http://${this.baseUrl}/${data.prefix}${data.mid}.${
+      data.type
+    }?vkey=${vkey}&guid=${guid}&uin=0&fromtag=${data.fromtag}`;
   }
 }
 
