@@ -106,6 +106,9 @@ class QQ {
     )}`;
     const res = await common.sendRequest({ url });
     const { vkey } = JSON.parse(res.body).req.data.midurlinfo[0];
+    if (!vkey) {
+      return null;
+    }
     return `http://${this.baseUrl}/${data.prefix}${data.mid}.${
       data.type
     }?vkey=${vkey}&guid=${guid}&uin=0&fromtag=${data.fromtag}`;
