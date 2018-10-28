@@ -12,7 +12,7 @@ import config from '../config';
  * Get port from environment and store in Express.
  */
 
-const port = config.port || '8123';
+const port = process.env.PORT || config.port || '8123';
 
 /**
  * Create HTTP server.

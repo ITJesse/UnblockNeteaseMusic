@@ -9,7 +9,14 @@
     "unblockneteasemusic": "dist/bin/unblockneteasemusic.js"
   },
   "dependencies": {
+    "babel-cli": "^6.26.0",
     "babel-runtime": "^6.11.6",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.6",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "big-integer": "^1.6.36",
     "colors": "^1.3.2",
     "commander": "^2.19.0",
@@ -37,13 +44,6 @@
   "main": "dist/bin/unblockneteasemusic.js",
   "devDependencies": {
     "ajv": "^5.5.2",
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^8.2.6",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-es-beautifier": "^1.0.1",
