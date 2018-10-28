@@ -15,12 +15,11 @@ class QQ {
       this.baseSearchApi = 'https://c.y.qq.com';
       this.baseVKeyApi = 'https://u.y.qq.com';
     }
-    console.log(this.baseVKeyApi)
   }
 
   static getGUid() {
     const currentMs = new Date().getUTCMilliseconds();
-    return `${(Math.round(2147483647 * Math.random()) * currentMs) % 1e10}`
+    return `${(Math.round(2147483647 * Math.random()) * currentMs) % 1e10}`;
   }
 
   async search(keyword) {
